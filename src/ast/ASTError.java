@@ -1,0 +1,13 @@
+package ast;
+
+import interfaces.IAST;
+
+public class ASTError implements IAST {
+
+	@Override
+	public void visit(StringBuffer sb) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
