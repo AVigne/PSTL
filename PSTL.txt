@@ -1,0 +1,65 @@
+script pour PSTL : 
+
+- mode sans option : n arguments donnant les n erreurs à générer par PSTL (répétition possible)
+	-> peut convertir le nom de l'erreur en son numéro pour l'appel à l'outil PSTL 
+	-> ne génère que du code, pas d'infos sur ce que mopsa devrait trouver
+- option1 : 1 argument nom de fichier config pour les trucs à générer (boucles, etc)
+- option2 : 1 argument nom de fichier pour mettre le code dedans
+- option3 : 1 argument nom de fichier pour notre json d'erreur 
+- option4 : afficher le json d'erreur dans stdout après (ou avant) le code généré
+
+les options 1 à 3 immédiatement suivies du nom de fichier
+- help qui va cat un fichier help expliquant comment fonctionne le script
+
+-> script distribué dans le dossier avec un script configure si on sait en faire un jour + le jar evidemment
+
+ et derrière si on veut tester mopsa ou d'autres outils, on utilise
+-> soit le script avec options basique qui génère un code (stdout ou fichier) + Maybe JSON à partir d'un fichier config
+-> soit le script d'automatisation qui lui va comparer N codes générés à partir du fichier config avec les résultats mopsa attendus et faire des sorties stdout 
+script auto : tu mets le nom de ton fichier config, le dossier ou tu veux les codes générés et lui te fait des sorties pour raconter ce qui se passe
+
+Structure PSTL :
+- une interface IAST basique avec une méthode visit 
+
+- une interface/classe lexenv 
+	-> nom des variables utilisées + leur type pour que ça compile sinon c'est con
+	-> dans la gestion des boucles/conditions, voir une gestion de la portée des variables
+	
+	-> gestion des valeurs des variables dans la génération d'erreurs (par ex division par 0 faut avoir 0)
+
+- ASTprgm qui contient plein de lignes, sa méthode visit appelle les visit de chacune de ses lignes à la suite
+- ASTerreur : étendue par tous les types d'erreur
+	-> contient des lignes
+	
+- TypeLigne : une enum avec les possibilités différentes : free; declaration; malloc;...
+- ASTLigne : un typeLigne + une string à renvoyer dans la méthode visit
+
+- ErrorBuilder : utilise un lexenv + l'erreur à générer
+	-> génère et renvoie une ASTerreur
+	-> utilise les règles de génération de l'erreur choisie
+	-> ajoute les variables utilisées au lexenv 
+- ProgramBuilder : utilise un lexenv et une liste d'ASTerreurs 
+		+ pq pas des éléments d'un fichier config (mode dev au moins)
+	-> génère et renvoie un ASTprgm
+	-> utilise les lignes des ASTerreurs aléatoirement
+	-> le fichier config peut lui donner le nombre de lignes de bruit à générer ou autres param
+	
+	-> doit aussi donner des infos sur les emplacements d'erreurs (stringBuilder en argument?)
+
+
+
+errorBuilder : 
+-> crée des lignes genre 
+"int i = 0;\n"
+"float a = 12 / i;\n"
+-> crée une liste avec les lignes, construit un ASTerror avec pour argument la liste et enum.DIVZERO
+
+ensuite intervient programBuilder
+-> génère des lignes correctes 
+        -> pourquoi pas plus tard des boucles avec un loopBuilder
+-> pioche aléatoirement dans un des ASTerreurs qu'il a de dispo pour mettre une ligne dans le programme
+-> construit un ASTprogramme avec la liste des lignes
+
+visiteur 
+-> appelle visit sur l'ASTprogramme 
+-> ASTProgramme va appeler les visit sur chacune de ses lignes à la suite
