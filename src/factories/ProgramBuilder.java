@@ -1,7 +1,7 @@
 package factories;
 
-import java.util.List;
-
+import ast.ASTError;
+import ast.ASTProgram;
 import interfaces.IAST;
 import interfaces.ILexenv;
 import interfaces.IProgramBuilder;
@@ -9,19 +9,30 @@ import interfaces.IProgramBuilder;
 public class ProgramBuilder implements IProgramBuilder{
 
 	
-	private List<IAST> listeErreurs;
+	private IAST[] listeErreurs;
+	
+	static final int NB_MAX_LIGNES = 100;
 	
 	
-	
-	public ProgramBuilder(List<IAST> lerr) {
+	public ProgramBuilder(IAST[] lerr) {
 		listeErreurs = lerr;
 	}
 	
 	
 	@Override
 	public IAST build(ILexenv le) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ASTProgram res =  new ASTProgram();
+		
+		// pour le moment pas de trucs avec le lexenv ou jsp quoi, on se contente de mettre les lignes d'erreurs uniquement
+		
+		for( IAST err :  listeErreurs) {
+			while( ((ASTError) err).hasNext()) {
+				res.addLine(((ASTError) err).pullLine());			
+			}			
+		}		
+		
+		return res;
 	}
 
 }
