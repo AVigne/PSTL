@@ -6,7 +6,7 @@ import factories.*;
 import interfaces.*;
 
 public class PSTL {
-	/*  Liste des erreurs repérées dans le code de Mopsa : 
+	/*  Liste des erreurs reperees dans le code de Mopsa : 
 	1 "Out of bound access"
 	2 "Null pointer dereference"
 	3 "Invalid pointer dereference"
@@ -24,19 +24,19 @@ public class PSTL {
 	15 "Incorrect type of format argument"
 	
 	
-	On utilise les numéros dans le programme, la doc du script explique comment s'en servir
+	On utilise les numeros dans le programme, la doc du script explique comment s'en servir
 	le script parse les options pour donner un code au programme
-	Pour le moment, on va tester uniquement l'erreur 9 pour démarrer la structure du projet
+	Pour le moment, on va tester uniquement l'erreur 9 pour demarrer la structure du projet
 	et faire les premiers tests
 	 */
 	public static void main(String[] args) {
 		
-		// création du lexenv et du builder de la première erreur
+		// creation du lexenv et du builder de la premiere erreur
 		ILexenv lv = new Lexenv();
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
 		
-		ASTError[] errorsList = new ASTError[1]; // 1 à remplacer par nombre d'arguments, ou autre chose selon la gestion des args
+		ASTError[] errorsList = new ASTError[1]; // 1 ï¿½ remplacer par nombre d'arguments, ou autre chose selon la gestion des args
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
 		errorsList[0] = (ASTError) errBuilder.build(lv);
 		

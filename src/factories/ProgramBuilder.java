@@ -1,5 +1,7 @@
 package factories;
 
+import java.util.ArrayList;
+
 import ast.ASTError;
 import ast.ASTProgram;
 import interfaces.IAST;
@@ -8,7 +10,6 @@ import interfaces.IProgramBuilder;
 
 public class ProgramBuilder implements IProgramBuilder{
 
-	
 	private IAST[] listeErreurs;
 	
 	static final int NB_MAX_LIGNES = 100;
@@ -21,10 +22,13 @@ public class ProgramBuilder implements IProgramBuilder{
 	
 	@Override
 	public IAST build(ILexenv le) {
-		
 		ASTProgram res =  new ASTProgram();
 		
-		// pour le moment pas de trucs avec le lexenv ou jsp quoi, on se contente de mettre les lignes d'erreurs uniquement
+		//Recupération des variables du lexenv (pour plus tard)
+		ArrayList<String> varerreur = le.getVars();
+		
+		
+		// pour le moment on se contente de mettre les lignes d'erreurs uniquement
 		
 		for( IAST err :  listeErreurs) {
 			while( ((ASTError) err).hasNext()) {
