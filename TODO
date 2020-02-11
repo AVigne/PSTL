@@ -1,0 +1,24 @@
+A faire pour avancer le projet, l'ordre n'est pas impératif
+
+- Utilisation de l'environnement lexical (lexenv) pour nommer les variables
+  -> format du nom : type + id + ( error + idError)
+  -> ecriture de méthodes dans le lexenv permettant de connaitre les bornes d'une variable numérique
+  
+  
+- Ajout des lib standard dans la String générée par ASTProgram
+
+- Generation des premières lignes de bruit par programBuilder
+  -> modifier le code pour générer un nombre de lignes aléatoire + introduire les lignes d'erreurs à des endroits aléatoires
+    -> ajouter une méthode permettant de connaitre le nombre de lignes d'une AST 
+  -> utilisation des types de base, à partir du lexenv
+  -> opérations basiques, utilisation du lexenv pour s'assurer de l'absence d'erreur
+  
+- Ajout de la gestion de nouvelles erreurs
+  -> main à modifier
+  -> errorBuilder à modifier
+  
+- Ajout des types de ligne au moment de la génération des lignes
+  -> permet la génération du texte à comparer avec le json
+  
+- Modification du main pour lire les erreurs en entrée 
+
