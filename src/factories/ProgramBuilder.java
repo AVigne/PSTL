@@ -2,8 +2,8 @@ package factories;
 
 import java.util.ArrayList;
 
-import ast.ASTError;
 import ast.ASTProgram;
+import ast.errors.ASTError;
 import interfaces.IAST;
 import interfaces.ILexenv;
 import interfaces.IProgramBuilder;

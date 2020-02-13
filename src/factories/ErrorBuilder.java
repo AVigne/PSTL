@@ -1,7 +1,7 @@
 package factories;
 
-import ast.ASTError;
 import ast.ASTLine;
+import ast.errors.ASTError;
 import enums.ErrorType;
 import interfaces.IAST;
 import interfaces.ILexenv;

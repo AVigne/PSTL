@@ -1,6 +1,7 @@
 package main;
 
 import ast.*;
+import ast.errors.ASTError;
 import enums.ErrorType;
 import factories.*;
 import interfaces.*;
