@@ -1,7 +1,11 @@
 package main;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import ast.*;
-import ast.errors.ASTError;
 import enums.ErrorType;
 import factories.*;
 import interfaces.*;
@@ -30,25 +34,35 @@ public class PSTL {
 	Pour le moment, on va tester uniquement l'erreur 9 pour demarrer la structure du projet
 	et faire les premiers tests
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		// creation du lexenv et du builder de la premiere erreur
 		ILexenv lv = new Lexenv();
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
 		
-		ASTError[] errorsList = new ASTError[1]; // 1 � remplacer par nombre d'arguments, ou autre chose selon la gestion des args
+		ArrayList<ASTExpression> errorsList=new ArrayList<>();; // 1 � remplacer par nombre d'arguments, ou autre chose selon la gestion des args
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
-		errorsList[0] = (ASTError) errBuilder.build(lv);
+		errorsList.add(errBuilder.build(lv));
+		//Liste si génération de plusieurs erreurs
 		
+		
+		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
 		IAST program = progBuilder.build(lv);
 		
 		StringBuffer sb = new StringBuffer();
-		Visitor.visit(program, sb);
+		program.visit(sb);
 		
-		System.out.println(sb.toString());
+		//Affichage Console
+		String output=sb.toString();
+		System.out.println(output);
 		
+		//Ecriture dans un fichier
+		File f = new File("test.c");
+		FileWriter fw = new FileWriter(f);
+		fw.write(output);
+		fw.close();
 	}
 
 }

@@ -1,8 +1,9 @@
 package factories;
 
-import ast.ASTLine;
-import ast.errors.ASTError;
+import ast.ASTExpression;
+import ast.errors.ASTErreurDoubleFree;
 import enums.ErrorType;
+import enums.VarType;
 import interfaces.IAST;
 import interfaces.ILexenv;
 import interfaces.IProgramBuilder;
@@ -12,29 +13,15 @@ public class ErrorBuilder implements IProgramBuilder{
 	private ErrorType et;
 	
 	@Override
-	public IAST build(ILexenv le) {
-		ASTError res = new ASTError();
+	public ASTExpression build(ILexenv le) {
 		this.le=le;
 		switch(et) {
 		case DOUBLE_FREE: 
-			buildDoubleFree(res); 
-			break;
-		
+			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null); 
 		default:
-			break;
+			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null); //Pour que ça compile
 		
 		}
-		
-		
-		
-		return res;
-	}
-
-	private void buildDoubleFree(ASTError res) {
-		res.addLine(new ASTLine("int *a = malloc(10*sizeof(int));\n"));
-		res.addLine(new ASTLine("free(a);\n"));
-		res.addLine(new ASTLine("free(a);\n"));
-		le.addVar("a");
 	}
 
 	public boolean setErrorType(ErrorType et) {

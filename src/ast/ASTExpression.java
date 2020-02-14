@@ -9,6 +9,7 @@ public abstract class ASTExpression implements IASTExpression{
 	protected VarType type;
 	protected String nom;
 	protected Object valeur;
+	protected VarType pointée=null;
 	protected ArrayList<ASTExpression> explist= new ArrayList<>();;
 	
 	public ASTExpression (VarType type, String nom,Object valeur) {
@@ -17,6 +18,10 @@ public abstract class ASTExpression implements IASTExpression{
 		this.valeur=valeur;
 	}
 	
+	
+	public void addExpr(ASTExpression e) {
+		explist.add(e);
+	}
 	public VarType getType() {
 		return type;
 	}
@@ -27,5 +32,7 @@ public abstract class ASTExpression implements IASTExpression{
 	public Object getValeur() {
 		return valeur;
 	}
-	
+	public VarType getPointee() {
+		return pointée;
+	}
 }

@@ -2,20 +2,20 @@ package factories;
 
 import java.util.ArrayList;
 
+import ast.ASTExpression;
 import ast.ASTProgram;
-import ast.errors.ASTError;
 import interfaces.IAST;
 import interfaces.ILexenv;
 import interfaces.IProgramBuilder;
 
 public class ProgramBuilder implements IProgramBuilder{
 
-	private IAST[] listeErreurs;
+	private ArrayList<ASTExpression> listeErreurs;
 	
 	static final int NB_MAX_LIGNES = 100;
 	
 	
-	public ProgramBuilder(IAST[] lerr) {
+	public ProgramBuilder(ArrayList<ASTExpression> lerr) {
 		listeErreurs = lerr;
 	}
 	
@@ -30,11 +30,10 @@ public class ProgramBuilder implements IProgramBuilder{
 		
 		// pour le moment on se contente de mettre les lignes d'erreurs uniquement
 		
-		for( IAST err :  listeErreurs) {
-			while( ((ASTError) err).hasNext()) {
-				res.addLine(((ASTError) err).pullLine());			
-			}			
-		}		
+		for( ASTExpression err :  listeErreurs) {
+				res.addExp(err);
+		}			
+		
 		
 		return res;
 	}

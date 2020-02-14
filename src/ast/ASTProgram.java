@@ -1,30 +1,31 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import interfaces.IAST;
-import interfaces.IASTLine;
 
 public class ASTProgram implements IAST {
 	
 	
-	private List<IASTLine> lineList = new ArrayList<>();
+	private ArrayList<ASTExpression> explist = new ArrayList<>();
 	
-	public void addLine(IASTLine line) {
+	public void addExp(ASTExpression exp) {
 		
-		this.lineList.add(line);
+		this.explist.add(exp);
 	}
 	
 	
 	@Override
 	public void visit(StringBuffer sb) {
+		//Biblio a ajouter au fur et a mesure si besoin
+		sb.append("# include stdlib.h\n");
+		sb.append("# include string.h\n");
 		sb.append("int main(){\n");
-		for(int i = 0; i < lineList.size(); i++) {
-			sb.append("\t");
-			lineList.get(i).visit(sb);
+		for(int i = 0; i < explist.size(); i++) {
+			//sb.append("\t");
+			explist.get(i).visit(sb);
 		}
-		sb.append("\treturn 0;\n}");
+		sb.append("return 0;\n}");
 	}
 
 }
