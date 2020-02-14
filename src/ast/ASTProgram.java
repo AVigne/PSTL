@@ -18,8 +18,8 @@ public class ASTProgram implements IAST {
 	@Override
 	public void visit(StringBuffer sb) {
 		//Biblio a ajouter au fur et a mesure si besoin
-		sb.append("# include stdlib.h\n");
-		sb.append("# include string.h\n");
+		sb.append("# include <stdlib.h>\n");
+		sb.append("# include <string.h>\n");
 		sb.append("int main(){\n");
 		for(int i = 0; i < explist.size(); i++) {
 			//sb.append("\t");

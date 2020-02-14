@@ -9,7 +9,7 @@ public class ASTErreurDoubleFree extends ASTExpression{
 
 	public ASTErreurDoubleFree(VarType type, String nom, Object valeur) {
 		super(type, nom, valeur);
-		ASTExpression pointeur = new ASTVar(VarType.PINT, "a","null");
+		ASTExpression pointeur = new ASTVar(VarType.PINT, "a","NULL");
 		ASTExpression num = new ASTVar(VarType.INT,"nb",10);
 		
 		explist.add(pointeur);

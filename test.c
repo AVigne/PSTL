@@ -1,8 +1,8 @@
-# include stdlib.h
-# include string.h
+# include <stdlib.h>
+# include <string.h>
 int main(){
 int* a;
-a = null;
+a = NULL;
 int nb;
 nb = 10;
 a = malloc(nb*sizeof(int));
