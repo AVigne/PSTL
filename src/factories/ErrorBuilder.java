@@ -4,10 +4,9 @@ import ast.ASTExpression;
 import ast.errors.ASTErreurDoubleFree;
 import enums.ErrorType;
 import enums.VarType;
-import interfaces.IAST;
-import interfaces.IProgramBuilder;
+import interfaces.IErrorBuilder;
 
-public class ErrorBuilder implements IProgramBuilder{
+public class ErrorBuilder implements IErrorBuilder{
 	private ErrorType et;
 	
 	@Override

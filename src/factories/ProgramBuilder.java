@@ -11,8 +11,6 @@ public class ProgramBuilder implements IProgramBuilder{
 
 	private ArrayList<ASTExpression> listeErreurs;
 	
-	static final int NB_MAX_LIGNES = 100;
-	
 	
 	public ProgramBuilder(ArrayList<ASTExpression> lerr) {
 		listeErreurs = lerr;
@@ -20,8 +18,8 @@ public class ProgramBuilder implements IProgramBuilder{
 	
 	
 	@Override
-	public IAST build() {
-		ASTProgram res =  new ASTProgram();
+	public IAST build(int enrE,int enrB) {
+		ASTProgram res =  new ASTProgram(enrE,enrB);
 		
 		//Recupération des variables du lexenv (pour plus tard)
 		ArrayList<String> varerreur = Lexenv.getVars();

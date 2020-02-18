@@ -1,29 +1,32 @@
 # include <stdlib.h>
 # include <string.h>
+/* 
+nombre d'enrichissements des erreurs : 10
+nombre d'enrichissements du bruit : 0
+seed : 1582049452027
+*/
 int main(){
 int* a;
 a = NULL;
-int d;
-int p;
-p = 5 * 1;
-int x;
-x = 60 / 2;
-int n;
-n = 30 * 1;
-int y;
-y = 180 / 6;
-int nb;
-nb = 29 + 1;
-int s;
-s = 0 + 30;
-int sj;
-sj = 27 + 3;
-int e;
-e = 7 + 23;
 int j;
-j = 15 * 2;
-d = p * 30;
-a = malloc(d*sizeof(int));
+int e;
+int r;
+int t;
+t = 1 / 1;
+int rg;
+int sq;
+sq = 0 / 1;
+rg = sq + 3;
+r = t * rg;
+int s;
+s = 0 / 1;
+e = r - s;
+int k;
+int ex;
+ex = 31 / 1;
+k = ex + 19;
+j = e * k;
+a = malloc(j*sizeof(int));
 free(a);
 free(a);
 return 0;

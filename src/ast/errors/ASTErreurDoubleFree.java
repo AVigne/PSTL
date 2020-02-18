@@ -1,6 +1,5 @@
 package ast.errors;
 
-import ast.ASTAffectation;
 import ast.ASTExpression;
 import ast.ASTVar;
 import enums.VarType;
@@ -19,11 +18,9 @@ public class ASTErreurDoubleFree extends ASTExpression{
 	}
 	
 	@Override
-	public void enrichissement() {
+	public void enrichissement(int nb) {
 		//Que la gestion d'enrichissement d'entiers pour le moment
-		for(int i=0;i<nbEnrichissement;i++) {
-			num.enrichissement();
-		}
+			num.enrichissement(nb);
 	}
 
 	@Override

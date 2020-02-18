@@ -9,7 +9,7 @@ public class ASTAffectation extends ASTExpression{
 	}
 
 	@Override
-	public void enrichissement() {
+	public void enrichissement(int nb) {
 		// TODO Auto-generated method stub
 		
 	}

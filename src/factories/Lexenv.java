@@ -1,13 +1,12 @@
 package factories;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 //import interfaces.ILexenv;
 
 public class Lexenv{
 	private static ArrayList<String> vars;
-	public Lexenv() {
+	public static void init() {
 		vars= new ArrayList<String>();
 	}
 	
@@ -26,7 +25,7 @@ public class Lexenv{
 		StringBuilder sb = new StringBuilder();
 		//génération de nom aleatoire, on ne se soucie pas de la taile du nom, seulement si il existe deja
 		do {
-			sb.append(alpha.charAt(new Random().nextInt(26)));
+			sb.append(alpha.charAt(RandomProvider.nextInt(26)));
 		}while (vars.contains(sb.toString()));
 		vars.add(sb.toString());
 		return sb.toString();

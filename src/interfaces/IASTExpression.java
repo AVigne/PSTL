@@ -1,10 +1,14 @@
 package interfaces;
 
-import java.util.ArrayList;
 
-import enums.VarType;
 
 public interface IASTExpression extends IAST{
 	
-	public void enrichissement();
+	
+	/**
+	 * Called to extend the expression
+	 * 
+	 * @param nb Number of times
+	 */
+	public void enrichissement(int nb);
 }

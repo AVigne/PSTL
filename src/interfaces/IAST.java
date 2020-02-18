@@ -5,9 +5,9 @@ public interface IAST {
 	
 	
 	/**
-	 * called by the visitor to build the C file
+	 * Called by the visitor to build the input string of the C file
 	 * 
-	 * @param sb sb
+	 * @param sb 
 	 */
 	public void visit(StringBuffer sb);
 

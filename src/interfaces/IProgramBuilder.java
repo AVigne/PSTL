@@ -1,10 +1,12 @@
 package interfaces;
 
 public interface IProgramBuilder {
+	
 	/**
 	 * 
-	 * @param le
+	 * @param enrE 
+	 * @param enrB
 	 * @return
 	 */
-	public IAST build();
+	public IAST build(int enrE, int enrB);
 }

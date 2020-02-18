@@ -37,11 +37,13 @@ public class PSTL {
 	public static void main(String[] args) throws IOException {
 		
 		// creation du lexenv et du builder de la premiere erreur
-		Lexenv lv = new Lexenv();
+		Lexenv.init();
+		RandomProvider.init();
+		
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
 		
-		ArrayList<ASTExpression> errorsList=new ArrayList<>();; // 1 � remplacer par nombre d'arguments, ou autre chose selon la gestion des args
+		ArrayList<ASTExpression> errorsList=new ArrayList<>(); 
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
 		errorsList.add(errBuilder.build());
 		//Liste si génération de plusieurs erreurs
@@ -49,7 +51,7 @@ public class PSTL {
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
-		IAST program = progBuilder.build();
+		IAST program = progBuilder.build(10,0);
 		
 		StringBuffer sb = new StringBuffer();
 		program.visit(sb);

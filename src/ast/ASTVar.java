@@ -1,10 +1,9 @@
 package ast;
 
-import java.util.Random;
 
 import ast.operations.*;
 import enums.VarType;
-import factories.Lexenv;
+import factories.RandomProvider;
 
 public class ASTVar extends ASTExpression{
 	
@@ -13,9 +12,9 @@ public class ASTVar extends ASTExpression{
 		
 		//Dans le cadre des pointeurs, potentiellement besoin de récup le type pointé, pour les mallocs par exemple
 		switch (type) {
-		case PINT: pointée=VarType.INT;
+		case PINT: pointee=VarType.INT;
 			break;
-		case PCHAR:pointée=VarType.CHAR;
+		case PCHAR:pointee=VarType.CHAR;
 			break;
 		default:
 		}
@@ -23,10 +22,10 @@ public class ASTVar extends ASTExpression{
 	
 
 	@Override
-	public void enrichissement() {
+	public void enrichissement(int nb) {
 		if (explist.isEmpty()) {
 			//Permet d'enrichir random entre +-*/
-			int op = new Random().nextInt(4);
+			int op = RandomProvider.nextInt(4);
 			
 			
 			//Si jamais etendue, on étends gauche
@@ -41,12 +40,12 @@ public class ASTVar extends ASTExpression{
 				case 3 :			explist.add(new ASTDivision(VarType.INT,this.nom,this.valeur,false));
 									break;
 				}
+				explist.get(0).enrichissement(nb-1);				
 				return;
-
 			}
 		}
 		else {
-			explist.get(0).enrichissement();
+			explist.get(0).enrichissement(nb);
 		}
 	}
 
