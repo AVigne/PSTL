@@ -17,7 +17,7 @@ public class ASTDivision extends ASTExpression{
 		int somme= (Integer)valeur;
 		if (somme==0) {
 			gauche=0;
-			droite=0;
+			droite=1;
 			declaration=dec;
 		}
 		else {
