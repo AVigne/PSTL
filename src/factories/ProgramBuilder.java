@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ast.ASTExpression;
 import ast.ASTProgram;
 import interfaces.IAST;
-import interfaces.ILexenv;
 import interfaces.IProgramBuilder;
 
 public class ProgramBuilder implements IProgramBuilder{
@@ -21,11 +20,11 @@ public class ProgramBuilder implements IProgramBuilder{
 	
 	
 	@Override
-	public IAST build(ILexenv le) {
+	public IAST build() {
 		ASTProgram res =  new ASTProgram();
 		
 		//Recupération des variables du lexenv (pour plus tard)
-		ArrayList<String> varerreur = le.getVars();
+		ArrayList<String> varerreur = Lexenv.getVars();
 		
 		
 		// pour le moment on se contente de mettre les lignes d'erreurs uniquement

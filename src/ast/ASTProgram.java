@@ -23,6 +23,7 @@ public class ASTProgram implements IAST {
 		sb.append("int main(){\n");
 		for(int i = 0; i < explist.size(); i++) {
 			//sb.append("\t");
+			explist.get(i).enrichissement();
 			explist.get(i).visit(sb);
 		}
 		sb.append("return 0;\n}");

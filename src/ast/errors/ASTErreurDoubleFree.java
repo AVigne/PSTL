@@ -4,29 +4,30 @@ import ast.ASTAffectation;
 import ast.ASTExpression;
 import ast.ASTVar;
 import enums.VarType;
+import factories.Lexenv;
 
 public class ASTErreurDoubleFree extends ASTExpression{
-
+	
+	int nbEnrichissement=10;
+	
+	ASTExpression pointeur;
+	ASTExpression num;
 	public ASTErreurDoubleFree(VarType type, String nom, Object valeur) {
 		super(type, nom, valeur);
-		ASTExpression pointeur = new ASTVar(VarType.PINT, "a","NULL");
-		ASTExpression num = new ASTVar(VarType.INT,"nb",10);
-		
-		explist.add(pointeur);
-		explist.add(num);
+		pointeur = new ASTVar(VarType.PINT, Lexenv.getNewName(),"NULL");
+		num = new ASTVar(VarType.INT,Lexenv.getNewName(),150);
 	}
 	
 	@Override
 	public void enrichissement() {
-		// TODO Auto-generated method stub
-		
+		//Que la gestion d'enrichissement d'entiers pour le moment
+		for(int i=0;i<nbEnrichissement;i++) {
+			num.enrichissement();
+		}
 	}
 
 	@Override
 	public void visit(StringBuffer sb) {
-		
-		ASTExpression pointeur = explist.get(0);
-		ASTExpression num = explist.get(1);
 		pointeur.visit(sb);
 		num.visit(sb);
 		

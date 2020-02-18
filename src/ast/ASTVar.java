@@ -1,6 +1,10 @@
 package ast;
 
+import java.util.Random;
+
+import ast.operations.*;
 import enums.VarType;
+import factories.Lexenv;
 
 public class ASTVar extends ASTExpression{
 	
@@ -20,8 +24,30 @@ public class ASTVar extends ASTExpression{
 
 	@Override
 	public void enrichissement() {
-		// TODO Auto-generated method stub
-		
+		if (explist.isEmpty()) {
+			//Permet d'enrichir random entre +-*/
+			int op = new Random().nextInt(4);
+			
+			
+			//Si jamais etendue, on étends gauche
+			if (explist.size()==0) {
+				switch (op) {
+				case 0 : 			explist.add(new ASTSomme(VarType.INT,this.nom,this.valeur,false));
+									break;
+				case 1 : 			explist.add(new ASTSoustraction(VarType.INT,this.nom,this.valeur,false));
+									break;
+				case 2 : 			explist.add(new ASTMultiplication(VarType.INT,this.nom,this.valeur,false));
+									break;
+				case 3 :			explist.add(new ASTDivision(VarType.INT,this.nom,this.valeur,false));
+									break;
+				}
+				return;
+
+			}
+		}
+		else {
+			explist.get(0).enrichissement();
+		}
 	}
 
 
