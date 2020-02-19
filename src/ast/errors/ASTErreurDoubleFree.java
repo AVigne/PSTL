@@ -13,8 +13,10 @@ public class ASTErreurDoubleFree extends ASTExpression{
 	ASTExpression num;
 	public ASTErreurDoubleFree(VarType type, String nom, Object valeur) {
 		super(type, nom, valeur);
+		Lexenv.toggleError(true);
 		pointeur = new ASTVar(VarType.PINT, Lexenv.getNewName(),"NULL");
 		num = new ASTVar(VarType.INT,Lexenv.getNewName(),150);
+		Lexenv.toggleError(false);
 	}
 	
 	@Override

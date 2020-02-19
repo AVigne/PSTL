@@ -27,7 +27,7 @@ public class ASTMultiplication extends ASTOperation{
 				rand = RandomProvider.nextInt(somme)+1;
 				cpt++;
 			}
-			if (cpt==10) {
+			if (cpt==10 || (rand > (Integer.MAX_VALUE / somme))) {
 				gauche=somme;
 				droite=1;
 			}
@@ -37,6 +37,7 @@ public class ASTMultiplication extends ASTOperation{
 			}
 			declaration=dec;
 		}
+		//System.out.println(gauche+" "+droite);
 	}
 
 	@Override

@@ -14,7 +14,6 @@ public class ASTOperation extends ASTExpression {
 	
 	public ASTOperation(VarType type, String nom, Object valeur) {
 		super(type, nom, valeur);
-		
 	}
 
 	@Override

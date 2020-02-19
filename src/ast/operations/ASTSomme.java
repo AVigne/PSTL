@@ -22,6 +22,7 @@ public class ASTSomme extends ASTOperation{
 			droite=somme-gauche;
 			declaration=dec;
 		}
+		//System.out.println(gauche+" "+droite);
 	}
 
 	@Override

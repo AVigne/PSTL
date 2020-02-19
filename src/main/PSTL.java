@@ -51,7 +51,7 @@ public class PSTL {
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
-		IAST program = progBuilder.build(10,0);
+		IAST program = progBuilder.build(500,0);
 		
 		StringBuffer sb = new StringBuffer();
 		program.visit(sb);
