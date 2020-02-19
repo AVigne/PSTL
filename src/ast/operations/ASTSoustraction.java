@@ -10,6 +10,7 @@ public class ASTSoustraction extends ASTOperation {
 	
 	public ASTSoustraction(VarType type, String nom, Object valeur,Boolean dec) {
 		super(type, nom, valeur);
+		//System.out.println("sub "+valeur);
 		int somme= (Integer)valeur;
 		if (somme==0) {
 			gauche=0;
@@ -18,12 +19,14 @@ public class ASTSoustraction extends ASTOperation {
 		}
 		else{
 			//gauche et droite aléatoires
-			int rand = RandomProvider.nextInt(somme);
+			int rand = 0;
+			if(somme < Integer.MAX_VALUE )
+				rand = RandomProvider.nextInt(Integer.MAX_VALUE - somme);
 			gauche= somme+rand;
 			droite=rand;
 			declaration=dec;
 		}
-		//System.out.println(gauche+" "+droite);
+		//System.out.println("sub "+gauche+" "+droite);
 	}
 
 	@Override

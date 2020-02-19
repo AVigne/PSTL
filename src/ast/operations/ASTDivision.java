@@ -11,6 +11,7 @@ public class ASTDivision extends ASTOperation{
 	
 	public ASTDivision(VarType type, String nom, Object valeur,Boolean dec) {
 		super(type, nom, valeur);
+		//System.out.println("div "+valeur);
 		int somme= (Integer)valeur;
 		if (somme==0) {
 			gauche=0;
@@ -21,15 +22,14 @@ public class ASTDivision extends ASTOperation{
 			//gauche et droite aléatoires
 			int rand = RandomProvider.nextInt(somme)+1;
 			int cpt=0;
-	
+			int maxIter = 10;
 			//On tire un diviseur de la valeur, 100 fois au plus (afin de ne pas boucler jusqu'a trouver 1)
 			//Regle le soucis des grands nombres premeiers entre autre
-			//res pour éviter les overflow
-			while((somme%rand!=0)&&(cpt<100)){
+			while((somme%rand!=0)&&(cpt<maxIter)){
 				rand = RandomProvider.nextInt(somme)+1;
 				cpt++;
 			}
-			if (cpt==10 || (rand > (Integer.MAX_VALUE / somme))) {
+			if (cpt==maxIter || (rand > (Integer.MAX_VALUE / somme))) {
 				gauche=somme;
 				droite=1;
 			}
@@ -39,7 +39,7 @@ public class ASTDivision extends ASTOperation{
 			}
 			declaration=dec;
 		}
-		//System.out.println(gauche+" "+droite);
+		//System.out.println("div "+gauche+" "+droite);
 	}
 
 

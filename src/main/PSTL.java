@@ -35,7 +35,7 @@ public class PSTL {
 	et faire les premiers tests
 	 */
 	public static void main(String[] args) throws IOException {
-		
+
 		// creation du lexenv et du builder de la premiere erreur
 		Lexenv.init();
 		RandomProvider.init();
@@ -46,12 +46,13 @@ public class PSTL {
 		ArrayList<ASTExpression> errorsList=new ArrayList<>(); 
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
 		errorsList.add(errBuilder.build());
-		//Liste si génération de plusieurs erreurs
 		
+		//Timer 
+		long time = System.currentTimeMillis();
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
-		IAST program = progBuilder.build(500,0);
+		IAST program = progBuilder.build(1000,0);
 		
 		StringBuffer sb = new StringBuffer();
 		program.visit(sb);
@@ -59,6 +60,7 @@ public class PSTL {
 		//Affichage Console
 		String output=sb.toString();
 		System.out.println(output);
+		System.out.println("\n"+(System.currentTimeMillis() - time)/1000.0);
 		
 		//Ecriture dans un fichier
 		File f = new File("test.c");

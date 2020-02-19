@@ -10,6 +10,7 @@ public class ASTSomme extends ASTOperation{
 	
 	public ASTSomme(VarType type, String nom, Object valeur,Boolean dec) {
 		super(type, nom, valeur);
+		//System.out.println("sum "+valeur);
 		int somme= (Integer)valeur;
 		if (somme==0) {
 			gauche=0;
@@ -22,7 +23,7 @@ public class ASTSomme extends ASTOperation{
 			droite=somme-gauche;
 			declaration=dec;
 		}
-		//System.out.println(gauche+" "+droite);
+		//System.out.println("sum "+gauche+" "+droite);
 	}
 
 	@Override
