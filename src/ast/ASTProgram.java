@@ -26,6 +26,7 @@ public class ASTProgram implements IAST {
 	public void visit(StringBuffer sb) {
 		//Biblio a ajouter au fur et a mesure si besoin
 		sb.append("# include <stdlib.h>\n");
+		sb.append("# include <stdio.h>\n");
 		sb.append("# include <string.h>\n");
 		
 		sb.append("/* \nnombre d'enrichissements des erreurs : "+nbEnrichissementsErr+"\n");

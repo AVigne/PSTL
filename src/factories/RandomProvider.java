@@ -21,11 +21,11 @@ public class RandomProvider {
 	public static long getSeed() {
 		return seed;
 	}
-	
+	//Entier random
 	public static int nextInt() {
 		return theAlmighty.nextInt();
 	}
-
+	//Entier random avec borne i
 	public static int nextInt(int i) {
 		return theAlmighty.nextInt(i);
 	}

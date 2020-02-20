@@ -6,9 +6,8 @@ import factories.Lexenv;
 import factories.RandomProvider;
 
 
-//Utile si liste d'operation plus tard. Sinon juste extends ASTEXpression -> changement minime
 
-public class ASTOperation extends ASTExpression {
+public abstract class ASTOperation extends ASTExpression {
 	protected int gauche;
 	protected int droite;
 	
@@ -36,7 +35,7 @@ public class ASTOperation extends ASTExpression {
 			return;
 		}
 		
-		//Si jamais etendue, on étends gauche, sinon droit	
+		//Si jamais etendue, on étends gauche, sinon droit, aopération aléatoire
 		int cote = explist.size() > 0 ? droite : gauche;
 			switch (op) {
 			case 0 : 			explist.add(new ASTSomme(VarType.INT,Lexenv.getNewName(),cote,true));
@@ -52,10 +51,5 @@ public class ASTOperation extends ASTExpression {
 			return;			
 	}
 
-	@Override
-	public void visit(StringBuffer sb) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

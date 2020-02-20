@@ -1,6 +1,7 @@
 package factories;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ast.ASTExpression;
 import ast.ASTProgram;
@@ -22,10 +23,10 @@ public class ProgramBuilder implements IProgramBuilder{
 		ASTProgram res =  new ASTProgram(enrE,enrB);
 		
 		//Recupération des variables du lexenv (pour plus tard)
-		ArrayList<String> varerreur = Lexenv.getVars();
+		List<String> varerreur = Lexenv.getVars();
 		
 		
-		// pour le moment on se contente de mettre les lignes d'erreurs uniquement
+		// pour le moment on se contente de mettre les erreurs uniquement
 		
 		for( ASTExpression err :  listeErreurs) {
 				res.addExp(err);

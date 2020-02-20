@@ -1,0 +1,19 @@
+script pour PSTL : 
+
+- mode sans option : n arguments donnant les n erreurs � g�n�rer par PSTL (r�p�tition possible)
+	-> peut convertir le nom de l'erreur en son num�ro pour l'appel � l'outil PSTL 
+	-> ne g�n�re que du code, pas d'infos sur ce que mopsa devrait trouver
+- option1 : 1 argument nom de fichier config pour les trucs � g�n�rer (boucles, etc)
+- option2 : 1 argument nom de fichier pour mettre le code dedans
+- option3 : 1 argument nom de fichier pour notre json d'erreur 
+- option4 : afficher le json d'erreur dans stdout apr�s (ou avant) le code g�n�r�
+
+les options 1 � 3 imm�diatement suivies du nom de fichier
+- help qui va cat un fichier help expliquant comment fonctionne le script
+
+-> script distribu� dans le dossier avec un script configure si on sait en faire un jour + le jar evidemment
+
+ et derri�re si on veut tester mopsa ou d'autres outils, on utilise
+-> soit le script avec options basique qui g�n�re un code (stdout ou fichier) + Maybe JSON � partir d'un fichier config
+-> soit le script d'automatisation qui lui va comparer N codes g�n�r�s � partir du fichier config avec les r�sultats mopsa attendus et faire des sorties stdout 
+script auto : tu mets le nom de ton fichier config, le dossier ou tu veux les codes g�n�r�s et lui te fait des sorties pour raconter ce qui se passe
