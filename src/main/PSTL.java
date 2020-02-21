@@ -60,13 +60,14 @@ public class PSTL {
 		//Affichage Console
 		String output=sb.toString();
 		System.out.println(output);
-		System.out.println("\n"+(System.currentTimeMillis() - time)/1000.0);
 		
 		//Ecriture dans un fichier
 		File f = new File("test.c");
 		FileWriter fw = new FileWriter(f);
 		fw.write(output);
 		fw.close();
+		
+		System.out.println("\nGenere en "+(System.currentTimeMillis() - time)/1000.0+"s");
 	}
 
 }
