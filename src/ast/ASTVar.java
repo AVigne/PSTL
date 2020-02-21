@@ -1,7 +1,7 @@
 package ast;
 
 
-import ast.operations.*;
+import ast.operations_old.*;
 import enums.VarType;
 import factories.RandomProvider;
 

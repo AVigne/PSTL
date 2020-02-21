@@ -1,5 +1,7 @@
 package interfaces;
 
+import exceptions.EnrichissementMissingException;
+
 public interface IAST {
 	
 	
@@ -10,5 +12,12 @@ public interface IAST {
 	 * @param sb 
 	 */
 	public void visit(StringBuffer sb);
-
+	
+	
+	/**
+	 * Permet de remplacer une ast par une nouvelle après enrichissement
+	 * @param old
+	 * @param nouveau
+	 */
+	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException;
 }

@@ -2,17 +2,18 @@ package ast;
 
 import java.util.ArrayList;
 
+import exceptions.EnrichissementMissingException;
 import factories.RandomProvider;
 import interfaces.IAST;
 
 public class ASTProgram implements IAST {
 	
 	
-	private ArrayList<ASTExpression> explist = new ArrayList<>();
+	private ArrayList<IAST> explist = new ArrayList<>();
 	private int nbEnrichissementsErr;
 	private int nbEnrichissementsBr;
 	
-	public void addExp(ASTExpression exp) {
+	public void addExp(IAST exp) {
 		
 		this.explist.add(exp);
 	}
@@ -40,6 +41,12 @@ public class ASTProgram implements IAST {
 			explist.get(i).visit(sb);
 		}
 		sb.append("return 0;\n}");
+	}
+
+	@Override
+	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

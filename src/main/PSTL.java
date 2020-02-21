@@ -43,7 +43,7 @@ public class PSTL {
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
 		
-		ArrayList<ASTExpression> errorsList=new ArrayList<>(); 
+		ArrayList<IAST> errorsList=new ArrayList<>(); 
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
 		errorsList.add(errBuilder.build());
 		

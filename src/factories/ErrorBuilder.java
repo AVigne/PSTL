@@ -2,6 +2,7 @@ package factories;
 
 import ast.ASTExpression;
 import ast.errors.ASTErreurDoubleFree;
+import ast.expressions.ASTExpr;
 import enums.ErrorType;
 import enums.VarType;
 import interfaces.IErrorBuilder;
@@ -10,13 +11,13 @@ public class ErrorBuilder implements IErrorBuilder{
 	private ErrorType et;
 	
 	@Override
-	public ASTExpression build() {
+	public ASTExpr build() {
 
 		switch(et) {
 		case DOUBLE_FREE: 
-			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null); 
+			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null,null); 
 		default:
-			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null); //Pour que ça compile
+			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null,null); //Pour que ça compile
 		
 		}
 	}

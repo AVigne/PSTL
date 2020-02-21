@@ -2,26 +2,32 @@ package ast.errors;
 
 import ast.ASTExpression;
 import ast.ASTVar;
+import ast.expressions.ASTExpr;
+import ast.expressions.ASTVariable;
+import ast.statement.memory.ASTFree;
+import ast.statement.memory.ASTMalloc;
 import enums.VarType;
+import exceptions.EnrichissementMissingException;
 import factories.Lexenv;
+import interfaces.IAST;
 
-public class ASTErreurDoubleFree extends ASTExpression{
-	ASTExpression pointeur;
-	ASTExpression num;
-	public ASTErreurDoubleFree(VarType type, String nom, Object valeur) {
-		super(type, nom, valeur);
+public class ASTErreurDoubleFree extends ASTExpr{
+	IAST malloc;
+	IAST free1;
+	IAST free2;
+	IAST owner;
+	public ASTErreurDoubleFree(VarType type, String nom, Object valeur,IAST owner) {
+		super();
 		//nomme les deux variables avec des error_
 		Lexenv.toggleError(true);
-		pointeur = new ASTVar(VarType.PINT, Lexenv.getNewName(),"NULL");
-		num = new ASTVar(VarType.INT,Lexenv.getNewName(),150);
+		IAST pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL",this);
+		IAST num = new ASTVariable(VarType.INT,Lexenv.getNewName(),150,this);
+		malloc= new ASTMalloc(pointeur, num, this);
+		free1 = new ASTFree(pointeur, this);
+		free2 = new ASTFree(pointeur,this);
 		Lexenv.toggleError(false);
 	}
-	
-	@Override
-	public void enrichissement(int nb) {
-		//Que la gestion d'enrichissement d'entiers pour le moment
-		num.enrichissement(nb);
-	}
+
 
 	@Override
 	public void visit(StringBuffer sb) {
@@ -48,6 +54,11 @@ public class ASTErreurDoubleFree extends ASTExpression{
 		sb.append("free("+pointeur.getNom()+");\n");
 		sb.append("free("+pointeur.getNom()+");\n");
 		
+	}
+
+	@Override
+	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
+				
 	}
 	
 }

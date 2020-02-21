@@ -1,29 +1,45 @@
-package ast.operations;
-
+package ast.operations_old;
 
 import ast.ASTExpression;
 import enums.VarType;
 import factories.RandomProvider;
 
-public class ASTSomme extends ASTOperation{
+public class ASTMultiplication extends ASTOperation{
+
 	private boolean declaration;
 	
-	public ASTSomme(VarType type, String nom, Object valeur,Boolean dec) {
+	public ASTMultiplication(VarType type, String nom, Object valeur,Boolean dec) {
 		super(type, nom, valeur);
-		//System.out.println("sum "+valeur);
+		//System.out.println("mul "+valeur);
 		int somme= (Integer)valeur;
 		if (somme==0) {
 			gauche=0;
 			droite=0;
 			declaration=dec;
-		}
+		} 
 		else {
 			//gauche et droite aléatoires
-			gauche= RandomProvider.nextInt(somme);
-			droite=somme-gauche;
+			int rand = RandomProvider.nextInt(somme)+1;
+			int cpt=0;
+			int maxIter = 10;
+	
+			//On tire un diviseur de la valeur, 100 fois au plus (afin de ne pas boucler jusqu'a trouver 1)
+			//Regle le soucis des grands nombres premeiers entre autre
+			while((somme%rand!=0)&&(cpt<maxIter)){
+				rand = RandomProvider.nextInt(somme)+1;
+				cpt++;
+			}
+			if (cpt==maxIter || (rand > (Integer.MAX_VALUE / somme))) {
+				gauche=somme;
+				droite=1;
+			}
+			else {
+				gauche=rand;
+				droite=somme/rand;
+			}
 			declaration=dec;
 		}
-		//System.out.println("sum "+gauche+" "+droite);
+		//System.out.println("mul "+gauche+" "+droite);
 	}
 
 	@Override
@@ -50,7 +66,7 @@ public class ASTSomme extends ASTOperation{
 			d= explist.get(1).getNom();
 
 		}
-		sb.append(nom+" = "+ g+ " + "+d+";\n");
+		sb.append(nom+" = "+ g+ " * "+d+";\n");
 	}
 
 }
