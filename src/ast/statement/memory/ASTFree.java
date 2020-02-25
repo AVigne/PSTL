@@ -5,6 +5,7 @@ import ast.expressions.ASTExpr;
 import ast.statement.ASTStatement;
 import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
 
 public class ASTFree extends ASTStatement {
@@ -15,9 +16,9 @@ public class ASTFree extends ASTStatement {
 		Enrichissement.add(this);
 	}
 	@Override
-	public void visit(StringBuffer sb) {
-		// TODO Auto-generated method stub
-
+	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		sb.append("free("+var.getNom());
+		sb.append(");\n");
 	}
 
 	@Override
@@ -28,6 +29,10 @@ public class ASTFree extends ASTStatement {
 		else {
 			throw new EnrichissementMissingException("L'expression enrichie n'est pas le pointeur du free");
 		}
+	}
+	@Override
+	public String getNom() {
+		return this.nom;
 	}
 
 }

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.*;
+import ast.expressions.operations.ASTDiv;
+import ast.expressions.operations.ASTMult;
+import ast.expressions.operations.ASTOp;
+import ast.expressions.operations.ASTSous;
+import ast.expressions.operations.ASTSum;
 import ast.statement.*;
 import ast.statement.memory.ASTMalloc;
 import enums.VarType;
@@ -33,49 +38,66 @@ public class Enrichissement {
 	//Rajouter a la liste les AST enrichissables
 	//Permet d'en rajouter au fil de l'implémentatio
 	public static boolean isEnrichissable(IAST a) {
-		switch (a.getClass().getCanonicalName()) {
-		case "ASTVariable" : return true;
-		case "ASTAffect" : return true;
-		case "ASTMalloc" : return true;
-		case "ASTOp" : return true;
-		case "ASTSum" : return true;
-		case "ASTSous" : return true;
-		case "ASTMult" : return true;
-		case "ASTDiv" : return true;
-		default : return false;
-		}
+		if (a instanceof ASTVariable)  
+			return true;
+		if (a instanceof ASTAffect)
+			return true;
+		if (a instanceof ASTMalloc)
+			return true;
+		if (a instanceof ASTSum)
+			return true;
+		if (a instanceof ASTSous)
+			return true;
+		if (a instanceof ASTMult)
+			return true;
+		if (a instanceof ASTDiv)
+			return true;
+		return false;
+		
 	}
 	
 	
 	//Stratégies d'enrichissement par AST
 	
 	public static void enrichissement() throws EnrichissementNotImplementedException, EnrichissementMissingException {
+		System.out.println(enrichissables);
 		enrichissement(enrichissables.get(RandomProvider.nextInt(enrichissables.size())));
 	}
-	
-	public static void enrichissement(IAST a) throws EnrichissementNotImplementedException, EnrichissementMissingException{
-		switch (a.getClass().getCanonicalName()) {
-		case "ASTVariable" : enrichissement((ASTVariable)a);
-		case "ASTAffect" : enrichissement((ASTAffect)a);
-		case "ASTMalloc" : enrichissement((ASTMalloc)a);
-		default : throw new EnrichissementNotImplementedException("L'enrichissement de cet AST n'est pas implémenté");
+	public static void enrichissement(int a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
+		for (int i=0;i<a;i++) {
+			enrichissement();
 		}
 	}
 	
-	public static void enrichissement(ASTVariable a){
+	public static void enrichissement(IAST a) throws EnrichissementNotImplementedException, EnrichissementMissingException{
+		if (a instanceof ASTVariable)
+			enrichissement((ASTVariable)a);
+		if (a instanceof ASTAffect)
+			enrichissement((ASTAffect)a);
+		if (a instanceof ASTMalloc)
+			enrichissement((ASTMalloc)a);
+		//throw new EnrichissementNotImplementedException("L'enrichissement de cet AST n'est pas implémenté");
+		
+	}
+	
+	public static void enrichissement(ASTVariable a) throws EnrichissementMissingException{
 		pop(a);
 		switch (a.getType()) {
 		case INT: 
 			switch (RandomProvider.nextInt(nbEVar)) {
-			case 0 : a.getOwner();
+			case 0 : IAST o = a.getOwner();
+					 o.enrichissement(a, ASTOp.getOperation(a.getValeur(), o));break;
+			case 1 : IAST l = a.getOwner();
+					 l.enrichissement(a, new ASTAffect(a.getType(),a.getNom(),a.getValeur(),l) );break;
 			}
 		}
-		new ASTVariable(null, null, a, a);
+		//new ASTVariable(null, null, a, a);
 	}
 	//Pour un affectation, on ne peut que enrichir la variable, puis on retire l'affectation de la liste d'enrichissable 
-	public static void enrichissement(ASTAffect a){
-		enrichissement((ASTVariable)a.getVar());
+	public static void enrichissement(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException{
+		enrichissement((IAST)a.getVar());
 		pop(a);
+
 	}
 	//Pour le moment, on transforme juste le num en affectation, que l'on peu enrichir
 	//Voir pour modifier plus tard pour gérer le pointeur

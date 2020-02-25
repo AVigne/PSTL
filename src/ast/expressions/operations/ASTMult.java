@@ -1,10 +1,15 @@
 package ast.expressions.operations;
 
+import java.util.ArrayList;
+
 import ast.AST;
 import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
+import ast.statement.ASTDeclaration;
 import enrichissement.Enrichissement;
 import enums.VarType;
+import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
@@ -51,8 +56,26 @@ public class ASTMult extends ASTOp {
 		this.valeur=(Integer)g.getValeur()*(Integer)d.getValeur();
 	}
 	@Override
-	public void visit(StringBuffer sb) {
-		// TODO Auto-generated method stub
-		
+	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		ArrayList<AST> affects = getAffect(new ArrayList<AST>());
+		for (AST i : affects) {
+			
+			if (!i.isaffectee()) {
+				ASTDeclaration a = new ASTDeclaration(i.getType(),i.getNom(),i.getOwner());
+				a.visit(sb);
+				i.affectee();
+				i.visit(sb);
+
+				if (i.equals(this))
+					visitee=true;
+			}
+		}
+		if (!visitee) {
+			sb.append("(");
+			gauche.visit(sb);
+			sb.append(" * ");
+			droite.visit(sb);
+			sb.append(")");
+		}
 	}
 }

@@ -1,17 +1,17 @@
 package factories;
 
-import ast.ASTExpression;
 import ast.errors.ASTErreurDoubleFree;
 import ast.expressions.ASTExpr;
 import enums.ErrorType;
 import enums.VarType;
+import exceptions.EnrichissementMissingException;
 import interfaces.IErrorBuilder;
 
 public class ErrorBuilder implements IErrorBuilder{
 	private ErrorType et;
 	
 	@Override
-	public ASTExpr build() {
+	public ASTExpr build() throws EnrichissementMissingException {
 
 		switch(et) {
 		case DOUBLE_FREE: 

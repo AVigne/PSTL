@@ -1,7 +1,18 @@
 # TODO
 
+#V3
+##VISIT
+* Gérer les opérations, pour qu'elles prennent en charge les affectations
+* Gérer les affectation dans les opérations, voir pour déclaration
+* Rajouter un % pour l'enrichissement
+* COMMENTER
 
 
+
+
+
+
+#V2 TODO a UPDATE
 ## AST
 * ASTExpression getteur sur les bornes et mutabilité
 * AstVar/Type pour chaque type (int pour le moment) 

@@ -9,20 +9,20 @@ import java.util.List;
 import java.util.Map;
 
 
-import ast.ASTExpression;
+import ast.expressions.ASTExpr;
 
 //import interfaces.ILexenv;
 
 public class Lexenv{
 	private static List<String> vars;
 	//Pour plus tard, stocker les expressions et leur mutabilité -> creer du bruit dans les expressions
-	private static Map<ASTExpression,Boolean> explist;
+	private static Map<ASTExpr,Boolean> explist;
 	private static Boolean error;
 	private static List<String> languageKeywords;
 	
 	public static void init() {
 		vars= new ArrayList<String>();
-		explist = new HashMap<ASTExpression,Boolean>();
+		explist = new HashMap<ASTExpr,Boolean>();
 		// langage C
 		languageKeywords = new ArrayList<String>();
         try (BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))) {		

@@ -2,7 +2,9 @@ package ast;
 
 import java.util.ArrayList;
 
+import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 import factories.RandomProvider;
 import interfaces.IAST;
 
@@ -24,7 +26,7 @@ public class ASTProgram implements IAST {
 	}
 	
 	@Override
-	public void visit(StringBuffer sb) {
+	public void visit(StringBuffer sb) throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		//Biblio a ajouter au fur et a mesure si besoin
 		sb.append("# include <stdlib.h>\n");
 		sb.append("# include <stdio.h>\n");
@@ -35,9 +37,10 @@ public class ASTProgram implements IAST {
 		sb.append("seed : "+RandomProvider.getSeed()+"\n*/\n");
 		
 		sb.append("int main(){\n");
+		Enrichissement.enrichissement(nbEnrichissementsErr);
+
 		for(int i = 0; i < explist.size(); i++) {
 			//sb.append("\t");
-			explist.get(i).enrichissement(nbEnrichissementsErr);
 			explist.get(i).visit(sb);
 		}
 		sb.append("return 0;\n}");
@@ -46,6 +49,21 @@ public class ASTProgram implements IAST {
 	@Override
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getNom() {
+		return null;
+	}
+
+	@Override
+	public boolean isaffectee() {
+		return false;
+	}
+
+	@Override
+	public void affectee() {
 		
 	}
 

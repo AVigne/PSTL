@@ -1,6 +1,7 @@
 package interfaces;
 
 import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 
 public interface IAST {
 	
@@ -11,7 +12,7 @@ public interface IAST {
 	 * 
 	 * @param sb 
 	 */
-	public void visit(StringBuffer sb);
+	public void visit(StringBuffer sb) throws EnrichissementMissingException,EnrichissementNotImplementedException;
 	
 	
 	/**
@@ -19,5 +20,8 @@ public interface IAST {
 	 * @param old
 	 * @param nouveau
 	 */
+	public String getNom();
+	public boolean isaffectee();
+	public void affectee();
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException;
 }

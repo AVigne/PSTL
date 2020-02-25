@@ -3,15 +3,17 @@ package ast.expressions.operations;
 import java.util.ArrayList;
 
 import ast.AST;
+import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
 import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 import factories.RandomProvider;
 import interfaces.IAST;
 
 public class ASTOp extends ASTExpr{
-	protected IAST gauche;
-	protected IAST droite;
+	protected AST gauche;
+	protected AST droite;
 
 	
 	public ASTOp(ASTExpr g, ASTExpr d,IAST owner) {
@@ -35,18 +37,23 @@ public class ASTOp extends ASTExpr{
 		return valeur;
 	}
 	@Override
-	public void visit(StringBuffer sb) {
-		// TODO Auto-generated method stub
-		
+	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException{
+		System.out.println("NORMALEMENT AUCUNE RAISON D'ETRE ICI");
 	}
 	@Override
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
+		System.out.println("OP");
+		System.out.println(gauche);
+		System.out.println(droite);
+		System.out.println(old);
 		if(gauche==old) {
-			gauche=nouveau;
+			Enrichissement.pop(gauche);
+			gauche=(AST)nouveau;
 			return;
 		}
 		if (droite==old) {
-			droite=nouveau;
+			Enrichissement.pop(droite);
+			droite=(AST)nouveau;
 			return;
 		}
 		throw new EnrichissementMissingException("L'expression enrichie n'est pas dans l'opération");
@@ -79,6 +86,25 @@ public class ASTOp extends ASTExpr{
 		case 3 : return new ASTDiv(valeur,owner);
 		default : return new ASTSum(valeur,owner);
 		}
+	}
+
+	@Override
+	public String getNom() {
+		System.out.println("LOL");
+		return this.getNom();
+	}
+	
+	@Override
+	public ArrayList<AST> getAffect(ArrayList<AST> a){
+		if (gauche instanceof ASTAffect)
+			a.add(gauche);
+		else
+			a=gauche.getAffect(a);
+		if (droite instanceof ASTAffect) 
+			a.add(droite);
+		else
+			a=droite.getAffect(a);
+		return a;
 	}
 
 }

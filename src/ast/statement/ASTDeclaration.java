@@ -12,9 +12,8 @@ public class ASTDeclaration extends ASTStatement{
 	protected IAST var;
 	protected VarType type;
 	
-	public ASTDeclaration(VarType type, String nom, Object valeur, IAST owner) {
+	public ASTDeclaration(VarType type, String nom, IAST owner) {
 		this.nom=nom;
-		this.valeur=valeur;
 		this.type=type;
 		var= new ASTVariable(type,nom, valeur,this);
 		this.owner=owner;
@@ -23,7 +22,12 @@ public class ASTDeclaration extends ASTStatement{
 	
 	@Override
 	public void visit(StringBuffer sb) {
-		
+		String t="";
+		switch (this.type) {
+		case INT: t="int";
+		case PINT: t="int* ";
+		}
+		sb.append(t+" "+this.nom+";\n");
 	}
 	
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException{
@@ -33,5 +37,10 @@ public class ASTDeclaration extends ASTStatement{
 		else {
 			throw new EnrichissementMissingException("La variable enrichie n'est pas celle déclarée");
 		}
+	}
+
+	@Override
+	public String getNom() {
+		return this.nom;
 	}
 }

@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ast.*;
+import enrichissement.Enrichissement;
 import enums.ErrorType;
+import exceptions.EnrichissementMissingException;
+import exceptions.EnrichissementNotImplementedException;
 import factories.*;
 import interfaces.*;
 
@@ -34,11 +37,12 @@ public class PSTL {
 	Pour le moment, on va tester uniquement l'erreur 9 pour demarrer la structure du projet
 	et faire les premiers tests
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, EnrichissementMissingException, EnrichissementNotImplementedException {
 
 		// creation du lexenv et du builder de la premiere erreur
 		Lexenv.init();
 		RandomProvider.init();
+		Enrichissement.init();
 		
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
@@ -52,7 +56,7 @@ public class PSTL {
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
-		IAST program = progBuilder.build(1000,0);
+		IAST program = progBuilder.build(100,0);
 		
 		StringBuffer sb = new StringBuffer();
 		program.visit(sb);

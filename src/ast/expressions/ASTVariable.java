@@ -1,7 +1,6 @@
 package ast.expressions;
 
 import ast.AST;
-import ast.statement.ASTAffect;
 import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
@@ -9,7 +8,7 @@ import interfaces.IAST;
 
 public class ASTVariable extends ASTExpr{
 	protected String nom;
-
+	protected VarType pointee;
 
 	public ASTVariable(VarType type, String nom, Object valeur,IAST owner) {
 		this.typeretour=type;
@@ -17,6 +16,10 @@ public class ASTVariable extends ASTExpr{
 		this.valeur=valeur;
 		this.owner=owner;
 		Enrichissement.add(this);
+		switch (type) {
+		case PINT : pointee = VarType.INT; break;
+		}
+		
 		
 	}
 	public VarType getType() {
@@ -28,7 +31,9 @@ public class ASTVariable extends ASTExpr{
 	public Object getValeur() {
 		return valeur;
 	}
-	
+	public VarType getPointee() {
+		return pointee;
+	}
 	public IAST toAffect() {
 		return new ASTAffect(typeretour,nom,valeur,owner);
 	}
@@ -36,8 +41,7 @@ public class ASTVariable extends ASTExpr{
 	
 	@Override
 	public void visit(StringBuffer sb) {
-		// TODO Auto-generated method stub
-		
+		sb.append(this.valeur);
 	}
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException{
 		this.owner.enrichissement(old,nouveau);
