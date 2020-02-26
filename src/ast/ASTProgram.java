@@ -2,9 +2,9 @@ package ast;
 
 import java.util.ArrayList;
 
-import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import factories.RandomProvider;
 import interfaces.IAST;
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import ast.AST;
 import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
-import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import factories.RandomProvider;
 import interfaces.IAST;
 
@@ -96,14 +96,8 @@ public class ASTOp extends ASTExpr{
 	
 	@Override
 	public ArrayList<AST> getAffect(ArrayList<AST> a){
-		if (gauche instanceof ASTAffect)
-			a.add(gauche);
-		else
-			a=gauche.getAffect(a);
-		if (droite instanceof ASTAffect) 
-			a.add(droite);
-		else
-			a=droite.getAffect(a);
+		a=gauche.getAffect(a);
+		a=droite.getAffect(a);
 		return a;
 	}
 

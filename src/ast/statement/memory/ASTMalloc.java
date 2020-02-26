@@ -7,10 +7,10 @@ import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
 import ast.statement.ASTDeclaration;
 import ast.statement.ASTStatement;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTMalloc extends ASTStatement {
@@ -70,5 +70,6 @@ public class ASTMalloc extends ASTStatement {
 	public ArrayList<AST> getAffect(ArrayList<AST> a){
 		return num.getAffect(a);
 	}
+	
 
 }

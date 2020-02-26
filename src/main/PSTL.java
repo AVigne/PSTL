@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ast.*;
-import enrichissement.Enrichissement;
 import enums.ErrorType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;

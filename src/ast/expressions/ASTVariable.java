@@ -1,9 +1,9 @@
 package ast.expressions;
 
 import ast.AST;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
+import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTVariable extends ASTExpr{

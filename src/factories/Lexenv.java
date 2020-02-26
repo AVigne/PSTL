@@ -15,6 +15,7 @@ import ast.expressions.ASTExpr;
 
 public class Lexenv{
 	private static List<String> vars;
+	private static List<Boolean> declaree;
 	//Pour plus tard, stocker les expressions et leur mutabilité -> creer du bruit dans les expressions
 	private static Map<ASTExpr,Boolean> explist;
 	private static Boolean error;
@@ -22,6 +23,7 @@ public class Lexenv{
 	
 	public static void init() {
 		vars= new ArrayList<String>();
+		declaree = new ArrayList<Boolean>();
 		explist = new HashMap<ASTExpr,Boolean>();
 		// langage C
 		languageKeywords = new ArrayList<String>();
@@ -51,11 +53,18 @@ public class Lexenv{
 			sb.append(alpha.charAt(RandomProvider.nextInt(26)));
 		}while (vars.contains(sb.toString()) || languageKeywords.contains(sb.toString()));
 		vars.add(sb.toString());
+		declaree.add(false);
 		return sb.toString();
 	}
 	
 	public static List<String> getVars() {
 		return vars;
+	}
+	public static List<Boolean> getDeclarations(){
+		return declaree;
+	}
+	public static void declaration(int i) {
+		declaree.set(i, true);
 	}
 	//Permet de nommer les variables en error_
 	public static void toggleError(Boolean b) {

@@ -7,10 +7,10 @@ import ast.expressions.ASTVariable;
 import ast.statement.ASTStatement;
 import ast.statement.memory.ASTFree;
 import ast.statement.memory.ASTMalloc;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import factories.Lexenv;
 import interfaces.IAST;
 
@@ -40,6 +40,7 @@ public class ASTErreurDoubleFree extends ASTExpr{
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		
 		affect_malloc.visit(sb);
+		sb.append("printf(\"%d\\n\","+((ASTMalloc)affect_malloc.getVar()).getNum().getNom()+");\n");
 		free1.visit(sb);
 		free2.visit(sb);
 		

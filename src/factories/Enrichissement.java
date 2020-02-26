@@ -1,4 +1,4 @@
-package enrichissement;
+package factories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import ast.statement.memory.ASTMalloc;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.RandomProvider;
 import interfaces.IAST;
 
 public class Enrichissement {
@@ -88,7 +87,7 @@ public class Enrichissement {
 			case 0 : IAST o = a.getOwner();
 					 o.enrichissement(a, ASTOp.getOperation(a.getValeur(), o));break;
 			case 1 : IAST l = a.getOwner();
-					 l.enrichissement(a, new ASTAffect(a.getType(),a.getNom(),a.getValeur(),l) );break;
+					l.enrichissement(a, new ASTAffect(a.getType(),a.getNom(),a.getValeur(),l) );break;
 			}
 		}
 		//new ASTVariable(null, null, a, a);

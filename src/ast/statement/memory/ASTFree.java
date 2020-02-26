@@ -3,9 +3,9 @@ package ast.statement.memory;
 import ast.AST;
 import ast.expressions.ASTExpr;
 import ast.statement.ASTStatement;
-import enrichissement.Enrichissement;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTFree extends ASTStatement {

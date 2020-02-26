@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import ast.AST;
 import ast.statement.ASTDeclaration;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTAffect extends ASTExpr {
@@ -42,19 +42,33 @@ public class ASTAffect extends ASTExpr {
 		for (AST i : affects) {
 			
 			if (!i.isaffectee()) {
-				ASTDeclaration a = new ASTDeclaration(i.getType(),i.getNom(),i.getOwner());
-				a.visit(sb);
+				if (!i.isvisitee()) {
+					ASTDeclaration a = new ASTDeclaration(i.getType(),i.getNom(),i.getOwner());
+					a.visit(sb);
+				}
 				i.affectee();
 				i.visit(sb);
-
-				if (i.equals(this))
-					visitee=true;
 			}
+			if (i.equals(this)) {
+				visitee=true;
+			}
+			
 		}
-		if(!visitee) {
-			sb.append(this.nom+" = ");
-			var.visit(sb);
-			sb.append(";\n");
+		if(!visitee){
+			if (!var.isaffectee()){
+				sb.append(this.nom+" = ");
+				if (var instanceof ASTAffect)
+					sb.append(var.getNom());
+				else
+					var.visit(sb);
+				sb.append(";\n");
+			}
+			/*else {
+				sb.append(this.nom+" = ");
+				sb.append(var.getNom());
+				sb.append(";\n");
+			}
+			*/
 		}
 		
 	}

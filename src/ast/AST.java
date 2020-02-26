@@ -10,6 +10,8 @@ public abstract class AST implements IAST {
 	protected IAST owner;
 	protected boolean affectee=false;
 	protected String nom="";
+	protected boolean visitee=false;
+
 	public VarType getType() {
 		return null;
 	}
@@ -24,5 +26,11 @@ public abstract class AST implements IAST {
 	}
 	public boolean isaffectee() {
 		return affectee;
+	}
+	public boolean isvisitee() {
+		return visitee;
+	}
+	public void visiter() {
+		visitee=true;
 	}
 }

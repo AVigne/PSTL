@@ -3,13 +3,14 @@ package ast.expressions.operations;
 import java.util.ArrayList;
 
 import ast.AST;
+import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
 import ast.statement.ASTDeclaration;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
+import factories.Enrichissement;
 import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
@@ -43,25 +44,16 @@ public class ASTSous extends ASTOp {
 	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		ArrayList<AST> affects = getAffect(new ArrayList<AST>());
-		for (AST i : affects) {
-			
-			if (!i.isaffectee()) {
-				ASTDeclaration a = new ASTDeclaration(i.getType(),i.getNom(),i.getOwner());
-				a.visit(sb);
-				i.affectee();
-				i.visit(sb);
-
-				if (i.equals(this))
-					visitee=true;
-			}
-		}
-		if (!visitee) {
-			sb.append("(");
+		sb.append("(");
+		if (gauche instanceof ASTAffect)
+			sb.append(gauche.getNom());
+		else
 			gauche.visit(sb);
-			sb.append(" - ");
+		sb.append(" - ");
+		if (droite instanceof ASTAffect)
+			sb.append(droite.getNom());
+		else
 			droite.visit(sb);
-			sb.append(")");
-		}
+		sb.append(")");
 	}
 }

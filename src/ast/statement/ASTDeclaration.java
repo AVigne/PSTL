@@ -2,9 +2,10 @@ package ast.statement;
 
 import ast.AST;
 import ast.expressions.ASTVariable;
-import enrichissement.Enrichissement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
+import factories.Enrichissement;
+import factories.Lexenv;
 import interfaces.IAST;
 
 public class ASTDeclaration extends ASTStatement{
@@ -22,12 +23,16 @@ public class ASTDeclaration extends ASTStatement{
 	
 	@Override
 	public void visit(StringBuffer sb) {
-		String t="";
-		switch (this.type) {
-		case INT: t="int";
-		case PINT: t="int* ";
+		int index = Lexenv.getVars().indexOf(this.nom);
+		if (!Lexenv.getDeclarations().get(index)) {
+			String t="";
+			switch (this.type) {
+			case INT: t="int";break;
+			case PINT: t="int* ";break;
+			}
+			sb.append(t+" "+this.nom+";\n");
+			Lexenv.declaration(index);
 		}
-		sb.append(t+" "+this.nom+";\n");
 	}
 	
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException{
