@@ -25,10 +25,13 @@ public class ASTErreurDoubleFree extends ASTExpr{
 		Lexenv.toggleError(true);
 		ASTVariable pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL",this);
 		ASTVariable num = new ASTVariable(VarType.INT,Lexenv.getNewName(),150,this);
+		
+		//Le malloc est une affectation
 		ASTStatement malloc= new ASTMalloc(num, VarType.PINT, this);
 		affect_malloc = new ASTAffect(pointeur.getType(),pointeur.getNom(),pointeur.getValeur(),this);
+		//La variable de l'affectation de base n'est pas a enrichir
 		Enrichissement.pop(affect_malloc.getVar());
-		Enrichissement.pop(affect_malloc);
+		// On change la varible de l'enrichissement par le malloc
 		affect_malloc.enrichissement(affect_malloc.getVar(), malloc);
 		free1 = new ASTFree(pointeur, this);
 		free2 = new ASTFree(pointeur,this);

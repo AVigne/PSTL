@@ -23,12 +23,14 @@ public class ASTDeclaration extends ASTStatement{
 	
 	@Override
 	public void visit(StringBuffer sb) {
+		//Si la variable n'a jamais été déclarée, on la déclare
 		int index = Lexenv.getVars().indexOf(this.nom);
 		if (!Lexenv.getDeclarations().get(index)) {
 			String t="";
 			switch (this.type) {
 			case INT: t="int";break;
 			case PINT: t="int* ";break;
+			default:
 			}
 			sb.append(t+" "+this.nom+";\n");
 			Lexenv.declaration(index);
@@ -36,12 +38,7 @@ public class ASTDeclaration extends ASTStatement{
 	}
 	
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException{
-		if (var==old) {
-			var=nouveau;
-		}
-		else {
-			throw new EnrichissementMissingException("La variable enrichie n'est pas celle déclarée");
-		}
+		
 	}
 
 	@Override

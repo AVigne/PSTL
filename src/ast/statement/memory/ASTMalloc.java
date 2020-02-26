@@ -28,21 +28,13 @@ public class ASTMalloc extends ASTStatement {
 	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		/*ArrayList<AST> affects = num.getAffect(new ArrayList<>());
-		System.out.println(affects);
-		for (AST i : affects) {
-			if (!i.isaffectee()) {
-				ASTDeclaration a = new ASTDeclaration(i.getType(),i.getNom(),i.getOwner());
-				a.visit(sb);
-				i.visit(sb);
-			}
-			i.affectee();
-		}*/
-		if (num instanceof ASTAffect) 
-			System.out.println("on passe ici");
-
+		
 		sb.append("malloc( ");
-		sb.append(num.getNom());
+		if(num.isaffectee())
+			sb.append(num.getNom());
+		//cas ou jamais enrichi
+		else
+			sb.append(num.getValeur());
 		sb.append(" * sizeof (");
 		switch (pointeur) {
 		case PINT: sb.append("int))"); break;

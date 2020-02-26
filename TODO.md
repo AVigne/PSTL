@@ -1,34 +1,21 @@
-# TODO
+# TODO V3
 
-#V3
-##VISIT
-* Gérer les opérations, pour qu'elles prennent en charge les affectations
-* Gérer les affectation dans les opérations, voir pour déclaration
-* Rajouter un % pour l'enrichissement
+
+## Priorité forte
+
+* Rajouter un % pour l'enrichissement des variables (largeur/hauteur)
 * COMMENTER
+* Trouver la "fuite" d'enrichissement (enrichissements perdus alors que liste de 60+ elements)
 
 
+##Priorité Moyenne
 
-
-
-
-#V2 TODO a UPDATE
-## AST
-* ASTExpression getteur sur les bornes et mutabilité
-* AstVar/Type pour chaque type (int pour le moment) 
-* AstBlocs (if, for while)
-* Enum des types 
-
-## Bruit
-* Generation des lignes de bruit par programBuilder
-* Insertion du bruit dans les erreurs
-
-## Lexenv
-
-* stockage des expressions 
+* Ajout de la mutabilité des variables
+* Ajout de bruit "sans effet" type x=x+x-x
 
 
 ### Priorité faible 
+
 * Ajout de la gestion de nouvelles erreurs
 * Modification du main pour lire les erreurs en entrée 
 * scripts
