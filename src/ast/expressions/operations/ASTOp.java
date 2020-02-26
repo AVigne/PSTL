@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import ast.AST;
 import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
+import ast.expressions.ASTVariable;
+import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import factories.Enrichissement;
+import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
 
@@ -22,6 +25,17 @@ public abstract class ASTOp extends ASTExpr {
 		Enrichissement.add(gauche);
 		Enrichissement.add(droite);
 	}
+
+	public ASTOp(Object valeur, IAST owner) {
+		this.valeur = valeur;
+		this.owner = owner;
+		int somme = (Integer) valeur;
+
+		this.initCotes(somme);
+
+	}
+
+	protected abstract void initCotes(int somme);
 
 	// Pour créer des op vides, permet de super, puis modifier les g,d
 	public ASTOp() {
@@ -70,7 +84,7 @@ public abstract class ASTOp extends ASTExpr {
 		case 3:
 			return new ASTDiv(valeur, owner);
 		default:
-			return new ASTSum(valeur, owner);
+			return null;
 		}
 	}
 
@@ -88,6 +102,42 @@ public abstract class ASTOp extends ASTExpr {
 		a = gauche.getAffect(a);
 		a = droite.getAffect(a);
 		return a;
+	}
+
+	private void addOperator(StringBuffer sb) {
+		if (this instanceof ASTMult) {
+			sb.append(" * ");
+			return;
+		}
+		if (this instanceof ASTDiv) {
+			sb.append(" / ");
+			return;
+		}
+		if (this instanceof ASTSum) {
+			sb.append(" + ");
+			return;
+		}
+		if (this instanceof ASTSous) {
+			sb.append(" - ");
+			return;
+		}
+	}
+
+	@Override
+	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		sb.append("(");
+		if (gauche instanceof ASTAffect)
+			sb.append(gauche.getNom());
+		else
+			gauche.visit(sb);
+
+		this.addOperator(sb);
+
+		if (droite instanceof ASTAffect)
+			sb.append(droite.getNom());
+		else
+			droite.visit(sb);
+		sb.append(")");
 	}
 
 }

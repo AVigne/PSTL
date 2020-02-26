@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import ast.*;
 import enums.ErrorType;
+import exceptions.CodeSupposedUnreachableException;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import factories.*;
@@ -36,7 +37,11 @@ public class PSTL {
 	Pour le moment, on va tester uniquement l'erreur 9 pour demarrer la structure du projet
 	et faire les premiers tests
 	 */
-	public static void main(String[] args) throws IOException, EnrichissementMissingException, EnrichissementNotImplementedException {
+	public static void main(String[] args) 
+			throws IOException, 
+					EnrichissementMissingException, 
+					EnrichissementNotImplementedException,
+					CodeSupposedUnreachableException{
 
 		// creation du lexenv et du builder de la premiere erreur
 		Lexenv.init();
@@ -63,6 +68,8 @@ public class PSTL {
 		//Affichage Console
 		String output=sb.toString();
 		System.out.println(output);
+		System.out.println(Lexenv.getVars());
+		System.out.println(Lexenv.getVars().size());
 		
 		//Ecriture dans un fichier
 		File f = new File("test.c");

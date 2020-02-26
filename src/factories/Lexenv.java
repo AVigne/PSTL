@@ -12,7 +12,7 @@ import ast.expressions.ASTExpr;
 
 //import interfaces.ILexenv;
 
-public class Lexenv {
+public abstract class Lexenv {
 	private static List<String> vars;
 	private static List<Boolean> declaree;
 	// Pour plus tard, stocker les expressions et leur mutabilité -> creer du bruit
@@ -25,6 +25,7 @@ public class Lexenv {
 		vars = new ArrayList<String>();
 		declaree = new ArrayList<Boolean>();
 		explist = new HashMap<ASTExpr, Boolean>();
+
 		// langage C
 		languageKeywords = new ArrayList<String>();
 		try (BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))) {

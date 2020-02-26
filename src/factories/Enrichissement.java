@@ -16,9 +16,9 @@ import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
 
-public class Enrichissement {
+public abstract class Enrichissement {
 	public static List<IAST> enrichissables;
-	public static int nbEVar = 2;
+	public static int nbEnrVar = 2;
 
 	public static void init() {
 		enrichissables = new ArrayList<IAST>();
@@ -38,20 +38,13 @@ public class Enrichissement {
 	// Rajouter a la liste les AST enrichissables
 	// Permet d'en rajouter au fil de l'implémentatio
 	public static boolean isEnrichissable(IAST a) {
-		if (a instanceof ASTVariable)
-			return true;
-		if (a instanceof ASTAffect)
-			return true;
-		if (a instanceof ASTMalloc)
-			return true;
-		return false;
-
+		return (a instanceof ASTVariable) || (a instanceof ASTAffect) || (a instanceof ASTMalloc);
 	}
 
 	// Stratégies d'enrichissement par AST
 
 	public static void enrichissement() throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		//System.out.println(enrichissables);
+		// System.out.println(enrichissables);
 		System.out.println(enrichissables.size());
 		enrichissement(enrichissables.get(RandomProvider.nextInt(enrichissables.size())));
 	}
@@ -59,7 +52,7 @@ public class Enrichissement {
 	public static void enrichissement(int a)
 			throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		for (int i = 0; i < a; i++) {
-			if (i==0)
+			if (i == 0)
 				System.out.println(enrichissables);
 			enrichissement();
 		}
@@ -67,7 +60,7 @@ public class Enrichissement {
 
 	public static void enrichissement(IAST a)
 			throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		//System.out.println(a.getClass());
+		// System.out.println(a.getClass());
 		if (a instanceof ASTVariable) {
 			enrichissement((ASTVariable) a);
 			return;
@@ -89,8 +82,8 @@ public class Enrichissement {
 		pop(a);
 		switch (a.getType()) {
 		case INT:
-			//On enrichie aléatoirement entre une opération aléatoire et une affectation
-			switch (RandomProvider.nextInt(nbEVar)) {
+			// On enrichit aléatoirement entre une opération aléatoire et une affectation
+			switch (RandomProvider.nextInt(nbEnrVar)) {
 			case 0:
 				IAST o = a.getOwner();
 				o.enrichissement(a, ASTOp.getRandomOperation(a.getValeur(), o));

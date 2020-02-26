@@ -3,7 +3,7 @@
 
 ## Priorité forte
 
-* Rajouter un % pour l'enrichissement des variables (largeur/hauteur)
+* Rajouter un % pour l'enrichissement des variables (largeur/hauteur) (actuellement 50/50)
 * COMMENTER
 * Trouver la "fuite" d'enrichissement (enrichissements perdus alors que liste de 60+ elements)
 
