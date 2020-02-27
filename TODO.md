@@ -5,13 +5,15 @@
 
 * Rajouter un % pour l'enrichissement des variables (largeur/hauteur) (actuellement 50/50)
 * COMMENTER
-* Trouver la "fuite" d'enrichissement (enrichissements perdus alors que liste de 60+ elements)
+* Verifier que la fuite est entièrement réparée 
 
 
-##Priorité Moyenne
+
+## Priorité Moyenne
 
 * Ajout de la mutabilité des variables
 * Ajout de bruit "sans effet" type x=x+x-x
+* Split sur les ; des erreurs et du bruit pour intercaler les deux
 
 
 ### Priorité faible 
