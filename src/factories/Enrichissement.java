@@ -45,14 +45,14 @@ public abstract class Enrichissement {
 
 	public static void enrichissement() throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		// System.out.println(enrichissables);
-		System.out.println(enrichissables.size());
+		//System.out.println(enrichissables.size());
 		enrichissement(enrichissables.get(RandomProvider.nextInt(enrichissables.size())));
 	}
 
 	public static void enrichissement(int a)
 			throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		for (int i = 0; i < a; i++) {
-			if (i == 0)
+			if (i == 0 && false)
 				System.out.println(enrichissables);
 			enrichissement();
 		}

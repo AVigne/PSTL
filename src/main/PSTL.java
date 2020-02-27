@@ -43,7 +43,13 @@ public class PSTL {
 					EnrichissementNotImplementedException,
 					CodeSupposedUnreachableException{
 
-		// creation du lexenv et du builder de la premiere erreur
+		StringBuffer sb;
+		long time;
+		/* 		
+		int secu = 100000;
+		do {
+		*/
+		// initialisation du lexenv et du builder de la premiere erreur
 		Lexenv.init();
 		RandomProvider.init();
 		Enrichissement.init();
@@ -56,20 +62,24 @@ public class PSTL {
 		errorsList.add(errBuilder.build());
 		
 		//Timer 
-		long time = System.currentTimeMillis();
+		time = System.currentTimeMillis();
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
 		IAST program = progBuilder.build(100,0);
 		
-		StringBuffer sb = new StringBuffer();
+		sb = new StringBuffer();
 		program.visit(sb);
-		
+		/* pour tester des conditions sur un grand nombre de generations
+		} while (sb.toString().split("\n").length > 53 && secu-- > 0);
+		System.out.println(secu+"\n\n\n\n");
+		if (secu < 0) System.exit(0);
+		*/
 		//Affichage Console
 		String output=sb.toString();
 		System.out.println(output);
-		System.out.println(Lexenv.getVars());
-		System.out.println(Lexenv.getVars().size());
+		//System.out.println(Lexenv.getVars());
+		//System.out.println(Lexenv.getVars().size());
 		
 		//Ecriture dans un fichier
 		File f = new File("test.c");

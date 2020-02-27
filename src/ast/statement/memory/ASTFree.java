@@ -23,8 +23,9 @@ public class ASTFree extends ASTStatement {
 
 	@Override
 	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
-		if(var==old) {
+		if( var==old) {
 			var=nouveau;
+			Enrichissement.pop(var);
 		}
 		else {
 			throw new EnrichissementMissingException("L'expression enrichie n'est pas le pointeur du free");

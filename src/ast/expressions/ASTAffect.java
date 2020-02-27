@@ -76,7 +76,7 @@ public class ASTAffect extends ASTExpr {
 		 * System.out.println("Affect"); System.out.println(var);
 		 * System.out.println(old);
 		 */
-		if (var.equals(old)) {
+		if (var.equals(old) ) {
 			Enrichissement.pop(var);
 			var = (AST) nouveau;
 		} else {
