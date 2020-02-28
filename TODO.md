@@ -1,23 +1,23 @@
-# TODO
+# TODO V3
+
+
+## Priorité forte
+
+* Rajouter un % pour l'enrichissement des variables (largeur/hauteur) (actuellement 50/50)
+* COMMENTER
+* Verifier que la fuite est entièrement réparée 
 
 
 
-## AST
-* ASTExpression getteur sur les bornes et mutabilité
-* AstVar/Type pour chaque type (int pour le moment) 
-* AstBlocs (if, for while)
-* Enum des types 
+## Priorité Moyenne
 
-## Bruit
-* Generation des lignes de bruit par programBuilder
-* Insertion du bruit dans les erreurs
-
-## Lexenv
-
-* stockage des expressions 
+* Ajout de la mutabilité des variables
+* Ajout de bruit "sans effet" type x=x+x-x
+* Split sur les ; des erreurs et du bruit pour intercaler les deux
 
 
 ### Priorité faible 
+
 * Ajout de la gestion de nouvelles erreurs
 * Modification du main pour lire les erreurs en entrée 
 * scripts

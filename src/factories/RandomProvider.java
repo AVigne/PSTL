@@ -6,29 +6,35 @@ public class RandomProvider {
 
 	private static boolean isInit = false;
 	private static Random theAlmighty;
-	
-	// if using the seed got in another iteration, note that the format of a long is [digit]*L  (ex : 42L)
+
+	// if using the seed got in another iteration, note that the format of a long is
+	// [digit]*L (ex : 42L)
 	private static final long seed = System.currentTimeMillis();
-	
+
 	public static void init() {
-		if(!isInit) {
+		if (!isInit) {
 			theAlmighty = new Random();
 			isInit = true;
 			theAlmighty.setSeed(seed);
 		}
 	}
-	
+
 	public static long getSeed() {
 		return seed;
 	}
-	//Entier random
+
+	/**
+	 * @see java.util.Random#nextInt()
+	 */
 	public static int nextInt() {
 		return theAlmighty.nextInt();
 	}
-	//Entier random avec borne i
+
+	/**
+	 * @see java.util.Random#nextInt(int)
+	 */
 	public static int nextInt(int i) {
 		return theAlmighty.nextInt(i);
 	}
-	
-	
+
 }
