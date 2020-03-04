@@ -18,28 +18,20 @@ public class ASTDeclaration extends ASTStatement{
 		this.type=type;
 		var= new ASTVariable(type,nom, valeur,this);
 		this.owner=owner;
-		Enrichissement.add(this);
+		this.enrichissements=0;
 	}
 	
 	@Override
 	public void visit(StringBuffer sb) {
-		//Si la variable n'a jamais été déclarée, on la déclare
-		int index = Lexenv.getVars().indexOf(this.nom);
-		if (!Lexenv.getDeclarations().get(index)) {
-			String t="";
-			switch (this.type) {
-			case INT: t="int";break;
-			case PINT: t="int* ";break;
-			default:
-			}
-			sb.append(t+" "+this.nom+";\n");
-			Lexenv.declaration(index);
+		String t="";
+		switch (this.type) {
+		case INT: t="int";break;
+		case PINT: t="int* ";break;
+		default:
 		}
+		sb.append(t+" "+this.nom+";\n");		
 	}
 	
-	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException{
-		
-	}
 
 	@Override
 	public String getNom() {

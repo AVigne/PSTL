@@ -3,9 +3,9 @@ package ast.expressions.operations;
 import java.util.ArrayList;
 
 import ast.AST;
-import ast.expressions.ASTAffect;
 import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
+import ast.statement.ASTAffect;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
@@ -14,23 +14,22 @@ import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
 
-public abstract class ASTOp extends ASTExpr {
+public abstract class ASTOpBinaire extends ASTExpr {
 	protected AST gauche;
 	protected AST droite;
 
-	public ASTOp(ASTExpr g, ASTExpr d, IAST owner) {
+	public ASTOpBinaire(ASTExpr g, ASTExpr d, IAST owner) {
 		gauche = g;
 		droite = d;
 		this.owner = owner;
-		Enrichissement.add(gauche);
-		Enrichissement.add(droite);
+		this.enrichissements=2;
 	}
 
-	public ASTOp(Object valeur, IAST owner) {
+	public ASTOpBinaire(Object valeur, IAST owner) {
 		this.valeur = valeur;
 		this.owner = owner;
 		int somme = (Integer) valeur;
-
+		this.enrichissements=2;
 		this.initCotes(somme);
 
 	}
@@ -38,38 +37,24 @@ public abstract class ASTOp extends ASTExpr {
 	protected abstract void initCotes(int somme);
 
 	// Pour créer des op vides, permet de super, puis modifier les g,d
-	public ASTOp() {
+	public ASTOpBinaire() {
 	}
 
 	public IAST getGauche() {
 		return gauche;
 	}
-
+	public void setGauche(AST g) {
+		gauche=g;
+	}
+	public void setDroite(AST d) {
+		droite=d;
+	}
 	public IAST getDroite() {
 		return droite;
 	}
 
 	public Object getValeur() {
 		return valeur;
-	}
-
-	@Override
-	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
-		/*
-		 * System.out.println("OP"); System.out.println(gauche);
-		 * System.out.println(droite); System.out.println(old);
-		 */
-		if (gauche == old) {
-			Enrichissement.pop(gauche);
-			gauche = (AST) nouveau;
-			return;
-		}
-		if (droite == old) {
-			Enrichissement.pop(droite);
-			droite = (AST) nouveau;
-			return;
-		}
-		throw new EnrichissementMissingException("L'expression enrichie n'est pas dans l'opération");
 	}
 
 	// Renvoie une des 4 opérations de manière random
@@ -93,16 +78,6 @@ public abstract class ASTOp extends ASTExpr {
 		return this.getNom();
 	}
 
-	@Override
-	/**
-	 * Récupère les affectations dans les membres gauche et droits pour pouvoir les
-	 * faire avant
-	 */
-	public ArrayList<AST> getAffect(ArrayList<AST> a) {
-		a = gauche.getAffect(a);
-		a = droite.getAffect(a);
-		return a;
-	}
 
 	private void addOperator(StringBuffer sb) {
 		if (this instanceof ASTMult) {
@@ -126,17 +101,9 @@ public abstract class ASTOp extends ASTExpr {
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		sb.append("(");
-		if (gauche instanceof ASTAffect)
-			sb.append(gauche.getNom());
-		else
-			gauche.visit(sb);
-
+		gauche.visit(sb);
 		this.addOperator(sb);
-
-		if (droite instanceof ASTAffect)
-			sb.append(droite.getNom());
-		else
-			droite.visit(sb);
+		droite.visit(sb);
 		sb.append(")");
 	}
 

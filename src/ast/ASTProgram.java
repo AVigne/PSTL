@@ -13,7 +13,7 @@ public class ASTProgram implements IAST {
 	private ArrayList<IAST> explist = new ArrayList<>();
 	private int nbEnrichissementsErr;
 	private int nbEnrichissementsBr;
-
+	private int enrichissements=0;
 	public void addExp(IAST exp) {
 
 		this.explist.add(exp);
@@ -23,7 +23,9 @@ public class ASTProgram implements IAST {
 		this.nbEnrichissementsErr = enrE;
 		this.nbEnrichissementsBr = enrB;
 	}
-
+	public ArrayList<IAST> getexplist(){
+		return explist;
+	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		// Biblio a ajouter au fur et a mesure si besoin
@@ -36,7 +38,7 @@ public class ASTProgram implements IAST {
 		sb.append("seed : " + RandomProvider.getSeed() + "\n*/\n");
 
 		sb.append("int main(){\n");
-		Enrichissement.enrichissement(nbEnrichissementsErr);
+		Enrichissement.enrichirV2(nbEnrichissementsErr);
 
 		for (int i = 0; i < explist.size(); i++) {
 			explist.get(i).visit(sb);
@@ -45,24 +47,24 @@ public class ASTProgram implements IAST {
 	}
 
 	@Override
-	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public String getNom() {
 		return null;
 	}
 
+
 	@Override
-	public boolean isaffectee() {
-		return false;
+	public void setEnrichissements(int i) {
+		enrichissements=i;
 	}
 
 	@Override
-	public void affectee() {
-
+	public int getEnrichissements() {
+		return enrichissements;
 	}
+	
+	public int getPosition(AST a) {
+		return explist.indexOf(a);
+	}
+	
 
 }

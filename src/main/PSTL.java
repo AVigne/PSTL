@@ -59,7 +59,11 @@ public class PSTL {
 		
 		ArrayList<IAST> errorsList=new ArrayList<>(); 
 		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
-		errorsList.add(errBuilder.build());
+		ArrayList<AST> errors = errBuilder.build();
+		for (AST a : errors) {
+			errorsList.add(a);
+		}
+		
 		
 		//Timer 
 		time = System.currentTimeMillis();
@@ -67,6 +71,7 @@ public class PSTL {
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
 		IAST program = progBuilder.build(100,0);
+		Enrichissement.setProg((ASTProgram)program);
 		
 		sb = new StringBuffer();
 		program.visit(sb);

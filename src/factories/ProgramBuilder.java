@@ -21,10 +21,6 @@ public class ProgramBuilder implements IProgramBuilder{
 	public IAST build(int enrE,int enrB) {
 		ASTProgram res =  new ASTProgram(enrE,enrB);
 		
-		//Recupération des variables du lexenv (pour plus tard)
-		List<String> varerreur = Lexenv.getVars();
-		
-		
 		// pour le moment on se contente de mettre les erreurs uniquement
 		
 		for( IAST err :  listeErreurs) {

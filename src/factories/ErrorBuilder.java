@@ -1,5 +1,8 @@
 package factories;
 
+import java.util.ArrayList;
+
+import ast.AST;
 import ast.errors.ASTErreurDoubleFree;
 import ast.expressions.ASTExpr;
 import enums.ErrorType;
@@ -13,10 +16,10 @@ public class ErrorBuilder implements IErrorBuilder {
 	private ErrorType et;
 
 	@Override
-	public ASTExpr build() throws EnrichissementMissingException, CodeSupposedUnreachableException {
+	public ArrayList<AST> build() throws EnrichissementMissingException, CodeSupposedUnreachableException {
 		switch (et) {
 		case DOUBLE_FREE:
-			return new ASTErreurDoubleFree(VarType.ERROR, "edf", null, null);
+			return (new ASTErreurDoubleFree(VarType.ERROR, "edf", null, null)).getAst();
 		default:
 			throw new CodeSupposedUnreachableException("Erreur non gérée");
 		}

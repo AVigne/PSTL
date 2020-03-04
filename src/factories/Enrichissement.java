@@ -3,82 +3,102 @@ package factories;
 import java.util.ArrayList;
 import java.util.List;
 
+import ast.AST;
+import ast.ASTProgram;
 import ast.expressions.*;
 import ast.expressions.operations.ASTDiv;
 import ast.expressions.operations.ASTMult;
-import ast.expressions.operations.ASTOp;
+import ast.expressions.operations.ASTOpBinaire;
 import ast.expressions.operations.ASTSous;
 import ast.expressions.operations.ASTSum;
 import ast.statement.*;
 import ast.statement.memory.ASTMalloc;
 import enums.VarType;
+import exceptions.CodeSupposedUnreachableException;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
+import structures.ReturnEnrichissement;
 
 public abstract class Enrichissement {
-	public static List<IAST> enrichissables;
 	public static int nbEnrVar = 2;
-
+	public static int nbEnrConst = 2;
+	public static ASTProgram p ;
+	public static StringBuffer sn = new StringBuffer();
 	public static void init() {
-		enrichissables = new ArrayList<IAST>();
+	}
+	public static void setProg(ASTProgram prog) {
+		p=prog;
 	}
 
-	// Permet de n'ajouter que les AST dont l'enrichissement est implémenté
-	public static void add(IAST a) {
-		if (isEnrichissable(a)) {
-			enrichissables.add(a);
+	
+	//V4
+	public static void enrichirV2(int nb) throws EnrichissementNotImplementedException, EnrichissementMissingException {
+		for(int i=0;i<nb;i++) {
+			enrichirV2();
 		}
 	}
-
-	public static void pop(IAST a) {
-		enrichissables.remove(a);
+	public static void enrichirV2() throws EnrichissementNotImplementedException, EnrichissementMissingException {
+		int enrich=Integer.MAX_VALUE;
+		IAST choisi=null;
+		ArrayList<IAST> expl= p.getexplist();
+		for (IAST a : expl) {
+			//On récupère l'expression qui a le moins d'enrichissement possible pour l'enrichir
+			//Permet d'avoir quelque chose d'uniforme, paramètre modifiable
+			int e=a.getEnrichissements();
+			//System.out.println(e);
+			if ((e<enrich)&& (e!=0)) {
+				enrich=e;
+				choisi=a;
+			}
+		}
+		//System.out.println(choisi.getEnrichissements());
+		ReturnEnrichissement re = enrichirV2(choisi);
+		/*System.out.println(re.toString());
+		System.out.println(re.getIAST().getClass());
+		System.out.println("ICI");*/
+		int index = p.getPosition((AST)choisi);
+		expl.remove(index);
+		index--;
+		for (IAST i : re.getPreList()) {
+			expl.add(index, i);
+			index++;
+		}
+		index++;
+		expl.add(index, re.getIAST());
+		index++;
+		
+		for (IAST i : re.getPostList()) {
+			expl.add(index, i);
+			index++;
+		}
+		/*System.out.println("FIN DE BOUCLE");
+		System.out.println(expl);
+		System.out.println(p.getexplist());*/
+		
 	}
-
-	// Rajouter a la liste les AST enrichissables
-	// Permet d'en rajouter au fil de l'implémentatio
-	public static boolean isEnrichissable(IAST a) {
-		return (a instanceof ASTVariable) || (a instanceof ASTAffect) || (a instanceof ASTMalloc);
-	}
-
-	// Stratégies d'enrichissement par AST
-
-	public static void enrichissement() throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		// System.out.println(enrichissables);
-		//System.out.println(enrichissables.size());
-		enrichissement(enrichissables.get(RandomProvider.nextInt(enrichissables.size())));
-	}
-
-	public static void enrichissement(int a)
+	public static ReturnEnrichissement enrichirV2(IAST a)
 			throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		for (int i = 0; i < a; i++) {
-			if (i == 0 && false)
-				System.out.println(enrichissables);
-			enrichissement();
-		}
-	}
-
-	public static void enrichissement(IAST a)
-			throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		// System.out.println(a.getClass());
-		if (a instanceof ASTVariable) {
-			enrichissement((ASTVariable) a);
-			return;
-		}
+		/*System.out.println(a.getClass());
+		System.out.println(p.getexplist());*/
 		if (a instanceof ASTAffect) {
-			enrichissement((ASTAffect) a);
-			return;
+			return enrichirV2((ASTAffect) a);
 		}
 		if (a instanceof ASTMalloc) {
-			enrichissement((ASTMalloc) a);
-			return;
+			return enrichirV2((ASTMalloc) a);
+		}
+		if (a instanceof ASTConstante) {
+			return enrichirV2((ASTConstante) a);
+		}
+		if (a instanceof ASTOpBinaire) {
+			return enrichirV2((ASTOpBinaire) a);
 		}
 		throw new EnrichissementNotImplementedException(
 				"L'enrichissement n'est pas implémenté pour la classe : " + a.getClass());
 
 	}
-
-	public static void enrichissement(ASTVariable a) throws EnrichissementMissingException {
+	/*
+	public static ReturnEnrichissement enrichirV2(ASTVariable a) throws EnrichissementMissingException {
 		pop(a);
 		switch (a.getType()) {
 		case INT:
@@ -86,34 +106,77 @@ public abstract class Enrichissement {
 			switch (RandomProvider.nextInt(nbEnrVar)) {
 			case 0:
 				IAST o = a.getOwner();
-				o.enrichissement(a, ASTOp.getRandomOperation(a.getValeur(), o));
+				o.enrichir(a, ASTOpBinaire.getRandomOperation(a.getValeur(), o));
 				pop(a);
 				break;
 			case 1:
 				IAST l = a.getOwner();
-				l.enrichissement(a, new ASTAffect(a.getType(), a.getNom(), a.getValeur(), l));
+				l.enrichir(a, new ASTAffect(a.getType(), a.getNom(), a.getValeur(), l));
 				pop(a);
 				break;
 			}
 		}
+	}*/
+
+	public static ReturnEnrichissement enrichirV2(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
+		ReturnEnrichissement re = enrichirV2(a.getAffectation());
+		a.setAffectation((AST)re.getIAST());
+		a.upEnrichissement(-1);
+		a.setEnrichissements(re.getIAST().getEnrichissements());
+		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+
 	}
 
-	// Pour un affectation, on ne peut que enrichir la variable, puis on retire
-	// l'affectation de la liste d'enrichissable
-	public static void enrichissement(ASTAffect a)
-			throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		enrichissement((IAST) a.getVar());
-		pop(a);
-
+	public static ReturnEnrichissement enrichirV2(ASTMalloc a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		IAST num = ((IAST) a.getNum());
+		ReturnEnrichissement re = enrichirV2(num);
+		a.setNum((ASTExpr)re.getIAST());
+		a.upEnrichissement(-1);
+		a.setEnrichissements(re.getIAST().getEnrichissements());
+		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 	}
+	
+	
+	public static ReturnEnrichissement enrichirV2(ASTConstante a) throws EnrichissementMissingException{
+		switch (RandomProvider.nextInt(nbEnrConst)) {
+		//switch (0) {
+		case 0:
+			//cas d'une constante qui devient une opération
+			IAST o = a.getOwner();
+			return new ReturnEnrichissement(ASTOpBinaire.getRandomOperation(a.getValeur(), o));
+		case 1:
+			//Cas d'une constante qui devient une variable, donc besoin affectation et déclaration avant
+			IAST l = a.getOwner();
+			ArrayList<IAST> array = new ArrayList<>();
 
-	// Pour le moment, on transforme juste le num en affectation, que l'on peu
-	// enrichir
-	// Voir pour modifier plus tard pour gérer le pointeur
-	public static void enrichissement(ASTMalloc a) throws EnrichissementMissingException {
-		ASTVariable num = (ASTVariable) a.getNum();
-		a.enrichissement(num, new ASTAffect(num.getType(), num.getNom(), num.getValeur(), num.getOwner()));
-		pop(a);
+			array.add(new ASTDeclaration(a.getType(),a.getNom(),l));
+			array.add(new ASTAffect(a.getType(), a.getNom(), new ASTConstante(a.getType(),Lexenv.getNewName(),a.getValeur(),a.getOwner()), l));
+			return new ReturnEnrichissement(array, 	new ASTVariable(a.getType(),a.getNom(),a.getValeur(),l));
+		}
+		throw new EnrichissementMissingException(" Enrichissement de la constante ");
 	}
-
+	
+	public static ReturnEnrichissement enrichirV2(ASTOpBinaire a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		int rand = RandomProvider.nextInt(2);
+		//System.out.println(""+a.getEnrichissements()+a.getGauche().getEnrichissements()+a.getDroite().getEnrichissements());
+		if (a.getGauche().getEnrichissements()==0)
+			rand=1;
+		if (a.getDroite().getEnrichissements()==0)
+			rand=0;
+		switch (rand) {
+		case 0 : 
+			ReturnEnrichissement re = enrichirV2(a.getGauche());
+			a.setGauche((AST)re.getIAST());
+			a.upEnrichissement(-1);
+			a.setEnrichissements(re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+		case 1 : 
+			ReturnEnrichissement re2 = enrichirV2(a.getDroite());
+			a.setDroite((AST)re2.getIAST());
+			a.upEnrichissement(-1);
+			a.setEnrichissements(re2.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(re2.getPreList(),a,re2.getPostList());
+		}
+		throw new EnrichissementMissingException("Operation");
+	}
 }

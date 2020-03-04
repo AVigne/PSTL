@@ -3,9 +3,10 @@ package ast.expressions.operations;
 import java.util.ArrayList;
 
 import ast.AST;
-import ast.expressions.ASTAffect;
+import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
+import ast.statement.ASTAffect;
 import ast.statement.ASTDeclaration;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
@@ -15,7 +16,7 @@ import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
 
-public class ASTMult extends ASTOp {
+public class ASTMult extends ASTOpBinaire {
 
 	public ASTMult(Object valeur, IAST owner) {
 		super(valeur,owner);
@@ -53,8 +54,8 @@ public class ASTMult extends ASTOp {
 				d = somme / rand;
 			}
 		}
-		gauche = new ASTVariable(VarType.INT, Lexenv.getNewName(), g, this);
-		droite = new ASTVariable(VarType.INT, Lexenv.getNewName(), d, this);
+		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g, this);
+		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d, this);
 
 	}
 
