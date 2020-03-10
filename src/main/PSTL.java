@@ -37,28 +37,96 @@ public class PSTL {
 	Pour le moment, on va tester uniquement l'erreur 9 pour demarrer la structure du projet
 	et faire les premiers tests
 	 */
+	
+	//Permet de récup le premier argument et de le transformer en entier pour récup l'id de l'erreur
+	private static ErrorType genereError(String arg,ArrayList<ErrorType> errortypes) {
+		ErrorType et;
+		try{
+			int i = Integer.parseInt(arg);
+			if ((errortypes.size()>i) && (i>0)){
+				et= errortypes.get(i);
+			}
+			else {
+				System.out.println("//L'argument donné n'est pas une erreur implémentée, Erreur tirée aléatoirement");
+				et=errortypes.get(RandomProvider.nextInt(errortypes.size()));
+			}
+		}catch(NumberFormatException e) {
+			System.out.println("//L'argument donné n'est pas un entier, Erreur tirée aléatoirement");
+			et=errortypes.get(RandomProvider.nextInt(errortypes.size()));
+		}
+		return et;
+	}
+	
+	//Permet de récup le second argument et de el transformer en entier pour récup le nombre d'enrichissements
+	private static int genereEnr(String arg) {
+		int nbenr;
+
+		try{
+			int j = Integer.parseInt(arg);
+			if (j>0)
+				nbenr=j;
+			else
+				nbenr=RandomProvider.nextInt(100);
+			
+		}catch(NumberFormatException e) {
+			System.out.println("//L'argument donné n'est pas un entier, Nombre d'enrichissement tiré entre 0 et 100");
+			nbenr=RandomProvider.nextInt(100);
+		}
+		return nbenr;
+	}
+	
+	
+	/**
+	 * Prend en parametre deux entiers, le premier correspond a l'erreur a etendre, le second au nombre d'enrichissement
+	 * @param args
+	 * @throws IOException
+	 * @throws EnrichissementMissingException
+	 * @throws EnrichissementNotImplementedException
+	 * @throws CodeSupposedUnreachableException
+	 */
 	public static void main(String[] args) 
 			throws IOException, 
 					EnrichissementMissingException, 
 					EnrichissementNotImplementedException,
 					CodeSupposedUnreachableException{
-
+		Lexenv.init();
+		RandomProvider.init();
+		Enrichissement.init();
+		
 		StringBuffer sb;
+		ArrayList<ErrorType> errortypes=new ArrayList<>();
+		errortypes.add(ErrorType.DOUBLE_FREE);
+		errortypes.add(ErrorType.DIVISION_BY_ZERO);
+		ErrorType et=errortypes.get(0);
+		int nbenr=0;
+		switch (args.length) {
+		case 2 : 
+			et = genereError(args[0], errortypes);
+			nbenr = genereEnr(args[1]);
+			break;
+		case 1 : 
+			et = genereError(args[0], errortypes);
+			System.out.println("//Enrichissement générés");
+			nbenr = RandomProvider.nextInt(100);
+			break;
+		default:
+			System.out.println("//Erreur et enrichisssement générés");
+			et= errortypes.get(RandomProvider.nextInt(errortypes.size()));
+			nbenr = RandomProvider.nextInt(100);
+
+		}
 		long time;
 		/* 		
 		int secu = 100000;
 		do {
 		*/
 		// initialisation du lexenv et du builder de la premiere erreur
-		Lexenv.init();
-		RandomProvider.init();
-		Enrichissement.init();
 		
 		ErrorBuilder errBuilder = new ErrorBuilder();
 		
 		
 		ArrayList<IAST> errorsList=new ArrayList<>(); 
-		errBuilder.setErrorType(ErrorType.DOUBLE_FREE);
+		errBuilder.setErrorType(et);
 		ArrayList<AST> errors = errBuilder.build();
 		for (AST a : errors) {
 			errorsList.add(a);
@@ -70,7 +138,7 @@ public class PSTL {
 		
 		//Creation du programe
 		ProgramBuilder progBuilder = new ProgramBuilder(errorsList);
-		IAST program = progBuilder.build(100,0);
+		IAST program = progBuilder.build(nbenr,0);
 		Enrichissement.setProg((ASTProgram)program);
 		
 		sb = new StringBuffer();
@@ -92,7 +160,7 @@ public class PSTL {
 		fw.write(output);
 		fw.close();
 		
-		System.out.println("\nGenere en "+(System.currentTimeMillis() - time)/1000.0+"s");
+		System.out.println("\n//Genere en "+(System.currentTimeMillis() - time)/1000.0+"s");
 	}
 
 }

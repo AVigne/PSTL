@@ -24,7 +24,10 @@ public class ASTDiv extends ASTOpBinaire {
 
 	public ASTDiv(ASTExpr g, ASTExpr d, IAST owner) {
 		super(g, d, owner);
-		this.valeur = (Integer) (g.getValeur()) / (Integer) d.getValeur();
+		if ((Integer)d.getValeur()==0)
+			this.valeur=0;
+		else
+			this.valeur = (Integer) (g.getValeur()) / (Integer) d.getValeur();
 	}
 
 	@Override

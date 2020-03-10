@@ -121,7 +121,6 @@ public abstract class Enrichissement {
 	public static ReturnEnrichissement enrichirV2(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		ReturnEnrichissement re = enrichirV2(a.getAffectation());
 		a.setAffectation((AST)re.getIAST());
-		a.upEnrichissement(-1);
 		a.setEnrichissements(re.getIAST().getEnrichissements());
 		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 
@@ -131,7 +130,6 @@ public abstract class Enrichissement {
 		IAST num = ((IAST) a.getNum());
 		ReturnEnrichissement re = enrichirV2(num);
 		a.setNum((ASTExpr)re.getIAST());
-		a.upEnrichissement(-1);
 		a.setEnrichissements(re.getIAST().getEnrichissements());
 		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 	}
@@ -167,13 +165,11 @@ public abstract class Enrichissement {
 		case 0 : 
 			ReturnEnrichissement re = enrichirV2(a.getGauche());
 			a.setGauche((AST)re.getIAST());
-			a.upEnrichissement(-1);
 			a.setEnrichissements(re.getIAST().getEnrichissements());
 			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 		case 1 : 
 			ReturnEnrichissement re2 = enrichirV2(a.getDroite());
 			a.setDroite((AST)re2.getIAST());
-			a.upEnrichissement(-1);
 			a.setEnrichissements(re2.getIAST().getEnrichissements());
 			return new ReturnEnrichissement(re2.getPreList(),a,re2.getPostList());
 		}

@@ -11,7 +11,7 @@ import exceptions.EnrichissementNotImplementedException;
 import factories.Enrichissement;
 import interfaces.IAST;
 
-public class ASTAffect extends ASTExpr {
+public class ASTAffect extends ASTStatement {
 
 	protected ASTVariable var;
 	protected AST affectation;

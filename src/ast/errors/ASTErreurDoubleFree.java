@@ -49,9 +49,8 @@ public class ASTErreurDoubleFree extends ASTExpr{
 
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		
+		System.out.println("JAMAIS ICI");
 		affect_malloc.visit(sb);
-		sb.append("printf(\"%d\\n\","+((ASTMalloc)affect_malloc.getVar()).getNum().getNom()+");\n");
 		free1.visit(sb);
 		free2.visit(sb);
 		
