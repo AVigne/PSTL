@@ -2,22 +2,22 @@
 # include <stdio.h>
 # include <string.h>
 /* 
-nombre d'enrichissements des erreurs : 10
+nombre d'enrichissements des erreurs : 5
 nombre d'enrichissements du bruit : 0
-seed : 1583861263342
+seed : 1584012144707
 */
 int main(){
-int f;
-f = (1076770372 / 2);
-int k;
-k = f;
-int b;
-b = (538385187 - k);
-int qq;
-qq = ((1461563789 - 670799157) * b);
-int*  error_r;
-error_r = malloc( ((790764782 / 1) - qq) * sizeof (int));
-free(error_r);
-free(error_r);
+int n;
+n = (129 + 21);
+int e;
+e = n;
+int g;
+g = e;
+int error_j;
+error_j = g;
+int*  error_l;
+error_l = malloc( error_j * sizeof (int));
+free(error_l);
+free(error_l);
 return 0;
 }

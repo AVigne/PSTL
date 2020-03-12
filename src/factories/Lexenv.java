@@ -32,9 +32,9 @@ public abstract class Lexenv {
 		languageKeywords = new ArrayList<String>();
 		try (
 				//Pour le .jar, besoin de stream pour ouvrir le fichier
-			InputStream inputStream = Lexenv.class.getClassLoader().getResourceAsStream("Ckeywords.txt");
-			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-			//BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))){
+			//InputStream inputStream = Lexenv.class.getClassLoader().getResourceAsStream("Ckeywords.txt");
+			//BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))){
 			String line;
 			while ((line = br.readLine()) != null) {
 				languageKeywords.add(line);

@@ -1,26 +1,23 @@
-//L'argument donné n'est pas un entier, Erreur tirée aléatoirement
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
 /* 
-nombre d'enrichissements des erreurs : 10
+nombre d'enrichissements des erreurs : 5
 nombre d'enrichissements du bruit : 0
-seed : 1583861258959
+seed : 1584012140216
 */
 int main(){
-int bp;
-bp = 0;
-int n;
-n = bp;
-int x;
-x = n;
-int k;
-k = ((0 - x) / (574400296 / (1498274931 - 923874635)));
-int error_qz;
-error_qz = k;
-int error_h;
-error_h = ((4 * 29) / error_qz);
+int j;
+j = (221916304 - 221916294);
+int r;
+r = (j * 15);
+int error_n;
+error_n = r;
+int*  error_c;
+error_c = malloc( error_n * sizeof (int));
+free(error_c);
+free(error_c);
 return 0;
 }
 
-//Genere en 0.003s
+//Genere en 0.013s

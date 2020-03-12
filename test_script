@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -f tests/*.c
+
+for i in `seq 1 $3`;
+do
+	java -jar PSTL.jar $1 $2 &>tests/test$i.c
+	json_res=`mopsa-c tests/test$i.c -format=json`
+	python3 error_checker.py $1 "test$i.c" $json_res
+done

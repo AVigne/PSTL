@@ -47,7 +47,7 @@ public abstract class Enrichissement {
 			//Permet d'avoir quelque chose d'uniforme, paramètre modifiable
 			int e=a.getEnrichissements();
 			//System.out.println(e);
-			if ((e<enrich)&& (e!=0)) {
+			if ((e<=enrich)&& (e!=0)) {
 				enrich=e;
 				choisi=a;
 			}
@@ -59,12 +59,12 @@ public abstract class Enrichissement {
 		System.out.println("ICI");*/
 		int index = p.getPosition((AST)choisi);
 		expl.remove(index);
-		index--;
+		//index--;
 		for (IAST i : re.getPreList()) {
 			expl.add(index, i);
 			index++;
 		}
-		index++;
+		//index++;
 		expl.add(index, re.getIAST());
 		index++;
 		

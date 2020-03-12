@@ -1,0 +1,41 @@
+#!/bin/bash
+
+function config(){
+	echo "do avec fichier de config";
+}
+
+function destination(){
+	#java bin/main/pstl
+	mopsa-c test.c
+}
+
+function json(){
+	echo "do avec fichier JSON";
+}
+
+function jprint(){
+	echo "print le JSON";
+}
+
+while [ -n "$1" ]; do
+	case "$1" in
+		-c) config;;
+		-d) destination;;
+		-j) json;;
+		-p) jprint;;
+		--help) echo "Pour utiliser ce script:";
+				echo "-c pstl configure    permet de définir les structures de bruit à générer";
+				echo "-d pstl destination    permet de définir un dossier de destination pour les codes générés";
+				echo ".-j pstl json    permet de fournir un fichier JSON qui récupérera les erreurs attendues";
+				echo ".-p pstl    permet de print le JSON d'erreur du code généré";
+				echo "--help    permet d'afficher cette aide";;
+		*) echo "Option $1 non reconnue, essayez \"./gen_script --help\" pour plus d'information";;
+	esac
+	shift #decalage d'argument
+done
+
+
+exit 0
+
+#source
+#https://bioinfo-fr.net/astuce-ajouter-des-options-dans-un-script-bash-avec-getopt

@@ -1,6 +1,6 @@
-#PSTL
+# PSTL
 
-###Le script nécessite trois arguments:
+### Le script nécessite trois arguments:
 
 	1 - l'id de l'erreur (pour le moment il n'y a que 0 -> Double Free et 1 -> Div/0)
 

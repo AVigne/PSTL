@@ -19,7 +19,10 @@ public class ASTErreurDivZero {
 	public ASTErreurDivZero(VarType type, String nom, Object valeur,IAST owner) throws EnrichissementMissingException {
 		super();
 		Lexenv.toggleError(true);
-		ASTDiv d = new ASTDiv(new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(150),null),new ASTConstante(VarType.INT, Lexenv.getNewName(), 0, null),null);
+		ASTDiv d = new ASTDiv(
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(150),null),
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0, null),
+				null);
 		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d,null);
 		d.setEnrichissements(2);
 		div.setEnrichissements(2);
