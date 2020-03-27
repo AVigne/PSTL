@@ -18,12 +18,12 @@ import interfaces.IAST;
 
 public class ASTMult extends ASTOpBinaire {
 
-	public ASTMult(Object valeur, IAST owner) {
-		super(valeur,owner);
+	public ASTMult(Object valeur) {
+		super(valeur);
 	}
 
-	public ASTMult(ASTExpr g, ASTExpr d, IAST owner) {
-		super(g, d, owner);
+	public ASTMult(ASTExpr g, ASTExpr d) {
+		super(g, d);
 		this.valeur = (Integer) g.getValeur() * (Integer) d.getValeur();
 	}
 
@@ -54,8 +54,8 @@ public class ASTMult extends ASTOpBinaire {
 				d = somme / rand;
 			}
 		}
-		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g, this);
-		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d, this);
+		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g);
+		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d);
 
 	}
 

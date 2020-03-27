@@ -13,12 +13,12 @@ public class ASTDeclaration extends ASTStatement{
 	protected IAST var;
 	protected VarType type;
 	
-	public ASTDeclaration(VarType type, String nom, IAST owner) {
+	public ASTDeclaration(VarType type, String nom) {
 		this.nom=nom;
 		this.type=type;
-		var= new ASTVariable(type,nom, valeur,this);
-		this.owner=owner;
+		var= new ASTVariable(type,nom, valeur);
 		this.enrichissements=0;
+		this.addDeclaree(nom);
 	}
 	
 	@Override
@@ -37,4 +37,5 @@ public class ASTDeclaration extends ASTStatement{
 	public String getNom() {
 		return this.nom;
 	}
+	
 }

@@ -10,8 +10,7 @@ import interfaces.IAST;
 
 public class ASTFree extends ASTStatement {
 	private IAST var;
-	public ASTFree(IAST var, IAST owner) {
-		this.owner=owner;
+	public ASTFree(IAST var) {
 		this.var=var;
 		this.enrichissements=0;
 	}
@@ -28,4 +27,16 @@ public class ASTFree extends ASTStatement {
 		return this.nom;
 	}
 
+	@Override
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			declaree.add(n);
+		var.addDeclaree(n);
+	} 
+	@Override
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			usable.add(n);
+		var.addUsable(n);
+	}
 }

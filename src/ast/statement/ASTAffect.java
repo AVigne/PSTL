@@ -18,12 +18,11 @@ public class ASTAffect extends ASTStatement {
 	protected VarType type;
 	protected String nom;
 
-	public ASTAffect(VarType type, String nom, AST affectation, IAST owner) {
+	public ASTAffect(VarType type, String nom, AST affectation) {
 		this.affectation = affectation;
 		this.nom = nom;
 		this.type = type;
-		var = new ASTVariable(type, nom, valeur, this);
-		this.owner = owner;
+		var = new ASTVariable(type, nom, valeur);
 		this.enrichissements=1;
 	}
 
@@ -57,5 +56,16 @@ public class ASTAffect extends ASTStatement {
 	public String getNom() {
 		return this.nom;
 	}
-
+	@Override
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			this.declaree.add(n);
+		affectation.addDeclaree(n);
+	}
+	@Override
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			this.usable.add(n);
+		affectation.addUsable(n);
+	}
 }

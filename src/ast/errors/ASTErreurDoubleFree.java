@@ -26,13 +26,13 @@ public class ASTErreurDoubleFree extends ASTExpr{
 		super();
 		//nomme les deux variables avec des error_
 		Lexenv.toggleError(true);
-		ASTVariable pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL",this);
-		ASTConstante num = new ASTConstante(VarType.INT,Lexenv.getNewName(),150,this);
+		ASTVariable pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL");
+		ASTConstante num = new ASTConstante(VarType.INT,Lexenv.getNewName(),150);
 		//Le malloc est une affectation
-		ASTStatement malloc= new ASTMalloc(num, VarType.PINT, this);
-		affect_malloc = new ASTAffect(pointeur.getType(),pointeur.getNom(),malloc,this);
-		free1 = new ASTFree(pointeur, this);
-		free2 = new ASTFree(pointeur,this);
+		ASTStatement malloc= new ASTMalloc(num, VarType.PINT);
+		affect_malloc = new ASTAffect(pointeur.getType(),pointeur.getNom(),malloc);
+		free1 = new ASTFree(pointeur);
+		free2 = new ASTFree(pointeur);
 		free1.setEnrichissements(0);
 		free2.setEnrichissements(0);
 		affect_malloc.setEnrichissements(1);
@@ -40,7 +40,7 @@ public class ASTErreurDoubleFree extends ASTExpr{
 	}
 	public ArrayList<AST> getAst(){
 		ArrayList<AST> a = new ArrayList<>();
-		a.add(new ASTDeclaration(affect_malloc.getType(),affect_malloc.getNom(),affect_malloc.getOwner()));
+		a.add(new ASTDeclaration(affect_malloc.getType(),affect_malloc.getNom()));
 		a.add(affect_malloc);
 		a.add(free1);
 		a.add(free2);

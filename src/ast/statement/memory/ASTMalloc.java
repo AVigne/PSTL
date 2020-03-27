@@ -17,9 +17,8 @@ public class ASTMalloc extends ASTStatement {
 	private ASTExpr num;
 	private VarType pointeur;
 
-	public ASTMalloc(IAST num, VarType pointeur, IAST owner) {
+	public ASTMalloc(IAST num, VarType pointeur) {
 		this.num = (ASTExpr) num;
-		this.owner = owner;
 		this.pointeur = pointeur;
 		this.enrichissements=1;
 	}
@@ -50,5 +49,19 @@ public class ASTMalloc extends ASTStatement {
 	}
 	public void setNum(ASTExpr num) {
 		this.num=num;
+	}
+	
+	@Override
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			declaree.add(n);
+		num.addDeclaree(n);
+	}
+	
+	@Override
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			usable.add(n);
+		num.addUsable(n);
 	}
 }

@@ -1,23 +1,20 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import enums.VarType;
 import interfaces.IAST;
-import structures.ReturnEnrichissement;
 
 public abstract class AST implements IAST {
-	protected IAST owner;
 	protected String nom = "";
 	protected int enrichissements=0;
+	protected ArrayList<String> declaree =new ArrayList<>();
+	protected ArrayList<String> usable= new ArrayList<>();
 	public VarType getType() {
 		return null;
 	}
 
-	public IAST getOwner() {
-		return owner;
-	}
+
 
 	@Override
 	public void setEnrichissements(int i) {
@@ -33,5 +30,22 @@ public abstract class AST implements IAST {
 
 	public void enrichirV2() {
 		
+	}
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			declaree.add(n);
+	}
+	public ArrayList<String> getDeclaree() {
+		return declaree;
+	}
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			usable.add(n);
+	}
+	public ArrayList<String> getUsable(){
+		return usable;
+	}
+	public void popUsable(String n) {
+		usable.remove(n);
 	}
 }

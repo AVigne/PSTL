@@ -18,16 +18,14 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	protected AST gauche;
 	protected AST droite;
 
-	public ASTOpBinaire(ASTExpr g, ASTExpr d, IAST owner) {
+	public ASTOpBinaire(ASTExpr g, ASTExpr d) {
 		gauche = g;
 		droite = d;
-		this.owner = owner;
 		this.enrichissements=2;
 	}
 
-	public ASTOpBinaire(Object valeur, IAST owner) {
+	public ASTOpBinaire(Object valeur) {
 		this.valeur = valeur;
-		this.owner = owner;
 		int somme = (Integer) valeur;
 		this.enrichissements=2;
 		this.initCotes(somme);
@@ -58,16 +56,16 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	}
 
 	// Renvoie une des 4 opérations de manière random
-	public static IAST getRandomOperation(Object valeur, IAST owner) {
+	public static IAST getRandomOperation(Object valeur) {
 		switch (RandomProvider.nextInt(4)) {
 		case 0:
-			return new ASTSum(valeur, owner);
+			return new ASTSum(valeur);
 		case 1:
-			return new ASTSous(valeur, owner);
+			return new ASTSous(valeur);
 		case 2:
-			return new ASTMult(valeur, owner);
+			return new ASTMult(valeur);
 		case 3:
-			return new ASTDiv(valeur, owner);
+			return new ASTDiv(valeur);
 		default:
 			return null;
 		}
@@ -105,6 +103,21 @@ public abstract class ASTOpBinaire extends ASTExpr {
 		this.addOperator(sb);
 		droite.visit(sb);
 		sb.append(")");
+	}
+	
+	@Override
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			this.declaree.add(n);
+		gauche.addDeclaree(n);
+		droite.addDeclaree(n);
+	}
+	@Override
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			this.usable.add(n);
+		gauche.addUsable(n);
+		droite.addUsable(n);
 	}
 
 }

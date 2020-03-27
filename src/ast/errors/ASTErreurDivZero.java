@@ -20,17 +20,17 @@ public class ASTErreurDivZero {
 		super();
 		Lexenv.toggleError(true);
 		ASTDiv d = new ASTDiv(
-				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(150),null),
-				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0, null),
-				null);
-		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d,null);
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(150)),
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0)
+				);
+		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d);
 		d.setEnrichissements(2);
 		div.setEnrichissements(2);
 		Lexenv.toggleError(false);
 	}
 	public ArrayList<AST> getAst(){
 		ArrayList<AST> a = new ArrayList<>();
-		a.add(new ASTDeclaration(div.getType(),div.getNom(),div.getOwner()));
+		a.add(new ASTDeclaration(div.getType(),div.getNom()));
 		a.add(div);
 		return a;
 	}

@@ -16,17 +16,15 @@ import ast.expressions.ASTExpr;
 
 public abstract class Lexenv {
 	private static List<String> vars;
-	private static List<Boolean> declaree;
-	// Pour plus tard, stocker les expressions et leur mutabilité -> creer du bruit
-	// dans les expressions
-	private static Map<ASTExpr, Boolean> explist;
+	
 	private static Boolean error=false;
 	private static List<String> languageKeywords;
-
+	/***
+	 * Initialisation de l'environnement lexical avec notamment les mots du langage C
+	 */
 	public static void init() {
 		vars = new ArrayList<String>();
-		declaree = new ArrayList<Boolean>();
-		explist = new HashMap<ASTExpr, Boolean>();
+		
 
 		// langage C
 		languageKeywords = new ArrayList<String>();
@@ -46,7 +44,10 @@ public abstract class Lexenv {
 			System.exit(1);
 		}
 	}
-
+	/***
+	 * Renvoit un nouveau nom, pas encore utilisé
+	 * @return String nom
+	 */
 	public static String getNewName() {
 		// alphabet
 		String alpha = "abcdefghijklmnopqrstuvwxyz";
@@ -60,23 +61,20 @@ public abstract class Lexenv {
 			sb.append(alpha.charAt(RandomProvider.nextInt(26)));
 		} while (vars.contains(sb.toString()) || languageKeywords.contains(sb.toString()));
 		vars.add(sb.toString());
-		declaree.add(false);
 		return sb.toString();
 	}
-
+	/***
+	 * Renvoie la liste des noms des variables
+	 * @return List des noms
+	 */
 	public static List<String> getVars() {
 		return vars;
 	}
-
-	public static List<Boolean> getDeclarations() {
-		return declaree;
-	}
-
-	public static void declaration(int i) {
-		declaree.set(i, true);
-	}
-
-	// Permet de nommer les variables en error_
+	
+	/***
+	 * _Si True, les appels a getNewName renverront des noms sous la forme error_XXXX
+	 * @param b
+	 */
 	public static void toggleError(Boolean b) {
 		error = b;
 	}

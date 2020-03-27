@@ -10,11 +10,10 @@ import interfaces.IAST;
 public class ASTVariable extends ASTExpr {
 	protected VarType pointee;
 
-	public ASTVariable(VarType type, String nom, Object valeur, IAST owner) {
+	public ASTVariable(VarType type, String nom, Object valeur) {
 		this.typeretour = type;
 		this.nom = nom;
 		this.valeur = valeur;
-		this.owner = owner;
 		switch (type) {
 		case PINT:
 			pointee = VarType.INT;

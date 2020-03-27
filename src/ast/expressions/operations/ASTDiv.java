@@ -18,12 +18,12 @@ import interfaces.IAST;
 
 public class ASTDiv extends ASTOpBinaire {
 
-	public ASTDiv(Object valeur, IAST owner) {
-		super(valeur,owner);
+	public ASTDiv(Object valeur) {
+		super(valeur);
 		}
 
-	public ASTDiv(ASTExpr g, ASTExpr d, IAST owner) {
-		super(g, d, owner);
+	public ASTDiv(ASTExpr g, ASTExpr d) {
+		super(g, d);
 		if ((Integer)d.getValeur()==0)
 			this.valeur=0;
 		else
@@ -44,8 +44,8 @@ public class ASTDiv extends ASTOpBinaire {
 			g = somme * rand;
 			d = rand;
 		}
-		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g, this);
-		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d, this);	
+		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g);
+		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d);	
 	}
 
 

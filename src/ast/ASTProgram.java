@@ -65,6 +65,36 @@ public class ASTProgram implements IAST {
 	public int getPosition(AST a) {
 		return explist.indexOf(a);
 	}
+
+	@Override
+	public void addDeclaree(String n) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> getDeclaree() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addUsable(String n) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> getUsable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void popUsable(String n) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
