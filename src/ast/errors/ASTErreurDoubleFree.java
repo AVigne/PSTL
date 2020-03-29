@@ -40,9 +40,14 @@ public class ASTErreurDoubleFree extends ASTExpr{
 	}
 	public ArrayList<AST> getAst(){
 		ArrayList<AST> a = new ArrayList<>();
-		a.add(new ASTDeclaration(affect_malloc.getType(),affect_malloc.getNom()));
+		ASTDeclaration dec = new ASTDeclaration(affect_malloc.getType(),affect_malloc.getNom());
+		dec.addDeclaree(dec.getNom());
+		a.add(dec);
+		affect_malloc.addDeclaree(dec.getNom());
 		a.add(affect_malloc);
+		free1.addDeclaree(dec.getNom());
 		a.add(free1);
+		free2.addDeclaree(dec.getNom());
 		a.add(free2);
 		return a;
 	}

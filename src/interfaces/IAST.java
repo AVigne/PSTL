@@ -48,5 +48,14 @@ public interface IAST {
 	 * @param n (nom de la variable a supprimer)
 	 */
 	public void popUsable(String n) ;
-
+	/***
+	 * Ajoute une liste de variables déclarées
+	 * @param l
+	 */
+	public void fuseDeclaree(ArrayList<String> l);
+	/***
+	 * Ajoute une liste de variables utilisables
+	 * @param l
+	 */
+	public void fuseUsable(ArrayList<String> l);
 }

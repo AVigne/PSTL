@@ -48,4 +48,14 @@ public abstract class AST implements IAST {
 	public void popUsable(String n) {
 		usable.remove(n);
 	}
+	public void fuseDeclaree(ArrayList<String> l) {
+		for (String s: l) {
+			addDeclaree(s);
+		}
+	}
+	public void fuseUsable(ArrayList<String> l) {
+		for (String s : l) {
+			addUsable(s);
+		}
+	}
 }

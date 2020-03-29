@@ -19,7 +19,7 @@ public class ASTVariable extends ASTExpr {
 			pointee = VarType.INT;
 			break;
 		}
-		this.enrichissements = 0;
+		this.enrichissements = 1;
 
 	}
 
@@ -38,10 +38,6 @@ public class ASTVariable extends ASTExpr {
 	public VarType getPointee() {
 		return pointee;
 	}
-	/*
-	 * public IAST toAffect() { return new ASTAffect(typeretour, nom, valeur,
-	 * owner); }
-	 */
 
 	@Override
 	public void visit(StringBuffer sb) {

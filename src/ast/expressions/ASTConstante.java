@@ -19,14 +19,7 @@ public class ASTConstante extends ASTExpr{
 	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		switch (RandomProvider.nextInt(2)) {
-			case 0: sb.append(this.valeur); break;
-			case 1: 
-				int borneinf = RandomProvider.nextInt((Integer)valeur+1);
-				int bornsup = RandomProvider.nextInt((Integer)valeur+1)+ ((Integer)valeur);
-				sb.append("(rand() % ("+bornsup+" - "+borneinf+" + 1))");
-				break;
-		}
+		sb.append(this.valeur); 
 	}
 
 	@Override

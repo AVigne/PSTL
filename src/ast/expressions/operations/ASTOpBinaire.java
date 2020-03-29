@@ -3,6 +3,7 @@ package ast.expressions.operations;
 import java.util.ArrayList;
 
 import ast.AST;
+import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
 import ast.statement.ASTAffect;
@@ -57,7 +58,8 @@ public abstract class ASTOpBinaire extends ASTExpr {
 
 	// Renvoie une des 4 opérations de manière random
 	public static IAST getRandomOperation(Object valeur) {
-		switch (RandomProvider.nextInt(4)) {
+		int rand = RandomProvider.nextInt(4);
+		switch (rand) {
 		case 0:
 			return new ASTSum(valeur);
 		case 1:

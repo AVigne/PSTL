@@ -95,6 +95,18 @@ public class ASTProgram implements IAST {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void fuseDeclaree(ArrayList<String> l) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fuseUsable(ArrayList<String> l) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

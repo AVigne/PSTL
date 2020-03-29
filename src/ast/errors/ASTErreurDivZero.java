@@ -30,7 +30,10 @@ public class ASTErreurDivZero {
 	}
 	public ArrayList<AST> getAst(){
 		ArrayList<AST> a = new ArrayList<>();
-		a.add(new ASTDeclaration(div.getType(),div.getNom()));
+		ASTDeclaration dec= new ASTDeclaration(div.getType(),div.getNom());
+		dec.addDeclaree(dec.getNom());
+		a.add(dec);
+		div.addDeclaree(dec.getNom());
 		a.add(div);
 		return a;
 	}

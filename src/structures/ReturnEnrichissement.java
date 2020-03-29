@@ -160,5 +160,14 @@ public class ReturnEnrichissement {
 		vardec.addAll(getVardecPost());
 		return vardec;
 	}
-	
+	/***
+	 * Renvoie le dernier AST, permet d'avoir les defUse du dernier element, et de les rajouter a tous
+	 * @return
+	 */
+	public IAST getLast() {
+		if (postList.isEmpty())
+			return a;
+		else
+			return postList.get(postList.size());
+	}
 }

@@ -9,7 +9,7 @@ public class RandomProvider {
 
 	// if using the seed got in another iteration, note that the format of a long is
 	// [digit]*L (ex : 42L)
-	private static final long seed = System.currentTimeMillis();
+	private static  long seed = System.currentTimeMillis();
 
 	public static void init() {
 		if (!isInit) {

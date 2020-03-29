@@ -31,17 +31,17 @@ public class ASTDiv extends ASTOpBinaire {
 	}
 
 	@Override
-	protected void initCotes(int somme) {
+	protected void initCotes(int div) {
 		int g, d;
-		if (somme == 0) {
+		if (div == 0) {
 			g = 0;
 			d = 1;
 		} else {
 			// gauche et droite aléatoires
 			
-			int rand = RandomProvider.nextInt((Integer.MAX_VALUE - 1)/ somme) + 1;
+			int rand = RandomProvider.nextInt((Integer.MAX_VALUE - 1)/ div) + 1;
 			//System.out.println(rand+" "+somme+" "+(somme*rand));
-			g = somme * rand;
+			g = div * rand;
 			d = rand;
 		}
 		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g);

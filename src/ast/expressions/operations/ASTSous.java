@@ -28,18 +28,18 @@ public class ASTSous extends ASTOpBinaire {
 	}
 	
 	@Override
-	protected void initCotes(int somme) {
+	protected void initCotes(int difference) {
 		int g,d;
-		if (somme==0) {
+		if (difference==0) {
 			g=0;
 			d=0;
 		}
 		else{
 			//gauche et droite aléatoires
 			int rand = 0;
-			if(somme < Integer.MAX_VALUE )
-				rand = RandomProvider.nextInt(Integer.MAX_VALUE - somme);
-			g = somme+rand;
+			if(difference < Integer.MAX_VALUE )
+				rand = RandomProvider.nextInt(Integer.MAX_VALUE - difference);
+			g = difference+rand;
 			d = rand;
 		}
 		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g);
