@@ -46,11 +46,11 @@ public class ASTAffect extends ASTStatement {
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		//Affiche les def use, pour débug
-		System.out.println(var.getNom());
+		/*System.out.println(var.getNom());
 		System.out.println(this.declaree);
 		System.out.println(this.usable);
 		System.out.println(var.getUsable());
-		System.out.println(affectation.getUsable());
+		System.out.println(affectation.getUsable());*/
 		var.visit(sb);
 		sb.append(" = ");
 		affectation.visit(sb);

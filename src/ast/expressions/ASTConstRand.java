@@ -28,11 +28,23 @@ public class ASTConstRand extends ASTExpr{
 	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		sb.append("(rand() % (");
-		sup.visit(sb);
-		sb.append(" - ");
-		inf.visit(sb);
-		sb.append(" + 1))");
+		if ((Integer)this.getValeur()==0){
+			sb.append("(");
+			sup.visit(sb);
+			sb.append(" - ");
+			inf.visit(sb);
+			sb.append(")");
+
+		}
+		else {
+			sb.append("(rand() % (");
+			sup.visit(sb);
+			sb.append(" - ");
+			inf.visit(sb);
+			sb.append(" + 1) + ");
+			inf.visit(sb);
+			sb.append(")");
+		}
 	}
 
 	@Override
