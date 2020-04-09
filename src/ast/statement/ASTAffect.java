@@ -1,14 +1,10 @@
 package ast.statement;
 
-import java.util.ArrayList;
-
 import ast.AST;
-import ast.expressions.ASTExpr;
 import ast.expressions.ASTVariable;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTAffect extends ASTStatement {

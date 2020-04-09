@@ -1,20 +1,9 @@
 package ast.expressions.operations;
 
-import java.util.ArrayList;
-
-import ast.AST;
 import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
-import ast.expressions.ASTVariable;
-import ast.statement.ASTAffect;
-import ast.statement.ASTDeclaration;
 import enums.VarType;
-import exceptions.EnrichissementMissingException;
-import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import factories.Lexenv;
-import factories.RandomProvider;
-import interfaces.IAST;
 
 public class ASTMult extends ASTOpBinaire {
 

@@ -1,17 +1,9 @@
 package ast.expressions.operations;
 
-import java.util.ArrayList;
-
 import ast.AST;
-import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
-import ast.expressions.ASTVariable;
-import ast.statement.ASTAffect;
-import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
-import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
 
@@ -22,7 +14,7 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	public ASTOpBinaire(ASTExpr g, ASTExpr d) {
 		gauche = g;
 		droite = d;
-		this.enrichissements=2;
+		this.enrichissements=gauche.getEnrichissements()+droite.getEnrichissements();
 	}
 
 	public ASTOpBinaire(Object valeur) {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import ast.AST;
 import ast.expressions.ASTConstante;
-import ast.expressions.ASTVariable;
 import ast.expressions.operations.ASTDiv;
 import ast.statement.ASTAffect;
 import ast.statement.ASTDeclaration;
@@ -20,7 +19,7 @@ public class ASTErreurDivZero {
 		super();
 		Lexenv.toggleError(true);
 		ASTDiv d = new ASTDiv(
-				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(150)),
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(RandomProvider.nbRandom)),
 				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0)
 				);
 		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d);

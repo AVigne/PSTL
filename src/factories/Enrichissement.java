@@ -1,20 +1,14 @@
 package factories;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import ast.AST;
 import ast.ASTProgram;
 import ast.expressions.*;
-import ast.expressions.operations.ASTDiv;
-import ast.expressions.operations.ASTMult;
 import ast.expressions.operations.ASTOpBinaire;
 import ast.expressions.operations.ASTSous;
 import ast.expressions.operations.ASTSum;
 import ast.statement.*;
 import ast.statement.memory.ASTMalloc;
-import enums.VarType;
-import exceptions.CodeSupposedUnreachableException;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
@@ -162,14 +156,11 @@ public abstract class Enrichissement {
 		if (a instanceof ASTOpBinaire) {
 			return enrichirV2((ASTOpBinaire) a);
 		}
-		if (a instanceof ASTConstRand) {
-			return enrichirV2((ASTConstRand) a);
+		if (a instanceof ASTRand) {
+			return enrichirV2((ASTRand) a);
 		}
 		if (a instanceof ASTVariable) {
 			return enrichirV2((ASTVariable) a);
-		}
-		if (a instanceof ASTVarPM) {
-			return enrichirV2((ASTVarPM) a);
 		}
 		throw new EnrichissementNotImplementedException(
 				"L'enrichissement n'est pas implémenté pour la classe : " + a.getClass());
@@ -219,7 +210,9 @@ public abstract class Enrichissement {
 					new ASTSous(new ASTConstante(a.getType(), a.getNom(), temp), new ASTConstante(a.getType(), Lexenv.getNewName(), temp))
 					);
 		}*/
-		switch (RandomProvider.nextInt(nbEnrConst)) {
+		int i = RandomProvider.nextInt(nbEnrConst);
+		//System.out.println(i);
+		switch (i) {
 		//switch (0) {
 		case 0:
 			//cas d'une constante qui devient une opération
@@ -233,40 +226,26 @@ public abstract class Enrichissement {
 			return new ReturnEnrichissement(array, 	new ASTVariable(a.getType(),a.getNom(),a.getValeur()));
 		case 2 : 
 			//cas d'un random
-			return new ReturnEnrichissement(new ASTConstRand(a.getType(), a.getNom(), a.getValeur()));
+			return new ReturnEnrichissement(new ASTRand(a.getType(), a.getNom(), a.getValeur()));
 		}
 		throw new EnrichissementMissingException(" Enrichissement de la constante ");
 	}
 	/***
-	 * Enrichissement de la constante random. Les bornes inf et sup peuvent être enrichies, aléatoirement.
+	 * Enrichissement d'un random, en enrichissant l'opération le composant
+	 * @see #enrichirV2(ASTOpBinaire a)
 	 * @param a
 	 * @return
 	 * @throws EnrichissementMissingException
 	 * @throws EnrichissementNotImplementedException
 	 */
-	public static ReturnEnrichissement enrichirV2(ASTConstRand a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		int rand = RandomProvider.nextInt(2);
-		//System.out.println(""+a.getEnrichissements()+a.getGauche().getEnrichissements()+a.getDroite().getEnrichissements());
-		if (a.getInf().getEnrichissements()==0)
-			rand=1;
-		if (a.getSup().getEnrichissements()==0)
-			rand=0;
-		switch (rand) {
-		case 0 : 
-			ReturnEnrichissement re = enrichirV2(a.getInf());
-			a.setInf((ASTExpr)re.getIAST());
-			a.setEnrichissements(re.getIAST().getEnrichissements()+a.getSup().getEnrichissements());
-			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
-		case 1 : 
-			ReturnEnrichissement re2 = enrichirV2(a.getSup());
-			a.setSup((ASTExpr)re2.getIAST());
-			a.setEnrichissements(re2.getIAST().getEnrichissements()+a.getInf().getEnrichissements());
-			return new ReturnEnrichissement(re2.getPreList(),a,re2.getPostList());
-		}
-		throw new EnrichissementMissingException("ConstRand");
+	public static ReturnEnrichissement enrichirV2(ASTRand a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		ReturnEnrichissement re = enrichirV2(a.getRand());
+		a.setRand((ASTOpBinaire)re.getIAST());
+		a.setEnrichissements(re.getIAST().getEnrichissements());
+		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 	}
 	/***
-	 * Enrichissement d'une opération, en enrichissant le memebre gauche, ou droit 
+	 * Enrichissement d'une opération, en enrichissant le membre gauche, ou droit 
 	 * @param a
 	 * @return
 	 * @throws EnrichissementMissingException
@@ -301,38 +280,48 @@ public abstract class Enrichissement {
 	 * @throws EnrichissementNotImplementedException
 	 */
 	public static ReturnEnrichissement enrichirV2(ASTVariable a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		ASTVarPM v = new ASTVarPM(a.getType(), a.getNom(), a.getValeur());
-		v.fuseDeclaree(a.getDeclaree());
-		v.fuseUsable(a.getUsable());
-		v.setRandV();
-		return new ReturnEnrichissement(v);
-	}
-	/***
-	 * Enrichissement de la variable plus moins, chaque variable (de nom identique) peut etre enrichie, par une expression du même type
-	 * @param a
-	 * @return
-	 * @throws EnrichissementMissingException
-	 * @throws EnrichissementNotImplementedException
-	 */
-	public static ReturnEnrichissement enrichirV2(ASTVarPM a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		int rand = RandomProvider.nextInt(2);
-		//System.out.println(""+a.getEnrichissements()+a.getGauche().getEnrichissements()+a.getDroite().getEnrichissements());
-		if (a.getGauche().getEnrichissements()==0)
-			rand=1;
-		if (a.getDroite().getEnrichissements()==0)
-			rand=0;
-		switch (rand) {
-		case 0 : 
-			ReturnEnrichissement re = enrichirV2(a.getGauche());
-			a.setGauche((ASTExpr)re.getIAST());
-			a.setEnrichissements(re.getIAST().getEnrichissements()+a.getDroite().getEnrichissements());
-			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
-		case 1 : 
-			ReturnEnrichissement re2 = enrichirV2(a.getDroite());
-			a.setDroite((ASTExpr)re2.getIAST());
-			a.setEnrichissements(re2.getIAST().getEnrichissements()+a.getGauche().getEnrichissements());
-			return new ReturnEnrichissement(re2.getPreList(),a,re2.getPostList());
+		ASTOpBinaire sous;
+		ASTOpBinaire sum;
+		ASTVariable vg,vd;
+		if (a.getUsable().size()!=0) {
+			String n;
+			boolean b;
+			int cpt=0;
+			//Recherche une variable utilisable et déclarée (normalement un tour de boucle suffit, mais dans le doute, 10 itermax)
+			do {
+				n=a.getUsable().get(RandomProvider.nextInt(a.getUsable().size()));
+				b=a.getDeclaree().contains(n);
+				cpt++;
+			}while((!b) || (cpt<10));
+			//Revérification
+			if (a.getDeclaree().contains(n)&& a.getUsable().contains(n)) {
+				vg=new ASTVariable(a.getType(),n,RandomProvider.nextInt(Integer.MAX_VALUE));
+				vd=new ASTVariable(a.getType(),n,RandomProvider.nextInt(Integer.MAX_VALUE));
+				vg.fuseDeclaree(a.getDeclaree());
+				vg.fuseUsable(a.getUsable());
+				vd.fuseDeclaree(a.getDeclaree());
+				vd.fuseUsable(a.getUsable());
+				sous = new ASTSous(vg,vd);
+				sum = new ASTSum(a,sous);
+				sous.fuseDeclaree(a.getDeclaree());
+				sous.fuseUsable(a.getUsable());
+				sum.fuseDeclaree(a.getDeclaree());
+				sum.fuseUsable(a.getUsable());
+				return new ReturnEnrichissement(sum);
+			}
 		}
-		throw new EnrichissementMissingException("Variable + -");
+		//Cas ou sous vide, soit pas de variable utilisable trouvée.
+		//x + x-x
+		vg=new ASTVariable(a.getType(),a.getNom(),RandomProvider.nextInt(Integer.MAX_VALUE));
+		vd=new ASTVariable(a.getType(),a.getNom(),RandomProvider.nextInt(Integer.MAX_VALUE));
+		vg.fuseDeclaree(a.getDeclaree());
+		vg.fuseUsable(a.getUsable());
+		vd.fuseDeclaree(a.getDeclaree());
+		vd.fuseUsable(a.getUsable());
+		sous = new ASTSous(vg,vd);
+		sum = new ASTSum(a,sous);
+		return new ReturnEnrichissement(sum);
 	}
+
+	
 }

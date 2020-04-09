@@ -1,11 +1,7 @@
 package ast.statement;
 
-import ast.AST;
 import ast.expressions.ASTVariable;
 import enums.VarType;
-import exceptions.EnrichissementMissingException;
-import factories.Enrichissement;
-import factories.Lexenv;
 import interfaces.IAST;
 
 public class ASTDeclaration extends ASTStatement{

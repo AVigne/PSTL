@@ -15,6 +15,7 @@ import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import factories.Lexenv;
+import factories.RandomProvider;
 import interfaces.IAST;
 
 public class ASTErreurDoubleFree extends ASTExpr{
@@ -27,7 +28,7 @@ public class ASTErreurDoubleFree extends ASTExpr{
 		//nomme les deux variables avec des error_
 		Lexenv.toggleError(true);
 		ASTVariable pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL");
-		ASTConstante num = new ASTConstante(VarType.INT,Lexenv.getNewName(),150);
+		ASTConstante num = new ASTConstante(VarType.INT,Lexenv.getNewName(),RandomProvider.nbRandom);
 		//Le malloc est une affectation
 		ASTStatement malloc= new ASTMalloc(num, VarType.PINT);
 		affect_malloc = new ASTAffect(pointeur.getType(),pointeur.getNom(),malloc);

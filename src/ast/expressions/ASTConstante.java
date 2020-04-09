@@ -3,9 +3,6 @@ package ast.expressions;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
-import factories.RandomProvider;
-import interfaces.IAST;
 
 public class ASTConstante extends ASTExpr{
 	

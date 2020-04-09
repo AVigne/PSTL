@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import structures.ReturnEnrichissement;
 
 public interface IAST {
 	

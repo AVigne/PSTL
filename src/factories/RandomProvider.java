@@ -3,7 +3,7 @@ package factories;
 import java.util.Random;
 
 public class RandomProvider {
-
+	public static final int nbRandom = 150;
 	private static boolean isInit = false;
 	private static Random theAlmighty;
 
@@ -35,6 +35,15 @@ public class RandomProvider {
 	 */
 	public static int nextInt(int i) {
 		return theAlmighty.nextInt(i);
+	}
+	/***
+	 * Retourne l'entier entre i et MAX_INT, pour limiter les overflow
+	 * @param i
+	 * @return
+	 */
+	public static int getInt(int i) {
+		int m = Integer.MAX_VALUE;
+		return (i / 2) + (m / 2) + (((i % 2) + (m % 2)) / 2);
 	}
 
 }

@@ -1,8 +1,6 @@
 package factories;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import ast.ASTProgram;
 import interfaces.IAST;
 import interfaces.IProgramBuilder;

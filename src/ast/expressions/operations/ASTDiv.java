@@ -1,20 +1,10 @@
 package ast.expressions.operations;
 
-import java.util.ArrayList;
-
-import ast.AST;
 import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
-import ast.expressions.ASTVariable;
-import ast.statement.ASTAffect;
-import ast.statement.ASTDeclaration;
 import enums.VarType;
-import exceptions.EnrichissementMissingException;
-import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import factories.Lexenv;
 import factories.RandomProvider;
-import interfaces.IAST;
 
 public class ASTDiv extends ASTOpBinaire {
 
@@ -35,11 +25,36 @@ public class ASTDiv extends ASTOpBinaire {
 		int g, d;
 		if (div == 0) {
 			g = 0;
-			d = 1;
+			d = RandomProvider.nextInt(RandomProvider.nbRandom);
 		} else {
-			// gauche et droite aléatoires
+			int rand=1;
+			//Si pas d'overflow au carré, on tire un random jusqu'a div
+			if (Integer.MAX_VALUE/div>div) {
+				int cpt=0;
+				do {
+					rand = RandomProvider.nextInt(div);
+					cpt++;
+				//Peu de chance de tirer div fois 0, donc normalement on a une valeur
+				}while((rand<0)&&(cpt<div));
+				//Au pire des cas on prend 1
+				if (cpt==div)
+					rand=1;
+			}
+			//Sinon on part de div/2 et on décrémente jusqu'a suprimer l'overflow
+			else {
+				int temp = div/2;
+				do {
+					if(temp==-1)
+						break;
+					rand = RandomProvider.nextInt(temp);
+					temp--;
+				}while((Integer.MAX_VALUE/rand<div)&&(rand<0));
+				//Si on ne trouve pas, on prend 1
+				if (temp<0) {
+					rand=1;
+				}
+			}
 			
-			int rand = RandomProvider.nextInt((Integer.MAX_VALUE - 1)/ div) + 1;
 			//System.out.println(rand+" "+somme+" "+(somme*rand));
 			g = div * rand;
 			d = rand;

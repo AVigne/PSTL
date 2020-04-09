@@ -1,11 +1,6 @@
 package ast.expressions;
 
-import ast.AST;
-import ast.statement.ASTAffect;
 import enums.VarType;
-import exceptions.EnrichissementMissingException;
-import factories.Enrichissement;
-import interfaces.IAST;
 
 public class ASTVariable extends ASTExpr {
 	protected VarType pointee;
@@ -17,6 +12,8 @@ public class ASTVariable extends ASTExpr {
 		switch (type) {
 		case PINT:
 			pointee = VarType.INT;
+			break;
+		default:
 			break;
 		}
 		this.enrichissements = 1;

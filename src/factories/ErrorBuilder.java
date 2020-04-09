@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import ast.AST;
 import ast.errors.ASTErreurDivZero;
 import ast.errors.ASTErreurDoubleFree;
-import ast.expressions.ASTExpr;
 import enums.ErrorType;
 import enums.VarType;
 import exceptions.CodeSupposedUnreachableException;
 import exceptions.EnrichissementMissingException;
-import interfaces.IAST;
 import interfaces.IErrorBuilder;
 
 public class ErrorBuilder implements IErrorBuilder {

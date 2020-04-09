@@ -1,16 +1,10 @@
 package ast.statement.memory;
 
-import java.util.ArrayList;
-
-import ast.AST;
 import ast.expressions.ASTExpr;
-import ast.statement.ASTAffect;
-import ast.statement.ASTDeclaration;
 import ast.statement.ASTStatement;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTMalloc extends ASTStatement {
