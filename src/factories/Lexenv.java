@@ -16,6 +16,8 @@ public abstract class Lexenv {
 	
 	private static Boolean error=false;
 	private static List<String> languageKeywords;
+	//Liste des opérateurs booléens
+	public static List<String> compop= List.of("==","!=",">","<",">=","<=");
 	/***
 	 * Initialisation de l'environnement lexical avec notamment les mots du langage C
 	 */

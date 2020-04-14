@@ -162,23 +162,43 @@ public abstract class Enrichissement {
 		if (a instanceof ASTVariable) {
 			return enrichirV2((ASTVariable) a);
 		}
+		if (a instanceof ASTBoolOperation) {
+			return enrichirV2((ASTBoolOperation) a);
+		}
+		if (a instanceof ASTIf) {
+			return enrichirV2((ASTIf) a);
+		}
 		throw new EnrichissementNotImplementedException(
 				"L'enrichissement n'est pas implémenté pour la classe : " + a.getClass());
 
 	}
 
 	/***
-	 * Enrichissement de l'affectation, qui enrichit le membre droit
+	 * Enrichissement de l'affectation, qui enrichit le membre droit, ou qui transforme l'affectation en If, 
+	 * et place l'affectation dans la branche qui sera exécutée
 	 * @param a
 	 * @return
 	 * @throws EnrichissementNotImplementedException
 	 * @throws EnrichissementMissingException
 	 */
 	public static ReturnEnrichissement enrichirV2(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		ReturnEnrichissement re = enrichirV2(a.getAffectation());
-		a.setAffectation((AST)re.getIAST());
-		a.setEnrichissements(re.getIAST().getEnrichissements());
-		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+		switch (RandomProvider.nextInt(2)) {
+		//Affectation linéaire
+		case 0 :
+			ReturnEnrichissement re = enrichirV2(a.getAffectation());
+			a.setAffectation((AST)re.getIAST());
+			a.setEnrichissements(re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+		//Ajout d'un If
+		case 1 : 
+			Boolean[] bool = {true,false};
+			boolean b = bool[RandomProvider.nextInt(bool.length)];
+			ASTIf iff= new ASTIf(Lexenv.getNewName(), b, a );
+			return new ReturnEnrichissement(iff);
+			
+		}
+		throw new EnrichissementMissingException(" Enrichissement de l'affectation ");
+
 
 	}
 	/***
@@ -322,6 +342,175 @@ public abstract class Enrichissement {
 		sum = new ASTSum(a,sous);
 		return new ReturnEnrichissement(sum);
 	}
+	/***
+	 * Enrichissement de l'opération booléenne (condition du if) en enrichissant soit a gauche, soit a droite
+	 * @param a
+	 * @return
+	 * @throws EnrichissementMissingException
+	 * @throws EnrichissementNotImplementedException
+	 */
+	public static ReturnEnrichissement enrichirV2(ASTBoolOperation a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		//Comme l'opération, on peut enrichir a gauche ou droite
+		int rand = RandomProvider.nextInt(2);
+		//System.out.println(""+a.getEnrichissements()+a.getGauche().getEnrichissements()+a.getDroite().getEnrichissements());
+		if (a.getGauche().getEnrichissements()==0)
+			rand=1;
+		if (a.getDroite().getEnrichissements()==0)
+			rand=0;
+		switch (rand) {
+		case 0 : 
+			ReturnEnrichissement re = enrichirV2(a.getGauche());
+			a.setGauche((ASTExpr)re.getIAST());
+			a.setEnrichissements(re.getIAST().getEnrichissements()+a.getDroite().getEnrichissements());
+			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+		case 1 : 
+			ReturnEnrichissement re2 = enrichirV2(a.getDroite());
+			a.setDroite((ASTExpr)re2.getIAST());
+			a.setEnrichissements(re2.getIAST().getEnrichissements()+a.getGauche().getEnrichissements());
+			return new ReturnEnrichissement(re2.getPreList(),a,re2.getPostList());
+		}
+		throw new EnrichissementMissingException("Operation booleenne / Condition");
+	}
+	/***
+	 * Enrichissement du If. Enrichie soit la condition, soit les instructions après le if, soit celles après le else. 
+	 * @param a
+	 * @return
+	 * @throws EnrichissementMissingException
+	 * @throws EnrichissementNotImplementedException
+	 */
+	public static ReturnEnrichissement enrichirV2(ASTIf a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		int rand = RandomProvider.nextInt(3);
+		int enrthen=0;
+		int enrelse=0;
+		for (IAST i : a.getThen()) {
+			enrthen+=i.getEnrichissements();
+		}
+		for (IAST j : a.getElse()) {
+			enrelse+=j.getEnrichissements();
+		}
+		//On gère le cas où un ou plusieurs sous arbres ne seraient pas enrichissables
+		if (a.getCond().getEnrichissements()==0) {
+			if (enrthen==0)
+				rand=2;
+			else {
+				if (enrelse==0)
+					rand=1;
+				else
+					rand=RandomProvider.nextInt(2)+1;
+			}
+		}
+		if (enrthen==0) {
+			if (a.getCond().getEnrichissements()==0)
+				rand=2;
+			else {
+				if (enrelse==0)
+					rand=0;
+				else
+					rand=RandomProvider.nextInt(2)*2;
+			}
+		}
+		if (enrelse==0) {
+			if (a.getCond().getEnrichissements()==0) 
+				rand=1;
+			else {
+				if (enrthen==0)
+					rand=0;
+				else
+					rand=RandomProvider.nextInt(2);
+			}
+		}
+		switch (rand) {
+		//cas Cond
+		case 0 : 
+			ReturnEnrichissement re = enrichirV2(a.getCond());
+			//on enleve les enrichissements de la condition
+			a.setEnrichissements(a.getEnrichissements()-a.getCond().getEnrichissements());
+			a.setCond((ASTBoolOperation)re.getIAST());
+			//Pour les rajouter après
+			a.setEnrichissements(a.getEnrichissements()+re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
+		//cas Then
+		//Code identique quasiment a la boucle principale. Moyen sans doute de le factoriser. 
+		case 1 : 
+			ArrayList<IAST> enrichissables= new ArrayList<>();
+			for (IAST k : a.getThen()) {
+				if (k.getEnrichissements()!=0)
+					enrichissables.add(k);
+			}
+			IAST choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
+			int index = a.getThen().indexOf(choisi);
+			re = enrichirV2(choisi);
+			ArrayList<String> vardecpost= new ArrayList<>();
+			ArrayList<String> varusepost = new ArrayList<>();
+			
+			vardecpost=re.getLast().getDeclaree();
+			varusepost=re.getLast().getUsable();
+			a.setEnrichissements(a.getEnrichissements()-a.getThen().get(index).getEnrichissements());
+			a.getThen().remove(index);
+			for (IAST i : re.getPreList()) {
+				i.fuseDeclaree(vardecpost);
+				i.fuseUsable(varusepost);
+				a.getThen().add(index, i);
+				index++;
+			}
+			re.getIAST().fuseDeclaree(vardecpost);
+			re.getIAST().fuseUsable(varusepost);
+			a.getThen().add(index, re.getIAST());
+			for (IAST i : re.getPostList()) {
+				i.fuseDeclaree(vardecpost);
+				i.fuseUsable(varusepost);
+				a.getThen().add(index, i);
+				index++;
+			}
+			ArrayList<String> vardec = re.getVardec();
+			for (int in = index; in<a.getThen().size();in++) {
+				a.getThen().get(in).fuseDeclaree(vardec);
+				a.getThen().get(in).fuseUsable(vardec);
+			}
+			a.setEnrichissements(a.getEnrichissements()+re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(a);
+		//cas Else
+		case 2 : 
+			enrichissables= new ArrayList<>();
+			for (IAST k : a.getElse()) {
+				if (k.getEnrichissements()!=0)
+					enrichissables.add(k);
+			}
+			choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
+			index = a.getElse().indexOf(choisi);
+			re = enrichirV2(choisi);
+			vardecpost= new ArrayList<>();
+			varusepost = new ArrayList<>();
+			
+			vardecpost=re.getLast().getDeclaree();
+			varusepost=re.getLast().getUsable();
+			a.setEnrichissements(a.getEnrichissements()-a.getElse().get(index).getEnrichissements());
+			a.getElse().remove(index);
+			for (IAST i : re.getPreList()) {
+				i.fuseDeclaree(vardecpost);
+				i.fuseUsable(varusepost);
+				a.getElse().add(index, i);
+				index++;
+			}
+			re.getIAST().fuseDeclaree(vardecpost);
+			re.getIAST().fuseUsable(varusepost);
+			a.getElse().add(index, re.getIAST());
+			for (IAST i : re.getPostList()) {
+				i.fuseDeclaree(vardecpost);
+				i.fuseUsable(varusepost);
+				a.getElse().add(index, i);
+				index++;
+			}
+			vardec = re.getVardec();
+			for (int in = index; in<a.getElse().size();in++) {
+				a.getElse().get(in).fuseDeclaree(vardec);
+				a.getElse().get(in).fuseUsable(vardec);
+			}
+			a.setEnrichissements(a.getEnrichissements()+re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(a);
+			
+		}
+		throw new EnrichissementMissingException("If");
 
-	
+	}
 }

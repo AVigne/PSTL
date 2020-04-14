@@ -1,5 +1,5 @@
 package enums;
 
 public enum VarType{
-	ERROR,INT,CHAR,PINT,PCHAR;
+	ERROR,INT,CHAR,PINT,PCHAR,BOOLEAN;
 }
