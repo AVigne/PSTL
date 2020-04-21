@@ -17,21 +17,22 @@ public abstract class Lexenv {
 	private static Boolean error=false;
 	private static List<String> languageKeywords;
 	//Liste des opérateurs booléens
-	public static List<String> compop= List.of("==","!=",">","<",">=","<=");
+	public static List<String> compop= new ArrayList<>();
 	/***
 	 * Initialisation de l'environnement lexical avec notamment les mots du langage C
 	 */
 	public static void init() {
 		vars = new ArrayList<String>();
-		
+
+		for(String s : new String[] {"==","!=",">","<",">=","<="}) compop.add(s);
 
 		// langage C
 		languageKeywords = new ArrayList<String>();
 		try (
 				//Pour le .jar, besoin de stream pour ouvrir le fichier
-			//InputStream inputStream = Lexenv.class.getClassLoader().getResourceAsStream("Ckeywords.txt");
-			//BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-			BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))){
+			InputStream inputStream = Lexenv.class.getClassLoader().getResourceAsStream("Ckeywords.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			//BufferedReader br = new BufferedReader(new FileReader("Ckeywords.txt"))){
 			String line;
 			while ((line = br.readLine()) != null) {
 				languageKeywords.add(line);

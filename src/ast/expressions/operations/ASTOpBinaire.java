@@ -10,6 +10,7 @@ import interfaces.IAST;
 public abstract class ASTOpBinaire extends ASTExpr {
 	protected AST gauche;
 	protected AST droite;
+	private String erreur_ici = "";
 
 	public ASTOpBinaire(ASTExpr g, ASTExpr d) {
 		gauche = g;
@@ -96,7 +97,12 @@ public abstract class ASTOpBinaire extends ASTExpr {
 		gauche.visit(sb);
 		this.addOperator(sb);
 		droite.visit(sb);
-		sb.append(")");
+		sb.append(erreur_ici+")");
+	}
+	
+	public boolean setTextError(String str) {
+		this.erreur_ici = str;
+		return true;
 	}
 	
 	@Override

@@ -43,7 +43,7 @@ public class PSTL {
 		ErrorType et;
 		try{
 			int i = Integer.parseInt(arg);
-			if ((errortypes.size()>i) && (i>0)){
+			if ((errortypes.size()>i) && (i>=0)){
 				et= errortypes.get(i);
 			}
 			else {

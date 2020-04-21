@@ -182,22 +182,21 @@ public abstract class Enrichissement {
 	 * @throws EnrichissementMissingException
 	 */
 	public static ReturnEnrichissement enrichirV2(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
-		switch (RandomProvider.nextInt(2)) {
+		switch (RandomProvider.nextInt(10)) {
 		//Affectation linéaire
 		case 0 :
-			ReturnEnrichissement re = enrichirV2(a.getAffectation());
-			a.setAffectation((AST)re.getIAST());
-			a.setEnrichissements(re.getIAST().getEnrichissements());
-			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
-		//Ajout d'un If
-		case 1 : 
 			Boolean[] bool = {true,false};
 			boolean b = bool[RandomProvider.nextInt(bool.length)];
 			ASTIf iff= new ASTIf(Lexenv.getNewName(), b, a );
 			return new ReturnEnrichissement(iff);
-			
+		//Ajout d'un If
+		default : 
+			ReturnEnrichissement re = enrichirV2(a.getAffectation());
+			a.setAffectation((AST)re.getIAST());
+			a.setEnrichissements(re.getIAST().getEnrichissements());
+			return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 		}
-		throw new EnrichissementMissingException(" Enrichissement de l'affectation ");
+		//throw new EnrichissementMissingException(" Enrichissement de l'affectation ");
 
 
 	}

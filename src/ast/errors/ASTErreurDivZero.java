@@ -25,6 +25,7 @@ public class ASTErreurDivZero {
 		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d);
 		d.setEnrichissements(2);
 		div.setEnrichissements(2);
+		d.setTextError("/*erreur ici*/");
 		Lexenv.toggleError(false);
 	}
 	public ArrayList<AST> getAst(){

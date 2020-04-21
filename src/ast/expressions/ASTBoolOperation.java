@@ -44,7 +44,7 @@ public class ASTBoolOperation extends ASTExpr {
 		this.typeretour = type;
 		this.nom = nom;
 		this.valeur = valeur;
-		int rand = RandomProvider.nextInt(RandomProvider.nbRandom);
+		int rand = RandomProvider.nextInt(RandomProvider.nbRandom)+1;
 		int r;
 		//Nombre alétoire, et différent
 		if (rand >=1) {

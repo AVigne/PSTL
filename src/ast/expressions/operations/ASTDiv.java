@@ -25,7 +25,7 @@ public class ASTDiv extends ASTOpBinaire {
 		int g, d;
 		if (div == 0) {
 			g = 0;
-			d = RandomProvider.nextInt(RandomProvider.nbRandom);
+			d = RandomProvider.nextInt(RandomProvider.nbRandom)+1;
 		} else {
 			int rand=1;
 			//Si pas d'overflow au carré, on tire un random jusqu'a div
