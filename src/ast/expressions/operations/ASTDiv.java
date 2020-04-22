@@ -32,7 +32,7 @@ public class ASTDiv extends ASTOpBinaire {
 			if (Integer.MAX_VALUE/div>div) {
 				int cpt=0;
 				do {
-					rand = RandomProvider.nextInt(div);
+					rand = RandomProvider.nextInt(div)+1;
 					cpt++;
 				//Peu de chance de tirer div fois 0, donc normalement on a une valeur
 				}while((rand<0)&&(cpt<div));
@@ -46,7 +46,7 @@ public class ASTDiv extends ASTOpBinaire {
 				do {
 					if(temp==-1)
 						break;
-					rand = RandomProvider.nextInt(temp);
+					rand = RandomProvider.nextInt(temp)+1;
 					temp--;
 				}while((Integer.MAX_VALUE/rand<div)&&(rand<0));
 				//Si on ne trouve pas, on prend 1

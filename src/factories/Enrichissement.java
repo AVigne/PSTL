@@ -240,7 +240,6 @@ public abstract class Enrichissement {
 		case 1:
 			//Cas d'une constante qui devient une variable, donc besoin affectation et déclaration avant
 			ArrayList<IAST> array = new ArrayList<>();
-
 			array.add(new ASTDeclaration(a.getType(),a.getNom()));
 			array.add(new ASTAffect(a.getType(), a.getNom(), new ASTConstante(a.getType(),Lexenv.getNewName(),a.getValeur())));
 			return new ReturnEnrichissement(array, 	new ASTVariable(a.getType(),a.getNom(),a.getValeur()));

@@ -20,7 +20,7 @@ public class ASTRand extends ASTExpr{
 		if ((Integer) valeur == 0){
 			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valeur);
 			infval=(Integer)valeur;
-			int s = RandomProvider.nextInt(RandomProvider.nbRandom);
+			int s = RandomProvider.nextInt(RandomProvider.nbRandom)+1;
 			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), s);
 			supval=s;
 			rand= new ASTSous(sup,inf);
