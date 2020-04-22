@@ -25,11 +25,11 @@ if succes:
 	print("Success : ",fileName)
 else:
 	print("Fail : ",fileName)
-print("Expected :",list_errs[int(sys.argv[1])],"Line",errline_recup)
-print("Found :")
-listePrint = [ str(liste_err_mopsa[i])+" Line "+str(errline_mopsa[i]) for i in range(len(s))]
-for i in listePrint:
-	print("\t"+i)
+	print("Expected :",list_errs[int(sys.argv[1])],"Line",errline_recup)
+	print("Found :")
+	listePrint = [ str(liste_err_mopsa[i])+" Line "+str(errline_mopsa[i]) for i in range(len(s))]
+	for i in listePrint:
+		print("\t"+i)
 
 """
 suite : 

@@ -9,7 +9,7 @@ public class RandomProvider {
 
 	// if using the seed got in another iteration, note that the format of a long is
 	// [digit]*L (ex : 42L)
-	private static  long seed = 1587472808494L;//System.currentTimeMillis();
+	private static  long seed = System.currentTimeMillis();
 
 	public static void init() {
 		if (!isInit) {
@@ -17,6 +17,11 @@ public class RandomProvider {
 			isInit = true;
 			theAlmighty.setSeed(seed);
 		}
+	}
+	
+	public static void init(long s) {
+		seed = s;
+		init();
 	}
 
 	public static long getSeed() {
