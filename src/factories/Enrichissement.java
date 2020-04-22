@@ -9,6 +9,7 @@ import ast.expressions.operations.ASTSous;
 import ast.expressions.operations.ASTSum;
 import ast.statement.*;
 import ast.statement.memory.ASTMalloc;
+import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
@@ -245,7 +246,9 @@ public abstract class Enrichissement {
 			return new ReturnEnrichissement(array, 	new ASTVariable(a.getType(),a.getNom(),a.getValeur()));
 		case 2 : 
 			//cas d'un random
-			return new ReturnEnrichissement(new ASTRand(a.getType(), a.getNom(), a.getValeur()));
+			ASTRand r = new ASTRand(a.getType(), a.getNom(), a.getValeur());
+			ASTConstante inf = new ASTConstante(VarType.INT, Lexenv.getNewName(), r.getInfval());
+			return new ReturnEnrichissement(new ASTSum(r, inf));
 		}
 		throw new EnrichissementMissingException(" Enrichissement de la constante ");
 	}

@@ -11,6 +11,7 @@ import factories.RandomProvider;
 
 public class ASTRand extends ASTExpr{
 	protected ASTOpBinaire rand;
+	protected Integer infval,supval;
 	public ASTRand(VarType type, String nom, Object valeur) {
 		this.typeretour = type;
 		this.nom = nom;
@@ -18,12 +19,11 @@ public class ASTRand extends ASTExpr{
 		//Si valeur a 0, la borne supérieur est aléatoire
 		if ((Integer) valeur == 0){
 			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valeur);
-			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), RandomProvider.nextInt(RandomProvider.nbRandom));
-			ASTConstante un = new ASTConstante(type, Lexenv.getNewName(), 1);
-			ASTExpr inf2 = new ASTConstante(type, Lexenv.getNewName(), valeur);
-			ASTSous sous= new ASTSous(sup,inf);
-			ASTSum plusun = new ASTSum (sous,un);
-			rand= new ASTSum(plusun,inf2);
+			infval=(Integer)valeur;
+			int s = RandomProvider.nextInt(RandomProvider.nbRandom);
+			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), s);
+			supval=s;
+			rand= new ASTSous(sup,inf);
 		}
 		else {
 			//System.out.println(valeur);
@@ -35,12 +35,11 @@ public class ASTRand extends ASTExpr{
 				cpt++;
 			}while(valrand>Integer.MAX_VALUE-(Integer)valeur);
 			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valrand);
+			infval=valrand;
 			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), valrand+(Integer)valeur);//RandomProvider.nextInt(Integer.MAX_VALUE-(Integer) valeur)+(Integer) valeur);
-			ASTConstante un = new ASTConstante(type, Lexenv.getNewName(), 1);
-			ASTExpr inf2 = new ASTConstante(type, Lexenv.getNewName(), valrand);
-			ASTSous sous= new ASTSous(sup,inf);
-			ASTSum plusun = new ASTSum (sous,un);
-			rand= new ASTSum(plusun,inf2);
+			supval=valrand+(Integer)valeur;
+			rand= new ASTSous(sup,inf);
+			
 		}
 		this.enrichissements=rand.getEnrichissements();
 	}
@@ -80,5 +79,8 @@ public class ASTRand extends ASTExpr{
 	 */
 	public void setRand(ASTOpBinaire i) {
 		rand=i;
+	}
+	public int getInfval() {
+		return infval;
 	}
 }
