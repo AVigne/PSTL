@@ -96,7 +96,7 @@ public class PSTLFixedSeed {
 			System.exit(1);
 		}
 		Lexenv.init();
-		RandomProvider.init(Integer.valueOf(args[2]));
+		RandomProvider.init(Long.parseLong(args[2]));
 		Enrichissement.init();
 		
 		StringBuffer sb;

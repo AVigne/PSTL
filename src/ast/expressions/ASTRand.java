@@ -17,10 +17,10 @@ public class ASTRand extends ASTExpr{
 		this.nom = nom;
 		this.valeur = valeur;
 		//Si valeur a 0, la borne supérieur est aléatoire
-		if ((Integer) valeur == 0){
+		if ((Integer) valeur <2){
 			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valeur);
 			infval=(Integer)valeur;
-			int s = RandomProvider.nextInt(RandomProvider.nbRandom)+1;
+			int s = RandomProvider.nextInt(RandomProvider.nbRandom)+2;
 			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), s);
 			supval=s;
 			rand= new ASTSous(sup,inf);
