@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import ast.functions.ASTFunction;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import factories.Enrichissement;
@@ -11,6 +12,7 @@ import interfaces.IAST;
 public class ASTProgram implements IAST {
 
 	private ArrayList<IAST> explist = new ArrayList<>();
+	private ArrayList<ASTFunction> funct = new ArrayList<>();
 	private int nbEnrichissementsErr;
 	private int nbEnrichissementsBr;
 	private int enrichissements=0;
@@ -25,6 +27,9 @@ public class ASTProgram implements IAST {
 	}
 	public ArrayList<IAST> getexplist(){
 		return explist;
+	}
+	public ArrayList<ASTFunction> getfunct(){
+		return funct;
 	}
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementNotImplementedException, EnrichissementMissingException {
@@ -43,7 +48,11 @@ public class ASTProgram implements IAST {
 		for (int i = 0; i < explist.size(); i++) {
 			explist.get(i).visit(sb);
 		}
-		sb.append("return 0;\n}");
+		sb.append("return 0;\n}\n");
+		for (int j = 0; j < funct.size(); j++) {
+			funct.get(j).visit(sb);
+			sb.append("\n");
+		}
 	}
 
 	@Override

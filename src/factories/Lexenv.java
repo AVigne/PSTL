@@ -15,6 +15,8 @@ public abstract class Lexenv {
 	private static List<String> vars;
 	
 	private static Boolean error=false;
+	private static Boolean local=false;
+	private static Boolean fun=false;
 	private static List<String> languageKeywords;
 	//Liste des opérateurs booléens
 	public static List<String> compop= new ArrayList<>();
@@ -55,6 +57,13 @@ public abstract class Lexenv {
 		if (error) {
 			sb.append("error_");
 		}
+		if (fun) {
+			sb.append("fun_");
+		}
+		if (local) {
+			sb.append("local_");
+		}
+		
 		// génération de nom aleatoire, on ne se soucie pas de la taile du nom,
 		// Seulement s'il n'existe pas déjà et n'est pas un mot du language
 		do {
@@ -77,5 +86,11 @@ public abstract class Lexenv {
 	 */
 	public static void toggleError(Boolean b) {
 		error = b;
+	}
+	public static void toggleLocal(Boolean b) {
+		local = b;
+	}
+	public static void toggleFun(Boolean b) {
+		fun = b;
 	}
 }

@@ -7,16 +7,21 @@ import ast.expressions.*;
 import ast.expressions.operations.ASTOpBinaire;
 import ast.expressions.operations.ASTSous;
 import ast.expressions.operations.ASTSum;
+import ast.functions.ASTFunctUse;
+import ast.functions.ASTFunction;
+import ast.functions.ASTReturn;
 import ast.statement.*;
 import ast.statement.memory.ASTMalloc;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import interfaces.IAST;
+import jdk.internal.agent.resources.agent;
 import structures.ReturnEnrichissement;
 
 public abstract class Enrichissement {
-	public static int nbEnrConst = 3;
+	//Opération, Variable, Random, Function
+	public static int nbEnrConst = 4;
 	public static ASTProgram p ;
 	public static StringBuffer sn = new StringBuffer();
 	public static void init() {
@@ -169,6 +174,15 @@ public abstract class Enrichissement {
 		if (a instanceof ASTIf) {
 			return enrichirV2((ASTIf) a);
 		}
+		if (a instanceof ASTFunctUse) {
+			return enrichirV2((ASTFunctUse) a);
+		}
+		if (a instanceof ASTFunction) {
+			return enrichirV2((ASTFunction) a);
+		}
+		if (a instanceof ASTReturn) {
+			return enrichirV2((ASTReturn) a);
+		}
 		throw new EnrichissementNotImplementedException(
 				"L'enrichissement n'est pas implémenté pour la classe : " + a.getClass());
 
@@ -184,13 +198,13 @@ public abstract class Enrichissement {
 	 */
 	public static ReturnEnrichissement enrichirV2(ASTAffect a) throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		switch (RandomProvider.nextInt(10)) {
-		//Affectation linéaire
+		//Ajout d'un If 1/10
 		case 0 :
 			Boolean[] bool = {true,false};
 			boolean b = bool[RandomProvider.nextInt(bool.length)];
 			ASTIf iff= new ASTIf(Lexenv.getNewName(), b, a );
 			return new ReturnEnrichissement(iff);
-		//Ajout d'un If
+		//Affectation linéaire 9/10
 		default : 
 			ReturnEnrichissement re = enrichirV2(a.getAffectation());
 			a.setAffectation((AST)re.getIAST());
@@ -248,6 +262,15 @@ public abstract class Enrichissement {
 			ASTRand r = new ASTRand(a.getType(), a.getNom(), a.getValeur());
 			ASTConstante inf = new ASTConstante(VarType.INT, Lexenv.getNewName(), r.getInfval());
 			return new ReturnEnrichissement(new ASTSum(r, inf));
+		case 3 :
+			//cas d'une fonction
+			Lexenv.toggleFun(true);
+			Lexenv.toggleLocal(false);
+			ASTFunction f = new ASTFunction(Lexenv.getNewName(),a.getValeur());
+			Lexenv.toggleFun(false);
+			p.getfunct().add(f);
+			ASTFunctUse fu = new ASTFunctUse(a.getNom(), a.getValeur(), f);
+			return new ReturnEnrichissement(fu);
 		}
 		throw new EnrichissementMissingException(" Enrichissement de la constante ");
 	}
@@ -513,5 +536,70 @@ public abstract class Enrichissement {
 		}
 		throw new EnrichissementMissingException("If");
 
+	}
+	
+	public static ReturnEnrichissement enrichirV2(ASTFunctUse a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		ReturnEnrichissement re = enrichirV2(a.getF());
+		ArrayList<ASTFunction> fs = p.getfunct();
+		for (ASTFunction f : fs) {
+			if (f==a.getF()) {
+				int index = fs.indexOf(f);
+				fs.remove(index);
+				fs.add(index, (ASTFunction)re.getIAST());
+				break;
+			}
+		}
+		a.setF((ASTFunction) re.getIAST());
+		//Tout ce qui se fait dans une fonction est local, donc pas de pré ni post list
+		return new ReturnEnrichissement(a);
+	}
+	public static ReturnEnrichissement enrichirV2(ASTFunction a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		//Comme les if, meme boucle que la boucle principale
+		ArrayList<IAST> enrichissables= new ArrayList<>();
+		for (IAST k : a.getInstr()) {
+			if (k.getEnrichissements()!=0)
+				enrichissables.add(k);
+		}
+		IAST choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
+		int index = a.getInstr().indexOf(choisi);
+		// Les variables crées auront pour nom local_
+		Lexenv.toggleFun(false);
+		Lexenv.toggleLocal(true);
+		ReturnEnrichissement re = enrichirV2(choisi);
+		Lexenv.toggleLocal(false);
+		ArrayList<String> vardecpost= new ArrayList<>();
+		ArrayList<String> varusepost = new ArrayList<>();
+		
+		vardecpost=re.getLast().getDeclaree();
+		varusepost=re.getLast().getUsable();
+		a.setEnrichissements(a.getEnrichissements()-a.getInstr().get(index).getEnrichissements());
+		a.getInstr().remove(index);
+		for (IAST i : re.getPreList()) {
+			i.fuseDeclaree(vardecpost);
+			i.fuseUsable(varusepost);
+			a.getInstr().add(index, i);
+			index++;
+		}
+		re.getIAST().fuseDeclaree(vardecpost);
+		re.getIAST().fuseUsable(varusepost);
+		a.getInstr().add(index, re.getIAST());
+		for (IAST i : re.getPostList()) {
+			i.fuseDeclaree(vardecpost);
+			i.fuseUsable(varusepost);
+			a.getInstr().add(index, i);
+			index++;
+		}
+		ArrayList<String> vardec = re.getVardec();
+		for (int in = index; in<a.getInstr().size();in++) {
+			a.getInstr().get(in).fuseDeclaree(vardec);
+			a.getInstr().get(in).fuseUsable(vardec);
+		}
+		a.setEnrichissements(a.getEnrichissements()+re.getIAST().getEnrichissements());
+		return new ReturnEnrichissement(a);
+	}
+	public static ReturnEnrichissement enrichirV2(ASTReturn a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		ReturnEnrichissement re = enrichirV2(a.getAffectation());
+		a.setAffectation(re.getIAST());
+		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 	}
 }

@@ -142,7 +142,14 @@ public class PSTL {
 		Enrichissement.setProg((ASTProgram)program);
 		
 		sb = new StringBuffer();
-		program.visit(sb);
+		try {
+			program.visit(sb);
+		}catch (Exception e) {
+			System.out.println("Seed amenant a des erreurs : ");
+			System.out.println(RandomProvider.getSeed());
+			System.out.println("\n");
+			System.out.println(e.toString());
+		}
 		/* pour tester des conditions sur un grand nombre de generations
 		} while (sb.toString().split("\n").length > 53 && secu-- > 0);
 		System.out.println(secu+"\n\n\n\n");

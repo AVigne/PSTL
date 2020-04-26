@@ -2,7 +2,6 @@ package ast.expressions;
 
 import ast.expressions.operations.ASTOpBinaire;
 import ast.expressions.operations.ASTSous;
-import ast.expressions.operations.ASTSum;
 import enums.VarType;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
@@ -34,9 +33,9 @@ public class ASTRand extends ASTExpr{
 				valrand = RandomProvider.nextInt((Integer)valeur-cpt);
 				cpt++;
 			}while(valrand>Integer.MAX_VALUE-(Integer)valeur);
-			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valrand);
+			ASTExpr inf = new ASTConstante(type, Lexenv.getNewName(), valrand+1);
 			infval=valrand;
-			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), valrand+(Integer)valeur);//RandomProvider.nextInt(Integer.MAX_VALUE-(Integer) valeur)+(Integer) valeur);
+			ASTExpr sup = new ASTConstante(type, Lexenv.getNewName(), valrand+1+(Integer)valeur);//RandomProvider.nextInt(Integer.MAX_VALUE-(Integer) valeur)+(Integer) valeur);
 			supval=valrand+(Integer)valeur;
 			rand= new ASTSous(sup,inf);
 			

@@ -51,7 +51,11 @@ public abstract class ASTOpBinaire extends ASTExpr {
 
 	// Renvoie une des 4 opérations de manière random
 	public static IAST getRandomOperation(Object valeur) {
-		int rand = RandomProvider.nextInt(4);
+		int e=4;
+		//Pas de division si valeur trop haute, on gère ça assez mal, évite des overflow
+		if ((Integer)valeur>Integer.MAX_VALUE/2)
+			e=3;
+		int rand = RandomProvider.nextInt(3);
 		switch (rand) {
 		case 0:
 			return new ASTSum(valeur);
