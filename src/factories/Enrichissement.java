@@ -540,7 +540,7 @@ public abstract class Enrichissement {
 	
 	public static ReturnEnrichissement enrichirV2(ASTFunctUse a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		ReturnEnrichissement re = enrichirV2(a.getF());
-		ArrayList<ASTFunction> fs = p.getfunct();
+		/*ArrayList<ASTFunction> fs = p.getfunct();
 		for (ASTFunction f : fs) {
 			if (f==a.getF()) {
 				int index = fs.indexOf(f);
@@ -549,7 +549,7 @@ public abstract class Enrichissement {
 				break;
 			}
 		}
-		a.setF((ASTFunction) re.getIAST());
+		a.setF((ASTFunction) re.getIAST());*/
 		//Tout ce qui se fait dans une fonction est local, donc pas de pré ni post list
 		return new ReturnEnrichissement(a);
 	}
@@ -600,6 +600,7 @@ public abstract class Enrichissement {
 	public static ReturnEnrichissement enrichirV2(ASTReturn a) throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		ReturnEnrichissement re = enrichirV2(a.getAffectation());
 		a.setAffectation(re.getIAST());
+		a.setEnrichissements(re.getIAST().getEnrichissements());
 		return new ReturnEnrichissement(re.getPreList(),a,re.getPostList());
 	}
 }
