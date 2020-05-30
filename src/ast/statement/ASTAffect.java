@@ -19,7 +19,7 @@ public class ASTAffect extends ASTStatement {
 		this.nom = nom;
 		this.type = type;
 		var = new ASTVariable(type, nom, valeur);
-		this.enrichissements=1;
+		this.enrichissements = 1;
 	}
 
 	@Override
@@ -30,23 +30,27 @@ public class ASTAffect extends ASTStatement {
 	public IAST getVar() {
 		return var;
 	}
+
 	public void setVar(ASTVariable v) {
-		var=v;
+		var = v;
 	}
+
 	public IAST getAffectation() {
 		return affectation;
 	}
+
 	public void setAffectation(AST a) {
-		affectation=a;
+		affectation = a;
 	}
+
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		//Affiche les def use, pour débug
-		/*System.out.println(var.getNom());
-		System.out.println(this.declaree);
-		System.out.println(this.usable);
-		System.out.println(var.getUsable());
-		System.out.println(affectation.getUsable());*/
+		// Affiche les def use, pour débug
+		/*
+		 * System.out.println(var.getNom()); System.out.println(this.declaree);
+		 * System.out.println(this.usable); System.out.println(var.getUsable());
+		 * System.out.println(affectation.getUsable());
+		 */
 		var.visit(sb);
 		sb.append(" = ");
 		affectation.visit(sb);
@@ -58,6 +62,7 @@ public class ASTAffect extends ASTStatement {
 	public String getNom() {
 		return this.nom;
 	}
+
 	@Override
 	public void addDeclaree(String n) {
 		if (!declaree.contains(n))
@@ -65,6 +70,7 @@ public class ASTAffect extends ASTStatement {
 		affectation.addDeclaree(n);
 		var.addDeclaree(n);
 	}
+
 	@Override
 	public void addUsable(String n) {
 		if (!usable.contains(n))

@@ -24,12 +24,13 @@ public class ASTMult extends ASTOpBinaire {
 			d = 0;
 		} else {
 			// gauche et droite aléatoires
-			int rand = ((int)Math.sqrt(produit)) + 1;
+			int rand = ((int) Math.sqrt(produit)) + 1;
 			int cpt = 0;
 			int maxIter = 50;
-			
-			/* On regarde les nombres entre sqrt(somme) et sqrt(somme) - 50 
-			 * on prend le premier diviseur de somme, si on en trouve aucun on multiplie somme par 1
+
+			/*
+			 * On regarde les nombres entre sqrt(somme) et sqrt(somme) - 50 on prend le
+			 * premier diviseur de somme, si on en trouve aucun on multiplie somme par 1
 			 */
 			while ((produit % rand != 0) && (cpt < maxIter)) {
 				rand--;
@@ -47,6 +48,5 @@ public class ASTMult extends ASTOpBinaire {
 		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d);
 
 	}
-
 
 }

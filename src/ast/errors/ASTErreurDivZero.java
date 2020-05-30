@@ -15,22 +15,23 @@ import interfaces.IAST;
 
 public class ASTErreurDivZero {
 	ASTAffect div;
-	public ASTErreurDivZero(VarType type, String nom, Object valeur,IAST owner) throws EnrichissementMissingException {
+
+	public ASTErreurDivZero(VarType type, String nom, Object valeur, IAST owner) throws EnrichissementMissingException {
 		super();
 		Lexenv.toggleError(true);
 		ASTDiv d = new ASTDiv(
 				new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nextInt(RandomProvider.nbRandom)),
-				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0)
-				);
-		div = new ASTAffect(VarType.INT,Lexenv.getNewName(),d);
+				new ASTConstante(VarType.INT, Lexenv.getNewName(), 0));
+		div = new ASTAffect(VarType.INT, Lexenv.getNewName(), d);
 		d.setEnrichissements(2);
 		div.setEnrichissements(2);
 		d.setTextError("/*erreur ici*/");
 		Lexenv.toggleError(false);
 	}
-	public ArrayList<AST> getAst(){
+
+	public ArrayList<AST> getAst() {
 		ArrayList<AST> a = new ArrayList<>();
-		ASTDeclaration dec= new ASTDeclaration(div.getType(),div.getNom());
+		ASTDeclaration dec = new ASTDeclaration(div.getType(), div.getNom());
 		dec.addDeclaree(dec.getNom());
 		a.add(dec);
 		div.addDeclaree(dec.getNom());

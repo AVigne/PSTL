@@ -7,12 +7,12 @@ import factories.Lexenv;
 import factories.RandomProvider;
 
 public class ASTSum extends ASTOpBinaire {
-	
+
 	public ASTSum(Object valeur) {
 		super(valeur);
 	}
-	
-	public ASTSum(ASTExpr g, ASTExpr d ) {
+
+	public ASTSum(ASTExpr g, ASTExpr d) {
 		super(g, d);
 		this.valeur = (Integer) g.getValeur() + (Integer) d.getValeur();
 	}

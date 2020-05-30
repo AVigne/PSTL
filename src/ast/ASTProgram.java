@@ -15,7 +15,8 @@ public class ASTProgram implements IAST {
 	private ArrayList<ASTFunction> funct = new ArrayList<>();
 	private int nbEnrichissementsErr;
 	private int nbEnrichissementsBr;
-	private int enrichissements=0;
+	private int enrichissements = 0;
+
 	public void addExp(IAST exp) {
 
 		this.explist.add(exp);
@@ -25,12 +26,15 @@ public class ASTProgram implements IAST {
 		this.nbEnrichissementsErr = enrE;
 		this.nbEnrichissementsBr = enrB;
 	}
-	public ArrayList<IAST> getexplist(){
+
+	public ArrayList<IAST> getexplist() {
 		return explist;
 	}
-	public ArrayList<ASTFunction> getfunct(){
+
+	public ArrayList<ASTFunction> getfunct() {
 		return funct;
 	}
+
 	@Override
 	public void visit(StringBuffer sb) throws EnrichissementNotImplementedException, EnrichissementMissingException {
 		// Biblio a ajouter au fur et a mesure si besoin
@@ -60,17 +64,16 @@ public class ASTProgram implements IAST {
 		return null;
 	}
 
-
 	@Override
 	public void setEnrichissements(int i) {
-		enrichissements=i;
+		enrichissements = i;
 	}
 
 	@Override
 	public int getEnrichissements() {
 		return enrichissements;
 	}
-	
+
 	public int getPosition(AST a) {
 		return explist.indexOf(a);
 	}
@@ -78,7 +81,7 @@ public class ASTProgram implements IAST {
 	@Override
 	public void addDeclaree(String n) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -90,7 +93,7 @@ public class ASTProgram implements IAST {
 	@Override
 	public void addUsable(String n) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -102,20 +105,19 @@ public class ASTProgram implements IAST {
 	@Override
 	public void popUsable(String n) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void fuseDeclaree(ArrayList<String> l) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void fuseUsable(ArrayList<String> l) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
 
 }

@@ -1,10 +1,10 @@
 package interfaces;
 
 public interface IProgramBuilder {
-	
+
 	/**
 	 * 
-	 * @param enrE 
+	 * @param enrE
 	 * @param enrB
 	 * @return
 	 */

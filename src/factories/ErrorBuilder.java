@@ -20,7 +20,7 @@ public class ErrorBuilder implements IErrorBuilder {
 		case DOUBLE_FREE:
 			return (new ASTErreurDoubleFree(VarType.ERROR, "edf", null, null)).getAst();
 		case DIVISION_BY_ZERO:
-			return (new ASTErreurDivZero(VarType.ERROR,"edpz",null,null)).getAst();
+			return (new ASTErreurDivZero(VarType.ERROR, "edpz", null, null)).getAst();
 		default:
 			throw new CodeSupposedUnreachableException("Erreur non gérée");
 		}

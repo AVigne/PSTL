@@ -18,20 +18,22 @@ import factories.Lexenv;
 import factories.RandomProvider;
 import interfaces.IAST;
 
-public class ASTErreurDoubleFree extends ASTExpr{
+public class ASTErreurDoubleFree extends ASTExpr {
 	ASTAffect affect_malloc;
 	ASTStatement free1;
 	ASTStatement free2;
 	AST owner;
-	public ASTErreurDoubleFree(VarType type, String nom, Object valeur,IAST owner) throws EnrichissementMissingException {
+
+	public ASTErreurDoubleFree(VarType type, String nom, Object valeur, IAST owner)
+			throws EnrichissementMissingException {
 		super();
-		//nomme les deux variables avec des error_
+		// nomme les deux variables avec des error_
 		Lexenv.toggleError(true);
-		ASTVariable pointeur =new ASTVariable(VarType.PINT, Lexenv.getNewName(),"NULL");
-		ASTConstante num = new ASTConstante(VarType.INT,Lexenv.getNewName(),RandomProvider.nbRandom);
-		//Le malloc est une affectation
-		ASTStatement malloc= new ASTMalloc(num, VarType.PINT);
-		affect_malloc = new ASTAffect(pointeur.getType(),pointeur.getNom(),malloc);
+		ASTVariable pointeur = new ASTVariable(VarType.PINT, Lexenv.getNewName(), "NULL");
+		ASTConstante num = new ASTConstante(VarType.INT, Lexenv.getNewName(), RandomProvider.nbRandom);
+		// Le malloc est une affectation
+		ASTStatement malloc = new ASTMalloc(num, VarType.PINT);
+		affect_malloc = new ASTAffect(pointeur.getType(), pointeur.getNom(), malloc);
 		free1 = new ASTFree(pointeur);
 		free2 = new ASTFree(pointeur);
 		free1.setEnrichissements(0);
@@ -39,9 +41,10 @@ public class ASTErreurDoubleFree extends ASTExpr{
 		affect_malloc.setEnrichissements(1);
 		Lexenv.toggleError(false);
 	}
-	public ArrayList<AST> getAst(){
+
+	public ArrayList<AST> getAst() {
 		ArrayList<AST> a = new ArrayList<>();
-		ASTDeclaration dec = new ASTDeclaration(affect_malloc.getType(),affect_malloc.getNom());
+		ASTDeclaration dec = new ASTDeclaration(affect_malloc.getType(), affect_malloc.getNom());
 		dec.addDeclaree(dec.getNom());
 		a.add(dec);
 		affect_malloc.addDeclaree(dec.getNom());
@@ -59,15 +62,12 @@ public class ASTErreurDoubleFree extends ASTExpr{
 		affect_malloc.visit(sb);
 		free1.visit(sb);
 		free2.visit(sb);
-		
-		
+
 	}
-
-
 
 	@Override
 	public String getNom() {
 		return null;
 	}
-	
+
 }

@@ -15,13 +15,13 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	public ASTOpBinaire(ASTExpr g, ASTExpr d) {
 		gauche = g;
 		droite = d;
-		this.enrichissements=gauche.getEnrichissements()+droite.getEnrichissements();
+		this.enrichissements = gauche.getEnrichissements() + droite.getEnrichissements();
 	}
 
 	public ASTOpBinaire(Object valeur) {
 		this.valeur = valeur;
 		int somme = (Integer) valeur;
-		this.enrichissements=2;
+		this.enrichissements = 2;
 		this.initCotes(somme);
 
 	}
@@ -35,12 +35,15 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	public IAST getGauche() {
 		return gauche;
 	}
+
 	public void setGauche(AST g) {
-		gauche=g;
+		gauche = g;
 	}
+
 	public void setDroite(AST d) {
-		droite=d;
+		droite = d;
 	}
+
 	public IAST getDroite() {
 		return droite;
 	}
@@ -51,10 +54,11 @@ public abstract class ASTOpBinaire extends ASTExpr {
 
 	// Renvoie une des 4 opérations de manière random
 	public static IAST getRandomOperation(Object valeur) {
-		int e=4;
-		//Pas de division si valeur trop haute, on gère ça assez mal, évite des overflow
-		if ((Integer)valeur>Integer.MAX_VALUE/2)
-			e=3;
+		int e = 4;
+		// Pas de division si valeur trop haute, on gère ça assez mal, évite des
+		// overflow
+		if ((Integer) valeur > Integer.MAX_VALUE / 2)
+			e = 3;
 		int rand = RandomProvider.nextInt(3);
 		switch (rand) {
 		case 0:
@@ -74,7 +78,6 @@ public abstract class ASTOpBinaire extends ASTExpr {
 	public String getNom() {
 		return this.getNom();
 	}
-
 
 	private void addOperator(StringBuffer sb) {
 		if (this instanceof ASTMult) {
@@ -101,14 +104,14 @@ public abstract class ASTOpBinaire extends ASTExpr {
 		gauche.visit(sb);
 		this.addOperator(sb);
 		droite.visit(sb);
-		sb.append(erreur_ici+")");
+		sb.append(erreur_ici + ")");
 	}
-	
+
 	public boolean setTextError(String str) {
 		this.erreur_ici = str;
 		return true;
 	}
-	
+
 	@Override
 	public void addDeclaree(String n) {
 		if (!declaree.contains(n))
@@ -116,6 +119,7 @@ public abstract class ASTOpBinaire extends ASTExpr {
 		gauche.addDeclaree(n);
 		droite.addDeclaree(n);
 	}
+
 	@Override
 	public void addUsable(String n) {
 		if (!usable.contains(n))
