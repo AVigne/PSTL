@@ -1,13 +1,21 @@
 # PSTL
 
-### Le script nécessite trois arguments:
+### Il existe deux scripts (necessitant MOPSA):
 
-	1 - l'id de l'erreur (pour le moment il n'y a que 0 -> Double Free et 1 -> Div/0)
+	1 - Le premier, pstl_script, prend en paramètres l'erreur (1 pour la division par 0),
+	    le nombre d'enrichissements souhaités et le nombre de fichiers à créer
+	    Ce script va créer autant de fichiers que spécifié, du nombre d'enrichissements donné.
 
-	2 - le nombre d'enrichissements souhaités
+	2 - Le second, pstl_fixed_seed, prend l'erreur, une seed, puis deux bornes d'enrichissements
+	    Ce script va créer tout les fichiers avec un nombre d'enrichissements compris entre les bornes,
+	    pour la seed donnée.
 
-	3 - le nombre de programmes à générer
 	
-Pour le moment, les programmes sont stockés dans un dossier tests au sein du projet, et le script ne fait qu'afficher les analyses de Mopsa
+### Pour utiliser le générateur seul
 
-Le script à aussi besoin du .jar du projet, généré avec eclipse pour le moment.
+	1- PSTL.jar prend en paramètres l'erreur (toujours 1 pour la division par 0), ainsi que le nombre d'enrichissements.
+	   Il va créer un fichier test.c du nombre d'enrichissements spécifié.
+	   
+	2- PSTLFixedSeed.jar prend en paramères l'erreur, le nombre d'enrichissement souhaité, ainsi que la seed. 
+	   Il va créer l'unique fichier d'enrichissement donné, en utilisant la seed passée en paramètre. 
+
