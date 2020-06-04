@@ -148,7 +148,7 @@ public class PSTL {
 			System.out.println("Seed amenant a des erreurs : ");
 			System.out.println(RandomProvider.getSeed());
 			System.out.println("\n");
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 		/* pour tester des conditions sur un grand nombre de generations
 		} while (sb.toString().split("\n").length > 53 && secu-- > 0);

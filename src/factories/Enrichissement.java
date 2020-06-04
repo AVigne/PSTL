@@ -490,9 +490,7 @@ public abstract class Enrichissement {
 					rand = RandomProvider.nextInt(2);
 			}
 		}
-		switch (rand) {
-		// cas Cond
-		case 0:
+		if(rand == 0) {
 			ReturnEnrichissement re = enrichirV2(a.getCond());
 			// on enleve les enrichissements de la condition
 			a.setEnrichissements(a.getEnrichissements() - a.getCond().getEnrichissements());
@@ -500,92 +498,64 @@ public abstract class Enrichissement {
 			// Pour les rajouter après
 			a.setEnrichissements(a.getEnrichissements() + re.getIAST().getEnrichissements());
 			return new ReturnEnrichissement(re.getPreList(), a, re.getPostList());
-		// cas Then
-		// Code identique quasiment a la boucle principale. Moyen sans doute de le
-		// factoriser.
-		case 1:
-			ArrayList<IAST> enrichissables = new ArrayList<>();
-			for (IAST k : a.getThen()) {
-				if (k.getEnrichissements() != 0)
-					enrichissables.add(k);
-			}
-			IAST choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
-			int index = a.getThen().indexOf(choisi);
-			re = enrichirV2(choisi);
-			ArrayList<String> vardecpost = new ArrayList<>();
-			ArrayList<String> varusepost = new ArrayList<>();
-
-			vardecpost = re.getLast().getDeclaree();
-			varusepost = re.getLast().getUsable();
-			a.setEnrichissements(a.getEnrichissements() - a.getThen().get(index).getEnrichissements());
-			a.getThen().remove(index);
-			for (IAST i : re.getPreList()) {
-				i.fuseDeclaree(vardecpost);
-				i.fuseUsable(varusepost);
-				a.getThen().add(index, i);
-				index++;
-			}
-			re.getIAST().fuseDeclaree(vardecpost);
-			re.getIAST().fuseUsable(varusepost);
-			a.getThen().add(index, re.getIAST());
-			for (IAST i : re.getPostList()) {
-				i.fuseDeclaree(vardecpost);
-				i.fuseUsable(varusepost);
-				a.getThen().add(index, i);
-				index++;
-			}
-			ArrayList<String> vardec = re.getVardec();
-			for (int in = index; in < a.getThen().size(); in++) {
-				a.getThen().get(in).fuseDeclaree(vardec);
-				a.getThen().get(in).fuseUsable(vardec);
-			}
-			a.setEnrichissements(a.getEnrichissements() + re.getIAST().getEnrichissements());
-			return new ReturnEnrichissement(a);
-		// cas Else
-		case 2:
-			enrichissables = new ArrayList<>();
-			for (IAST k : a.getElse()) {
-				if (k.getEnrichissements() != 0)
-					enrichissables.add(k);
-			}
-			choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
-			index = a.getElse().indexOf(choisi);
-			re = enrichirV2(choisi);
-			vardecpost = new ArrayList<>();
-			varusepost = new ArrayList<>();
-
-			vardecpost = re.getLast().getDeclaree();
-			varusepost = re.getLast().getUsable();
-			a.setEnrichissements(a.getEnrichissements() - a.getElse().get(index).getEnrichissements());
-			a.getElse().remove(index);
-			for (IAST i : re.getPreList()) {
-				i.fuseDeclaree(vardecpost);
-				i.fuseUsable(varusepost);
-				a.getElse().add(index, i);
-				index++;
-			}
-			re.getIAST().fuseDeclaree(vardecpost);
-			re.getIAST().fuseUsable(varusepost);
-			a.getElse().add(index, re.getIAST());
-			for (IAST i : re.getPostList()) {
-				i.fuseDeclaree(vardecpost);
-				i.fuseUsable(varusepost);
-				a.getElse().add(index, i);
-				index++;
-			}
-			vardec = re.getVardec();
-			for (int in = index; in < a.getElse().size(); in++) {
-				a.getElse().get(in).fuseDeclaree(vardec);
-				a.getElse().get(in).fuseUsable(vardec);
-			}
-			a.setEnrichissements(a.getEnrichissements() + re.getIAST().getEnrichissements());
-			return new ReturnEnrichissement(a);
-
 		}
-		throw new EnrichissementMissingException("If");
+		// cas Then
+		// Code identique quasiment a la boucle principale. Possibilite sans doute de le
+		// factoriser.
+		// cas Else
 
+		ArrayList<IAST> agetcons;
+		switch(rand) {
+		case 1: 
+			agetcons = a.getThen();
+			break;
+		case 2:
+			agetcons = a.getElse();
+			break;
+		default:
+			throw new EnrichissementMissingException("If");		
+		}
+		ReturnEnrichissement re;
+		ArrayList<IAST> enrichissables = new ArrayList<>();
+		for (IAST k : agetcons) {
+			if (k.getEnrichissements() != 0)
+				enrichissables.add(k);
+		}
+		IAST choisi = enrichissables.get(RandomProvider.nextInt(enrichissables.size()));
+		int index = agetcons.indexOf(choisi);
+		re = enrichirV2(choisi);
+		ArrayList<String> vardecpost = new ArrayList<>();
+		ArrayList<String> varusepost = new ArrayList<>();
+
+		vardecpost = re.getLast().getDeclaree();
+		varusepost = re.getLast().getUsable();
+		a.setEnrichissements(a.getEnrichissements() - agetcons.get(index).getEnrichissements());
+		agetcons.remove(index);
+		for (IAST i : re.getPreList()) {
+			i.fuseDeclaree(vardecpost);
+			i.fuseUsable(varusepost);
+			agetcons.add(index, i);
+			index++;
+		}
+		re.getIAST().fuseDeclaree(vardecpost);
+		re.getIAST().fuseUsable(varusepost);
+		agetcons.add(index, re.getIAST());
+		for (IAST i : re.getPostList()) {
+			i.fuseDeclaree(vardecpost);
+			i.fuseUsable(varusepost);
+			agetcons.add(index, i);
+			index++;
+		}
+		ArrayList<String> vardec = re.getVardec();
+		for (int in = index; in < agetcons.size(); in++) {
+			agetcons.get(in).fuseDeclaree(vardec);
+			agetcons.get(in).fuseUsable(vardec);
+		}
+		a.setEnrichissements(a.getEnrichissements() + re.getIAST().getEnrichissements());
+		return new ReturnEnrichissement(a);
 	}
 
+	
 	public static ReturnEnrichissement enrichirV2(ASTFunctUse a)
 			throws EnrichissementMissingException, EnrichissementNotImplementedException {
 		ReturnEnrichissement re = enrichirV2(a.getF());
