@@ -1,0 +1,11 @@
+#!/bin/bash
+
+rm -f tests/testfs[0-9]*.c
+
+for i in `seq $3 $4`;
+do
+	java -jar PSTLFixedSeed.jar $1 $i $2 &>tests/testfs$i.c
+	json_res=`mopsa-c tests/testfs$i.c -format=json`
+	grep_res=`grep -n "erreur ici" tests/testfs$i.c | cut -d':' -f1 `
+	python3 error_checker.py $1 "testfs$i.c" $grep_res $json_res
+done

@@ -1,57 +1,69 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import enums.VarType;
 import interfaces.IAST;
 
 public abstract class AST implements IAST {
-	protected IAST owner;
-	protected boolean affectee = false;
 	protected String nom = "";
-	protected boolean visitee = false;
+	protected int enrichissements = 0;
+	protected ArrayList<String> declaree = new ArrayList<>();
+	protected ArrayList<String> usable = new ArrayList<>();
 
 	public VarType getType() {
 		return null;
 	}
 
-	public IAST getOwner() {
-		return owner;
+	@Override
+	public void setEnrichissements(int i) {
+		this.enrichissements = i;
 	}
 
-	public ArrayList<AST> getAffect(ArrayList<AST> a) {
-		return a;
+	public void upEnrichissement(int i) {
+		this.enrichissements += i;
 	}
 
-	/**
-	 * Permet de dire qu'un AST a été affecté
-	 */
-	public void affectee() {
-		affectee = true;
+	@Override
+	public int getEnrichissements() {
+		return enrichissements;
 	}
 
-	/**
-	 * Retourne si un AST a été affecté
-	 *
-	 */
-	public boolean isaffectee() {
-		return affectee;
+	public void enrichirV2() {
+
 	}
 
-	/**
-	 * Retourne si un AST a été visité (évite les doublons)
-	 * 
-	 * @return
-	 */
-	public boolean isvisitee() {
-		return visitee;
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			declaree.add(n);
 	}
 
-	/**
-	 * Permet de dire qu'un AST a été visité
-	 */
-	public void visiter() {
-		visitee = true;
+	public ArrayList<String> getDeclaree() {
+		return declaree;
+	}
+
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			usable.add(n);
+	}
+
+	public ArrayList<String> getUsable() {
+		return usable;
+	}
+
+	public void popUsable(String n) {
+		usable.remove(n);
+	}
+
+	public void fuseDeclaree(ArrayList<String> l) {
+		for (String s : l) {
+			addDeclaree(s);
+		}
+	}
+
+	public void fuseUsable(ArrayList<String> l) {
+		for (String s : l) {
+			addUsable(s);
+		}
 	}
 }

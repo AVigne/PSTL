@@ -1,48 +1,66 @@
 package ast.expressions.operations;
 
-import java.util.ArrayList;
-
-import ast.AST;
-import ast.expressions.ASTAffect;
+import ast.expressions.ASTConstante;
 import ast.expressions.ASTExpr;
-import ast.expressions.ASTVariable;
-import ast.statement.ASTDeclaration;
 import enums.VarType;
-import exceptions.EnrichissementMissingException;
-import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import factories.Lexenv;
 import factories.RandomProvider;
-import interfaces.IAST;
 
-public class ASTDiv extends ASTOp {
+public class ASTDiv extends ASTOpBinaire {
 
-	public ASTDiv(Object valeur, IAST owner) {
-		super(valeur,owner);
-		}
+	public ASTDiv(Object valeur) {
+		super(valeur);
+	}
 
-	public ASTDiv(ASTExpr g, ASTExpr d, IAST owner) {
-		super(g, d, owner);
-		this.valeur = (Integer) (g.getValeur()) / (Integer) d.getValeur();
+	public ASTDiv(ASTExpr g, ASTExpr d) {
+		super(g, d);
+		if ((Integer) d.getValeur() == 0)
+			this.valeur = 0;
+		else
+			this.valeur = (Integer) (g.getValeur()) / (Integer) d.getValeur();
 	}
 
 	@Override
-	protected void initCotes(int somme) {
+	protected void initCotes(int div) {
 		int g, d;
-		if (somme == 0) {
+		if (div == 0) {
 			g = 0;
-			d = 1;
+			d = RandomProvider.nextInt(RandomProvider.nbRandom) + 1;
 		} else {
-			// gauche et droite aléatoires
-			
-			int rand = RandomProvider.nextInt((Integer.MAX_VALUE - 1)/ somme) + 1;
-			//System.out.println(rand+" "+somme+" "+(somme*rand));
-			g = somme * rand;
+			int rand = 1;
+			// Si pas d'overflow au carré, on tire un random jusqu'a div
+			if (Integer.MAX_VALUE / div > div) {
+				int cpt = 0;
+				do {
+					rand = RandomProvider.nextInt(div) + 1;
+					cpt++;
+					// Peu de chance de tirer div fois 0, donc normalement on a une valeur
+				} while ((rand < 0) && (cpt < div));
+				// Au pire des cas on prend 1
+				if (cpt == div)
+					rand = 1;
+			}
+			// Sinon on part de div/2 et on décrémente jusqu'a suprimer l'overflow
+			else {
+				int temp = div / 2;
+				do {
+					if (temp == -1)
+						break;
+					rand = RandomProvider.nextInt(temp) + 1;
+					temp--;
+				} while ((Integer.MAX_VALUE / rand < div) && (rand < 0));
+				// Si on ne trouve pas, on prend 1
+				if (temp < 0) {
+					rand = 1;
+				}
+			}
+
+			// System.out.println(rand+" "+somme+" "+(somme*rand));
+			g = div * rand;
 			d = rand;
 		}
-		gauche = new ASTVariable(VarType.INT, Lexenv.getNewName(), g, this);
-		droite = new ASTVariable(VarType.INT, Lexenv.getNewName(), d, this);	
+		gauche = new ASTConstante(VarType.INT, Lexenv.getNewName(), g);
+		droite = new ASTConstante(VarType.INT, Lexenv.getNewName(), d);
 	}
-
 
 }

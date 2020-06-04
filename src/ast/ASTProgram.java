@@ -2,6 +2,7 @@ package ast;
 
 import java.util.ArrayList;
 
+import ast.functions.ASTFunction;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
 import factories.Enrichissement;
@@ -11,8 +12,10 @@ import interfaces.IAST;
 public class ASTProgram implements IAST {
 
 	private ArrayList<IAST> explist = new ArrayList<>();
+	private ArrayList<ASTFunction> funct = new ArrayList<>();
 	private int nbEnrichissementsErr;
 	private int nbEnrichissementsBr;
+	private int enrichissements = 0;
 
 	public void addExp(IAST exp) {
 
@@ -22,6 +25,14 @@ public class ASTProgram implements IAST {
 	public ASTProgram(int enrE, int enrB) {
 		this.nbEnrichissementsErr = enrE;
 		this.nbEnrichissementsBr = enrB;
+	}
+
+	public ArrayList<IAST> getexplist() {
+		return explist;
+	}
+
+	public ArrayList<ASTFunction> getfunct() {
+		return funct;
 	}
 
 	@Override
@@ -36,18 +47,16 @@ public class ASTProgram implements IAST {
 		sb.append("seed : " + RandomProvider.getSeed() + "\n*/\n");
 
 		sb.append("int main(){\n");
-		Enrichissement.enrichissement(nbEnrichissementsErr);
+		Enrichissement.enrichirV2(nbEnrichissementsErr);
 
 		for (int i = 0; i < explist.size(); i++) {
 			explist.get(i).visit(sb);
 		}
-		sb.append("return 0;\n}");
-	}
-
-	@Override
-	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
-		// TODO Auto-generated method stub
-
+		sb.append("return 0;\n}\n");
+		for (int j = 0; j < funct.size(); j++) {
+			funct.get(j).visit(sb);
+			sb.append("\n");
+		}
 	}
 
 	@Override
@@ -56,12 +65,58 @@ public class ASTProgram implements IAST {
 	}
 
 	@Override
-	public boolean isaffectee() {
-		return false;
+	public void setEnrichissements(int i) {
+		enrichissements = i;
 	}
 
 	@Override
-	public void affectee() {
+	public int getEnrichissements() {
+		return enrichissements;
+	}
+
+	public int getPosition(AST a) {
+		return explist.indexOf(a);
+	}
+
+	@Override
+	public void addDeclaree(String n) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ArrayList<String> getDeclaree() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addUsable(String n) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ArrayList<String> getUsable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void popUsable(String n) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void fuseDeclaree(ArrayList<String> l) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void fuseUsable(ArrayList<String> l) {
+		// TODO Auto-generated method stub
 
 	}
 

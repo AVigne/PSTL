@@ -1,39 +1,41 @@
 package ast.statement.memory;
 
-import ast.AST;
-import ast.expressions.ASTExpr;
 import ast.statement.ASTStatement;
 import exceptions.EnrichissementMissingException;
 import exceptions.EnrichissementNotImplementedException;
-import factories.Enrichissement;
 import interfaces.IAST;
 
 public class ASTFree extends ASTStatement {
 	private IAST var;
-	public ASTFree(IAST var, IAST owner) {
-		this.owner=owner;
-		this.var=var;
-		Enrichissement.add(this);
-	}
-	@Override
-	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
-		sb.append("free("+var.getNom());
-		sb.append(");\n");
+
+	public ASTFree(IAST var) {
+		this.var = var;
+		this.enrichissements = 0;
 	}
 
 	@Override
-	public void enrichissement(IAST old, IAST nouveau) throws EnrichissementMissingException {
-		if( var==old) {
-			var=nouveau;
-			Enrichissement.pop(var);
-		}
-		else {
-			throw new EnrichissementMissingException("L'expression enrichie n'est pas le pointeur du free");
-		}
+	public void visit(StringBuffer sb) throws EnrichissementMissingException, EnrichissementNotImplementedException {
+		sb.append("free(");
+		var.visit(sb);
+		sb.append(");\n");
 	}
+
 	@Override
 	public String getNom() {
 		return this.nom;
 	}
 
+	@Override
+	public void addDeclaree(String n) {
+		if (!declaree.contains(n))
+			declaree.add(n);
+		var.addDeclaree(n);
+	}
+
+	@Override
+	public void addUsable(String n) {
+		if (!usable.contains(n))
+			usable.add(n);
+		var.addUsable(n);
+	}
 }
